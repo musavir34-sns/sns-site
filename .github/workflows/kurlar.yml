@@ -1,0 +1,22 @@
+name: TCMB kurlarini guncelle
+on:
+  schedule:
+    - cron: "50 12 * * 1-5"   # 15:50 Istanbul, TCMB kurlari aciklandiktan sonra
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  kur:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 araclar/kurlar.py
+      - name: Degisiklik varsa kaydet
+        run: |
+          if ! git diff --quiet kurlar.json; then
+            git config user.name "kur-botu"
+            git config user.email "kur-botu@users.noreply.github.com"
+            git add kurlar.json
+            git commit -m "TCMB kurlari"
+            git push
+          fi
