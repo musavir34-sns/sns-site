@@ -8,6 +8,10 @@
 .ib-grid label,.ib-tam{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#4A5056}
 .ib-tam{grid-column:1/-1}
 .ib-pro-gizli .ib-pro{display:none}
+.ib-tur{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 18px}
+.ib-tur span{font-weight:600;font-size:15px;margin-right:6px}
+.ib-tur button{font:600 15px/1 Manrope,sans-serif;border:2px solid #2B2F33;background:#FFF;color:#2B2F33;border-radius:10px;padding:14px 20px;cursor:pointer}
+.ib-tur button[aria-pressed="true"]{background:#2B2F33;color:#FFF}
 .hm textarea{font:400 15px/1.45 Manrope,sans-serif;color:#2B2F33;border:1px solid #D7DBD4;border-radius:8px;padding:10px;min-height:76px;resize:vertical;width:100%;box-sizing:border-box}
 .ib-logo{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .ib-logo img{max-height:56px;max-width:180px;border:1px solid #E1E4DE;border-radius:6px;padding:4px;background:#FFF}
@@ -67,6 +71,7 @@
 <p class="hm-giris">Firma bilgilerinizi ve logonuzu girin, kalemleri ve ambalaj bilgilerini doldurun; İngilizce ticari fatura ve çeki listesi kendi kurumsal görünümünüzle hazırlansın. PDF olarak alabilir ya da Excel'e aktarıp üzerinde çalışmaya devam edebilirsiniz.</p>
 <p class="ib-gizlilik">Girdiğiniz bilgiler ve logonuz yalnızca kendi tarayıcınızda işlenir; sunucumuza gönderilmez, bizde saklanmaz. Taslağınız bu cihazda hatırlanır; isterseniz dosya olarak kaydedip başka cihazda açabilirsiniz.</p>
 
+<div class="ib-tur" role="group" aria-label="Belge türü"><span>Hangi belgeyi hazırlıyorsunuz?</span><button type="button" data-t="commercial" aria-pressed="true">Commercial Invoice</button><button type="button" data-t="proforma" aria-pressed="false">Proforma Invoice</button></div>
 <div class="hm-kart">
 <div class="hm-dugmeler" style="margin-top:0"><button type="button" class="hm-btn" id="ib-ornek">Örnek veriyle doldur</button><button type="button" class="hm-btn" id="ib-yeni">Yeni belge (firma bilgileri kalsın)</button><button type="button" class="hm-btn" id="ib-json-kaydet">Taslağı dosyaya kaydet</button><label class="hm-btn" style="display:inline-flex;align-items:center">Taslak dosyası aç<input type="file" id="ib-json-ac" accept=".json,application/json" hidden></label></div>
 
@@ -186,7 +191,7 @@
  function imza(b){return '<div class="imza"><div>'+(D.stamp?'<img src="'+D.stamp+'" alt="">':'')+'<b>Authorized Signature</b><br>'+esc(D.seller.name)+(D.ex.signer?'<br>'+esc(D.ex.signer):'')+'</div><div><b>'+b+'</b><br>'+esc(D.buyer.name)+'</div></div>'}
  function ayak(s){return '<div class="ayak"><span>'+esc(D.seller.name)+' · '+s+' '+esc(D.inv.no)+'</span><span></span></div>'}
  function cizim(){var H=hesap(),c=D.inv.cur||'USD',sb=SB[c]||'',I=D.inv,uni=D.pk.unit||'cm',kind=D.pk.kind||'packages';tabloGuncelle(H);
-  var term=(I.terms||'')+(I.place?' '+esc(I.place):''),pro=I.type==='proforma';document.querySelector('.hm-kart').classList.toggle('ib-pro-gizli',!pro);
+  var term=(I.terms||'')+(I.place?' '+esc(I.place):''),pro=I.type==='proforma';document.querySelectorAll('.ib-tur button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-t')===(pro?'proforma':'commercial')?'true':'false')});document.querySelector('.hm-kart').classList.toggle('ib-pro-gizli',!pro);
   var f='<div class="doc" lang="en" id="doc-fatura" style="--renk:'+esc(D.color)+'">'+ust('Invoice',pro?'Proforma':'Commercial',pro?'PROFORMA INVOICE':'INVOICE')+
   '<div class="bilgi"><div><small>'+(pro?'Proforma No.':'Invoice No.')+'</small><b>'+esc(I.no)+'</b></div><div><small>'+(pro?'Date':'Invoice Date')+'</small><b>'+tarih(I.date)+'</b></div><div><small>Currency</small><b>'+esc(c)+(sb?' ('+sb+')':'')+'</b></div><div><small>Delivery Terms</small><b>'+term+'</b></div></div>'+
   taraf('Issued by (Seller / Exporter)','Billed to (Buyer / Consignee)')+
@@ -284,9 +289,10 @@
   p.getCell(r+1,1).value=D.seller.name||'';p.getCell(r+1,9).value=D.buyer.name||'';
   wb.eachSheet(function(ws){ws.eachRow({includeEmpty:false},function(row){row.eachCell({includeEmpty:false},function(cel){cel.font=Object.assign({name:'Calibri',size:10},cel.font||{})})})});
   wb.xlsx.writeBuffer().then(function(buf){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));a.download=(pro?'Proforma_':'Invoice_')+'PackingList_'+((I.no||'taslak').replace(/[^\w.-]+/g,'_'))+'.xlsx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},3000)})}
+ document.querySelectorAll('.ib-tur button').forEach(function(b){b.addEventListener('click',function(){var sel=document.querySelector('[data-b="inv.type"]');sel.value=b.getAttribute('data-t');degisti()})});
  // başlangıç
  try{var k=localStorage.getItem(ANAHTAR);if(k)D=Object.assign(D,JSON.parse(k))}catch(e){}
- if(!D.inv.date)D.inv.date=new Date().toISOString().slice(0,10);if(!D.inv.origin)D.inv.origin='Türkiye';
+ if(!D.inv.date)D.inv.date=new Date().toISOString().slice(0,10);if(location.hash==='#proforma')D.inv.type='proforma';else if(location.hash==='#commercial')D.inv.type='commercial';if(!D.inv.origin)D.inv.origin='Türkiye';
  yaz();document.querySelectorAll('.ib-sekme button').forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-g')===D.view?'true':'false')});cizim();
 })();
 </script>
