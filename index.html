@@ -32,6 +32,45 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 .taslak{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--panel);border:1px solid var(--line);color:#B9BEC2;font:500 12px/1.4 Manrope,system-ui,sans-serif;letter-spacing:.08em;padding:8px 12px}
 .kurbant{flex-wrap:wrap;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media (max-width:700px){.kurbant{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:10px 16px!important}.kurbant::-webkit-scrollbar{display:none}.kurbant .kur-tarih{margin-left:0!important}}
+
+/* acilir menu */
+header{position:relative;z-index:26}
+.mm-item{display:flex;align-items:center}
+.mm-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;margin:0;color:#2F3437;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.mm-btn svg{width:10px;height:10px;transition:transform .2s}
+.mm-item.acik .mm-btn,.mm-btn:hover{color:#1FA86D}
+.mm-item.acik .mm-btn svg{transform:rotate(180deg)}
+.mm-panel{display:none;position:absolute;left:0;right:0;top:100%;z-index:30;background:#FFFFFF;box-shadow:0 0 0 100vmax #FFFFFF;clip-path:inset(0 -100vmax -40px);border-top:3px solid #3DDC97;text-transform:none;letter-spacing:normal}
+.mm-item.acik .mm-panel{display:grid}
+.mm-panel{grid-template-columns:minmax(220px,300px) 1fr;gap:48px;padding:36px 24px 44px}
+.mm-giris h3{margin:0 0 10px;font:400 28px/1.15 Fraunces,serif;color:#2B2F33}
+.mm-giris p{margin:0 0 18px;font:400 15px/1.55 Manrope,sans-serif;color:#4A5056}
+.mm-giris a{font:600 14px/1 Manrope,sans-serif;color:#1FA86D;text-decoration:none}
+.mm-giris a:hover{text-decoration:underline}
+.mm-kolonlar{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:28px 36px;align-content:start}
+.mm-grup h4{margin:0 0 10px;font:600 12px/1.3 Manrope,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#666C72}
+.mm-grup ul{list-style:none;margin:0;padding:0}
+.mm-grup li a{display:block;padding:7px 0;font:500 15px/1.4 Manrope,sans-serif;color:#2B2F33;text-decoration:none;border-bottom:1px solid #EEF0EC}
+.mm-grup li a:hover{color:#1FA86D}
+.mm-grup li a::after{content:" →";color:#3DDC97;opacity:0;transition:opacity .15s}
+.mm-grup li a:hover::after{opacity:1}
+.mm-perde{display:none;position:fixed;inset:0;z-index:25;background:rgba(43,47,51,.18)}
+body.mm-acik .mm-perde{display:block}
+body.mm-acik header::before{content:"";position:absolute;top:0;bottom:0;left:-100vmax;right:-100vmax;background:#F4F4F2;z-index:-1}
+html,body{overflow-x:clip}
+@media (max-width:900px){
+  header.acik nav[aria-label="Ana menü"] > .mm-item{width:100%;flex-direction:column;align-items:flex-start}
+  header.acik nav[aria-label="Ana menü"] .mm-btn{padding:10px 0;font-size:15px;width:100%;justify-content:space-between}
+  .mm-panel{position:static;box-shadow:none;clip-path:none;border-top:0;border-left:2px solid #3DDC97;padding:4px 0 8px 14px;width:100%;box-sizing:border-box;background:transparent}
+  .mm-item.acik .mm-panel{display:block}
+  .mm-giris{display:none}
+  .mm-kolonlar{display:block}
+  .mm-grup{margin-bottom:10px}
+  .mm-grup h4{margin:8px 0 4px}
+  .mm-grup li a{font-size:15px;padding:8px 0}
+  .mm-grup li a::after{content:none}
+  body.mm-acik .mm-perde{display:none}
+}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 <div class="sayfa" id="ana">
@@ -777,15 +816,15 @@ EK: ……………</pre>
 </section>
 <section style="max-width: 1248px; margin: 56px auto 0; padding: 0 24px">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE">
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">01</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Muhasebe ve defter tutma</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Bilanço ve işletme hesabı esasına göre defter tutma</li><li>e-Defter, e-Fatura, e-Arşiv ve e-İrsaliye işlemleri</li><li>Dönem sonu işlemleri ve mali tabloların hazırlanması</li><li>Sabit kıymet ve amortisman kayıtları</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">02</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Vergi beyannameleri</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>KDV, muhtasar ve prim hizmet beyannameleri</li><li>Geçici vergi, kurumlar ve gelir vergisi beyannameleri</li><li>Damga vergisi ve diğer beyan yükümlülükleri</li><li>Vergi takvimi takibi ve tahakkuk kontrolü</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">03</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Bordro ve SGK işlemleri</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Aylık ücret bordroları ve ücret hesaplamaları</li><li>İşe giriş, işten çıkış ve aylık prim hizmet bildirgeleri</li><li>İstihdam teşviklerinin değerlendirilmesi</li><li>Kıdem ve ihbar tazminatı hesaplamaları</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">04</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Şirket işlemleri</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Şahıs işletmesi ve şirket kuruluşu</li><li>Sermaye artırımı, pay devri ve nevi değişikliği</li><li>Şube açılışı, adres değişikliği ve tasfiye işlemleri</li><li>Genel kurul ve ticaret sicili süreçleri</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">05</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Vergi incelemesi ve uzlaşma</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>İnceleme öncesi kayıt ve belge kontrolü</li><li>İnceleme sürecinde izahat ve belge hazırlığı</li><li>Uzlaşma ve idari başvuru süreçlerinde destek</li><li>Pişmanlık ve düzeltme beyannameleri</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">06</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Dış ticaret</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>İhracatta KDV iadesi ve mahsup işlemleri</li><li>Dahilde işleme ve ihraç kayıtlı teslimler</li><li>İthalat maliyeti, navlun ve gümrük kayıtları</li><li>Kur farkı ve dövizli işlemlerin muhasebesi</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">07</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Yabancı sermayeli şirketler</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Türkiye'de şirket kuruluşu ve yabancı ortak işlemleri</li><li>Yabancı sermaye bildirimleri</li><li>Ortaklara İngilizce dönemsel raporlama</li><li>Transfer fiyatlandırması belgelendirmesi</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">08</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Finansal raporlama ve bütçe</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Aylık yönetim raporları</li><li>Bütçe hazırlama ve bütçe-gerçekleşme karşılaştırması</li><li>Nakit akışı ve maliyet analizleri</li><li>Proje bazında kârlılık raporları</li></ul></div>
-<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">09</p><h3 style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Denetim ve iç kontrol</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Kooperatif dış denetimi</li><li>İç kontrol sistemlerinin gözden geçirilmesi</li><li>Süreç ve yetki matrislerinin değerlendirilmesi</li><li>Denetime hazırlık çalışmaları</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">01</p><h3 id="hz-muhasebe" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Muhasebe ve defter tutma</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Bilanço ve işletme hesabı esasına göre defter tutma</li><li>e-Defter, e-Fatura, e-Arşiv ve e-İrsaliye işlemleri</li><li>Dönem sonu işlemleri ve mali tabloların hazırlanması</li><li>Sabit kıymet ve amortisman kayıtları</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">02</p><h3 id="hz-beyanname" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Vergi beyannameleri</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>KDV, muhtasar ve prim hizmet beyannameleri</li><li>Geçici vergi, kurumlar ve gelir vergisi beyannameleri</li><li>Damga vergisi ve diğer beyan yükümlülükleri</li><li>Vergi takvimi takibi ve tahakkuk kontrolü</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">03</p><h3 id="hz-bordro" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Bordro ve SGK işlemleri</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Aylık ücret bordroları ve ücret hesaplamaları</li><li>İşe giriş, işten çıkış ve aylık prim hizmet bildirgeleri</li><li>İstihdam teşviklerinin değerlendirilmesi</li><li>Kıdem ve ihbar tazminatı hesaplamaları</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">04</p><h3 id="hz-sirket" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Şirket işlemleri</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Şahıs işletmesi ve şirket kuruluşu</li><li>Sermaye artırımı, pay devri ve nevi değişikliği</li><li>Şube açılışı, adres değişikliği ve tasfiye işlemleri</li><li>Genel kurul ve ticaret sicili süreçleri</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">05</p><h3 id="hz-inceleme" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Vergi incelemesi ve uzlaşma</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>İnceleme öncesi kayıt ve belge kontrolü</li><li>İnceleme sürecinde izahat ve belge hazırlığı</li><li>Uzlaşma ve idari başvuru süreçlerinde destek</li><li>Pişmanlık ve düzeltme beyannameleri</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">06</p><h3 id="hz-dis-ticaret" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Dış ticaret</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>İhracatta KDV iadesi ve mahsup işlemleri</li><li>Dahilde işleme ve ihraç kayıtlı teslimler</li><li>İthalat maliyeti, navlun ve gümrük kayıtları</li><li>Kur farkı ve dövizli işlemlerin muhasebesi</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">07</p><h3 id="hz-yabanci" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Yabancı sermayeli şirketler</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Türkiye'de şirket kuruluşu ve yabancı ortak işlemleri</li><li>Yabancı sermaye bildirimleri</li><li>Ortaklara İngilizce dönemsel raporlama</li><li>Transfer fiyatlandırması belgelendirmesi</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">08</p><h3 id="hz-raporlama" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Finansal raporlama ve bütçe</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Aylık yönetim raporları</li><li>Bütçe hazırlama ve bütçe-gerçekleşme karşılaştırması</li><li>Nakit akışı ve maliyet analizleri</li><li>Proje bazında kârlılık raporları</li></ul></div>
+<div style="background: #FFFFFF; padding: 32px 30px"><p style="margin: 0 0 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #2B2F33">09</p><h3 id="hz-denetim" style="margin: 0 0 12px; font-family: Fraunces, serif; font-weight: 500; font-size: 23px">Denetim ve iç kontrol</h3><ul style="margin: 0; padding: 0 0 0 18px; font-size: 15.5px; line-height: 1.85; color: #3A3F44"><li>Kooperatif dış denetimi</li><li>İç kontrol sistemlerinin gözden geçirilmesi</li><li>Süreç ve yetki matrislerinin değerlendirilmesi</li><li>Denetime hazırlık çalışmaları</li></ul></div>
 </div>
 </section>
 <section style="max-width: 1248px; margin: 0 auto; padding: 96px 24px 0">
@@ -922,7 +961,7 @@ EK: ……………</pre>
 </section>
 <section style="max-width: 1248px; margin: 0 auto; padding: 104px 24px 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Hizmet alanları</p>
-<h2 style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
+<h2 id="medya-kapsam" style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE">
 <article style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
 <p style="margin: 0; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Dizi ve film yapımı</p>
@@ -978,7 +1017,7 @@ EK: ……………</pre>
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 36px">
 <div>
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Medya yazıları</p>
-<h2 style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Sektörden analizler</h2>
+<h2 id="medya-analiz" style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Sektörden analizler</h2>
 </div>
 <a href="#yazilar-sayfa" style="font-size: 15px; text-decoration: none">Tüm yazılar →</a>
 </div>
@@ -1093,7 +1132,7 @@ EK: ……………</pre>
 </section>
 <section style="max-width: 1248px; margin: 0 auto; padding: 104px 24px 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Yolculuk</p>
-<h2 style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
+<h2 id="yat-kapsam" style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
 <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE">
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
 <span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">01</span>
@@ -1121,7 +1160,7 @@ EK: ……………</pre>
 <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
 <div style="flex: 1 1 360px; min-width: 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Fizibilite</p>
-<h2 style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Fizibilite çalışmalarında kullanılan çerçeve</h2>
+<h2 id="yat-fizibilite" style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Fizibilite çalışmalarında kullanılan çerçeve</h2>
 <p style="margin: 20px 0 0; font-size: 17px; line-height: 1.7; color: #4A5056">Her tekne için üç doluluk senaryosunda gelir, gider, vergi ve nakit akışını yan yana koyuyoruz. Aşağıdaki tablo çalışma çerçevesidir; rakamlar teknenize göre hesaplanır.</p>
 </div>
 <div style="flex: 999 1 560px; min-width: 0; overflow-x: auto; border: 1px solid #E1E4DE">
@@ -1148,7 +1187,7 @@ EK: ……………</pre>
 </section>
 <section style="max-width: 1248px; margin: 0 auto; padding: 104px 24px 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Kimler için</p>
-<h2 style="margin: 14px 0 36px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Hizmet verilen işletmeler</h2>
+<h2 id="yat-kimler" style="margin: 14px 0 36px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Hizmet verilen işletmeler</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
 <div style="border-top: 1px solid #1FA86D; padding-top: 18px"><h3 style="margin: 0 0 8px; font-family: Fraunces, serif; font-weight: 500; font-size: 21px">Tekne almayı planlayanlar</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #4A5056">Alım öncesi yapı, vergi ve fizibilite.</p></div>
 <div style="border-top: 1px solid #E1E4DE; padding-top: 18px"><h3 style="margin: 0 0 8px; font-family: Fraunces, serif; font-weight: 500; font-size: 21px">Charter şirketleri</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #4A5056">Sezonluk muhasebe, döviz faturalama, bordro.</p></div>
@@ -1160,7 +1199,7 @@ EK: ……………</pre>
 <div style="display: flex; flex-wrap: wrap; gap: 48px; border-top: 1px solid #E1E4DE; padding-top: 56px">
 <div style="flex: 1 1 320px; min-width: 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Sık sorulanlar</p>
-<h2 style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(30px, 3vw, 42px); line-height: 1.15">Satın almadan önce akla gelenler</h2>
+<h2 id="yat-sorular" style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(30px, 3vw, 42px); line-height: 1.15">Satın almadan önce akla gelenler</h2>
 </div>
 <div style="flex: 999 1 560px; min-width: 0">
 <details open="" style="border-top: 1px solid #E1E4DE; padding: 20px 0"><summary style="cursor: pointer; font-family: Fraunces, serif; font-size: 21px">Tekneyi şirket adına mı, şahıs adına mı almalıyım?</summary><p style="margin: 12px 0 0; font-size: 16px; line-height: 1.7; color: #4A5056">Kullanım amacına, charter planına ve genel vergi pozisyonunuza göre değişir. Satın almadan önce iki yapıyı rakamlarla karşılaştırıyoruz.</p></details>
@@ -1240,7 +1279,7 @@ EK: ……………</pre>
 </section>
 <section style="max-width: 1248px; margin: 0 auto; padding: 104px 24px 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Süreç</p>
-<h2 style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
+<h2 id="ulus-kapsam" style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
 <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE">
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
 <span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">01</span>
@@ -1268,7 +1307,7 @@ EK: ……………</pre>
 <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
 <div style="flex: 1 1 360px; min-width: 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Kârlılık tablosu</p>
-<h2 style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Maliyet hesaplamasında kullanılan çerçeve</h2>
+<h2 id="ulus-maliyet" style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Maliyet hesaplamasında kullanılan çerçeve</h2>
 <p style="margin: 20px 0 0; font-size: 17px; line-height: 1.7; color: #4A5056">Fabrika fiyatından alıcının deposuna kadar her kalemi tek tabloda görüyorsunuz. Aşağıdaki çerçeve örnektir; rakamlar ürününüze ve rotanıza göre hesaplanır.</p>
 </div>
 <div style="flex: 999 1 560px; min-width: 0; overflow-x: auto; border: 1px solid #E1E4DE">
@@ -1298,7 +1337,7 @@ EK: ……………</pre>
 <div style="display: flex; flex-wrap: wrap; gap: 24px 48px; justify-content: space-between; align-items: flex-end">
 <div style="flex: 1 1 460px; min-width: 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #3DDC97">Türkiye'deki Orta Doğu sermayeli şirketler</p>
-<h2 style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 48px); line-height: 1.1">Yabancı sermayeli şirketler</h2>
+<h2 id="ulus-yabanci" style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 48px); line-height: 1.1">Yabancı sermayeli şirketler</h2>
 <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px 32px">
 <p dir="rtl" lang="ar" style="margin: 0; font-family: 'Noto Naskh Arabic', serif; font-size: 21px; line-height: 1.6; color: #3DDC97">مكتب محاسبة ومستشار مالي معتمد – إسطنبول</p>
 <p dir="rtl" lang="fa" style="margin: 0; font-family: 'Noto Naskh Arabic', serif; font-size: 21px; line-height: 1.6; color: #3DDC97">دفتر حسابداری و مشاور مالی رسمی – استانبول</p>
@@ -1316,7 +1355,7 @@ EK: ……………</pre>
 </section>
 <section style="max-width: 1248px; margin: 0 auto; padding: 104px 24px 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Kimler için</p>
-<h2 style="margin: 14px 0 36px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Hizmet verilen işletmeler</h2>
+<h2 id="ulus-kimler" style="margin: 14px 0 36px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Hizmet verilen işletmeler</h2>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
 <div style="border-top: 1px solid #1FA86D; padding-top: 18px"><h3 style="margin: 0 0 8px; font-family: Fraunces, serif; font-weight: 500; font-size: 21px">Türkiye'den alım yapan firmalar</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #4A5056">Libya, Katar, Irak ve bölgedeki ithalatçılar.</p></div>
 <div style="border-top: 1px solid #E1E4DE; padding-top: 18px"><h3 style="margin: 0 0 8px; font-family: Fraunces, serif; font-weight: 500; font-size: 21px">Türk ihracatçılar</h3><p style="margin: 0; font-size: 15px; line-height: 1.65; color: #4A5056">Bölgeye satış yapan üreticiler ve dış ticaret firmaları.</p></div>
@@ -1465,6 +1504,57 @@ function hDv(){var t=sayi(_v('d-t'));if(!(t>0))return _hata('d-c','Geçerli bir 
    var t=b.querySelector('.kur-tarih');if(t)t.textContent='TCMB gösterge kuru · '+k.tarih;
   });
  }).catch(gizle);
+})();
+</script>
+<script>
+(function(){
+ var M={
+  '#hizmet-sayfa':{t:'Hizmetler',g:'Hizmet kapsamı',a:'Muhasebeden vergi incelemesine, dış ticaretten finansal raporlamaya büronun hizmet alanları.',h:'#hizmet-sayfa',k:[
+    {b:'Muhasebe ve beyan',l:[['Muhasebe ve defter tutma','#hz-muhasebe'],['Vergi beyannameleri','#hz-beyanname'],['Bordro ve SGK işlemleri','#hz-bordro'],['Şirket işlemleri','#hz-sirket']]},
+    {b:'Vergi ve denetim',l:[['Vergi incelemesi ve uzlaşma','#hz-inceleme'],['Denetim ve iç kontrol','#hz-denetim'],['Finansal raporlama ve bütçe','#hz-raporlama']]},
+    {b:'Uluslararası',l:[['Dış ticaret','#hz-dis-ticaret'],['Yabancı sermayeli şirketler','#hz-yabanci']]}]},
+  '#sektorler':{t:'Sektörler',g:'Sektörel uzmanlık',a:'Faaliyet alanına özgü muhasebe, maliyet ve vergi konuları.',h:'#sektorler',k:[
+    {b:'Öne çıkan sektörler',l:[['Medya, film ve dizi','#sektorler'],['Yat ve tekne işletmeleri','#yat-tekne'],['Uluslararası ticaret','#uluslararasi']]},
+    {b:'Diğer faaliyet alanları',l:[['İnşaat ve taahhüt','#sektor-insaat'],['E-ticaret ve pazaryeri','#sektor-eticaret'],['Etkinlik, organizasyon ve fuar','#sektor-etkinlik'],['Yazılım ve teknoloji','#sektor-yazilim'],['Ses, ışık, LED ve görüntü sistemleri','#sektor-teknik'],['Holding ve şirketler grubu','#sektor-holding']]}]},
+  '#yat-tekne':{t:'Yat & Tekne',g:'Yat ve tekne işletmeleri',a:'Satın almadan charter işletmesine kadar muhasebe, vergi ve fizibilite.',h:'#yat-tekne',k:[
+    {b:'Bu sayfada',l:[['Hizmet kapsamı','#yat-kapsam'],['Fizibilite çerçevesi','#yat-fizibilite'],['Hizmet verilen işletmeler','#yat-kimler'],['Satın almadan önce akla gelenler','#yat-sorular']]}]},
+  '#uluslararasi':{t:'Uluslararası',g:'Uluslararası ticaret',a:'İthalat-ihracat planlaması, yabancı sermayeli şirketler ve grup içi işlemler.',h:'#uluslararasi',k:[
+    {b:'Bu sayfada',l:[['Hizmet kapsamı','#ulus-kapsam'],['Maliyet hesaplama çerçevesi','#ulus-maliyet'],['Yabancı sermayeli şirketler','#ulus-yabanci'],['Hizmet verilen işletmeler','#ulus-kimler']]}]},
+  '#yazilar-sayfa':{t:'Yazılar',g:'Analizler ve görüşler',a:'Vergi, sektör ve mevzuat üzerine yazılar.',h:'#yazilar-sayfa',k:[
+    {b:'Vergi ve mevzuat',l:[['Madde 18 mi, şirket mi?','#madde-18'],['Prim günü mü, kazanç matrahı mı?','#prim-gunu'],['E-ticarette yeni gümrük kuralları','#e-ticaret-gumruk'],['Kooperatiflerde dış denetçi','#kooperatif-denetim']]},
+    {b:'Medya ve sinema',l:[['Türk dizi sektörünün finansal analizi','#dizi-ihracat'],['Yapım şirketlerinde mali yapı','#kamera-arkasi'],['Sinema salonu işletmeciliği','#sinema-salon']]}]},
+  '#pratik-sayfa':{t:'Pratik Bilgiler',g:'Hesaplama araçları ve oranlar',a:'2026 parametreleriyle hesaplayıcılar, güncel oranlar, takvim ve dilekçe örnekleri.',h:'#pratik-sayfa',k:[
+    {b:'Hesaplama araçları',l:[['KDV hesaplama','#h-kdv'],['Net – brüt maaş','#h-maas'],['Kıdem ve ihbar tazminatı','#h-kidem'],['Gelir vergisi','#h-gv'],['Gecikme zammı','#h-gz'],['Damga vergisi','#h-dv']]},
+    {b:'Oranlar ve takvim',l:[['Oranlar ve tutarlar 2026','#oranlar'],['Vergi takvimi','#takvim'],['Sık sorulan sorular','#sss']]},
+    {b:'Dilekçe ve listeler',l:[['Pişmanlık dilekçesi','#pismanlik'],['Uzlaşma talebi','#uzlasma'],['Ceza indirimi talebi','#ceza-indirimi'],['Genel talep dilekçesi','#genel-dilekce'],['Şirket kuruluşu bilgileri','#kurulus-listesi'],['İşe giriş belgeleri','#ise-giris-listesi']]}]}
+ };
+ var ok='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+ function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+ var perde=document.createElement('div');perde.className='mm-perde';document.body.appendChild(perde);
+ var acikOge=null,kapaZ=null;
+ function kapat(){if(acikOge){acikOge.classList.remove('acik');acikOge.querySelector('.mm-btn').setAttribute('aria-expanded','false');acikOge=null;}document.body.classList.remove('mm-acik');}
+ function ac(o){if(acikOge===o)return;kapat();o.classList.add('acik');o.querySelector('.mm-btn').setAttribute('aria-expanded','true');acikOge=o;if(window.innerWidth>900)document.body.classList.add('mm-acik');}
+ var masaustu=window.matchMedia('(min-width:901px) and (hover:hover)');
+ document.querySelectorAll('header nav[aria-label="Ana menü"]').forEach(function(nav){
+  Object.keys(M).forEach(function(href,n){
+   var a=nav.querySelector(':scope > a[href="'+href+'"]');if(!a)return;var d=M[href];
+   var o=document.createElement('div');o.className='mm-item';
+   var pid='mm-'+Math.random().toString(36).slice(2,8);
+   var h='<button type="button" class="mm-btn" aria-expanded="false" aria-controls="'+pid+'">'+esc(d.t)+ok+'</button>';
+   h+='<div class="mm-panel" id="'+pid+'"><div class="mm-giris"><h3>'+esc(d.g)+'</h3><p>'+esc(d.a)+'</p><a href="'+d.h+'">Tümüne git →</a></div><div class="mm-kolonlar">';
+   d.k.forEach(function(g){h+='<div class="mm-grup"><h4>'+esc(g.b)+'</h4><ul>';g.l.forEach(function(x){h+='<li><a href="'+x[1]+'">'+esc(x[0])+'</a></li>'});h+='</ul></div>'});
+   h+='</div></div>';o.innerHTML=h;a.replaceWith(o);
+   var b=o.querySelector('.mm-btn');
+   b.addEventListener('click',function(e){e.stopPropagation();if(o.classList.contains('acik'))kapat();else ac(o);});
+   o.addEventListener('mouseenter',function(){if(!masaustu.matches)return;clearTimeout(kapaZ);ac(o);});
+   o.addEventListener('mouseleave',function(){if(!masaustu.matches)return;kapaZ=setTimeout(kapat,220);});
+   o.querySelector('.mm-panel').addEventListener('click',function(e){if(e.target.closest('a'))kapat();});
+  });
+ });
+ perde.addEventListener('click',kapat);
+ document.addEventListener('click',function(e){if(acikOge&&!e.target.closest('.mm-item'))kapat();});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&acikOge){var b=acikOge.querySelector('.mm-btn');kapat();b.focus();}});
+ window.addEventListener('hashchange',kapat);
 })();
 </script>
 </body>
