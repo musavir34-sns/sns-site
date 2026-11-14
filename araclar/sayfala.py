@@ -225,6 +225,13 @@ YZ_CSS = (".yz{max-width:760px;margin:0 auto;padding:64px 24px 0;color:#2B2F33;f
           ".yz-kisaca{margin:0 0 34px;padding:18px 22px 12px;background:#FFF;border:1px solid #E1E4DE;border-left:4px solid #1FA86D;border-radius:10px}"
           ".yz-kisaca h2{margin:0 0 10px;font:600 12px/1.3 Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#157A4F}"
           ".yz-kisaca ul{margin:0;padding-left:20px}.yz .yz-kisaca li{font-size:16px;line-height:1.65;margin:0 0 8px}"
+          ".yz ol{margin:0 0 18px;padding-left:24px}.yz ol li{font-size:17px;line-height:1.7;color:#2F3437;margin:0 0 10px}"
+          ".yz .yz-uyari{padding:16px 20px;background:#FFF;border:1px solid #E1E4DE;border-left:4px solid #2B2F33;border-radius:10px;font-size:15.5px;line-height:1.7}"
+          ".yz .yz-gonder{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin:26px 0 8px}.yz-gonder span{flex:1 1 280px;font-size:14px;line-height:1.6;color:#5F656B}"
+          ".yz-dugme{display:inline-block;background:#3DDC97;color:#14281E;text-decoration:none;font:600 15px/1 Manrope,sans-serif;padding:16px 26px;border-radius:999px}.yz-dugme:hover{background:#1FA86D;color:#FFF}"
+          ".yz-sorular{list-style:none;margin:0 0 18px;padding:0;border-top:1px solid #E1E4DE}.yz .yz-sorular li{margin:0;border-bottom:1px solid #E1E4DE}"
+          ".yz-sorular a{display:block;padding:14px 0 2px;color:#2B2F33;text-decoration:none;font:400 19px/1.4 Fraunces,serif}.yz-sorular a:hover{color:#157A4F}.yz-sorular small{display:block;padding-bottom:14px;font-size:13px;color:#666C72}"
+          ".yz .yz-bos{color:#5F656B;font-style:italic}"
           "@media(max-width:700px){.yz{padding:40px 16px 0}.yz p{font-size:16.5px}}")
 def kisaca_yap(meta):
     if not meta.get("kisaca"):
@@ -274,6 +281,11 @@ for dosya in sorted(glob.glob("kaynak/sayfalar/*.html")):
     metin = open(dosya, encoding="utf-8").read()
     m = re.match(r"<!--META (\{.*?\}) -->\n", metin, re.S)
     meta = json.loads(m.group(1)); icerik = metin[m.end():]
+    if "<!--SORULAR-->" in icerik:
+        sorular = [d for d in YAZI_SIRASI if yz_meta[d][0]["kategori"].startswith("Okuyucu sorusu")]
+        liste = ('<ul class="yz-sorular">' + "".join('<li><a href="/yazilar/%s/">%s</a><small>%s · %s</small></li>' % (d, yz_meta[d][0]["baslik"], yz_meta[d][0]["kategori"].split(" · ")[-1], yz_meta[d][0]["guncelleme"]) for d in sorular) + '</ul>'
+                 if sorular else '<p class="yz-bos">Henüz yayımlanmış yanıt yok. Gelen sorular arasından seçilenler yanıtlandıkça bu listede yer alacak.</p>')
+        icerik = icerik.replace("<!--SORULAR-->", liste)
     kaynak = re.search(r"<!--KAYNAK (.*?) -->", icerik, re.S)
     icerik = re.sub(r"<!--KAYNAK .*? -->", "", icerik, flags=re.S).strip()
     govde = (re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="ozel-%s">' % os.path.basename(dosya)[:-5], yz_ust, count=1)
