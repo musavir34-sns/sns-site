@@ -1,0 +1,52 @@
+<!--META {"yol":"/hesaplama-merkezi/kar-marji/","baslik":"Kâr marjı ve kâr oranı hesaplama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Maliyetten hedef kâr marjına ya da kâr oranına göre satış fiyatı; satış fiyatından marj ve oran; komisyon ve satış giderleri dahil, KDV dahil fiyat ve senaryo tablosu."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Finans › Kâr marjı</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Finans</p>
+<h1>Kâr marjı ve kâr oranı</h1>
+<p class="hm-giris">Birim maliyeti girin; hedef kâr marjına ya da maliyet üzerine kâr oranına göre satış fiyatını bulun. Satış fiyatını biliyorsanız marjı ve oranı hesaplayın. Komisyon, pazaryeri ve benzeri satış üzerinden giderler de hesaba katılabilir.</p>
+<div class="hm-kart"><div class="hm-ayar">
+<label>Birim maliyet<input id="k-mal" inputmode="decimal" placeholder="6.178,57"></label>
+<label>Para birimi<input id="k-pb" value="TL"></label>
+<label>Hesap yöntemi<select id="k-yon"><option value="marj">Hedef kâr marjı (satış üzerinden %)</option><option value="oran">Kâr oranı / markup (maliyet üzerinden %)</option><option value="fiyat">Satış fiyatını biliyorum</option></select></label>
+<label id="k-deg-et">Hedef kâr marjı (%)<input id="k-deg" inputmode="decimal" placeholder="25"></label>
+<label>Satış üzerinden giderler (%)<input id="k-gid" inputmode="decimal" placeholder="komisyon, pazaryeri vb." ></label>
+<label>KDV oranı<select id="k-kdv"><option value="20" selected>%20</option><option value="10">%10</option><option value="1">%1</option><option value="0">%0 / ihracat</option></select></label>
+</div>
+<p class="hm-not" id="k-aktar" hidden></p>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="k-ornek">Örnek veriyle doldur</button></div></div>
+<h2>Sonuç</h2>
+<div class="hm-izgara">
+<div class="hm-kutu vurgu"><small>Satış fiyatı (KDV hariç)</small><b id="r-fiyat">–</b><span id="r-kdvli"></span></div>
+<div class="hm-kutu"><small>Birim kâr</small><b id="r-kar">–</b><span id="r-gider"></span></div>
+<div class="hm-kutu"><small>Kâr marjı</small><b id="r-marj">–</b><span>kâr ÷ satış fiyatı</span></div>
+<div class="hm-kutu"><small>Kâr oranı (markup)</small><b id="r-oran">–</b><span>kâr ÷ maliyet</span></div>
+</div>
+<h2>Senaryolar</h2>
+<div class="hm-tablo-kap"><table class="hm-tablo" style="min-width:560px"><thead><tr><th>Hedef kâr marjı</th><th class="sag">Satış fiyatı (KDV hariç)</th><th class="sag">KDV dahil</th><th class="sag">Birim kâr</th><th class="sag">Kâr oranı (markup)</th></tr></thead><tbody id="k-sen"></tbody></table></div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="k-pdf">PDF olarak kaydet</button></div>
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul"><b>Kâr marjı</b> <code>= (satış fiyatı − maliyet − satış giderleri) ÷ satış fiyatı</code><br><b>Kâr oranı (markup)</b> <code>= kâr ÷ maliyet</code><br><b>Hedef marjdan fiyat</b> <code>= maliyet ÷ (1 − marj − gider oranı)</code><br><b>Hedef orandan fiyat</b> <code>= maliyet × (1 + oran) ÷ (1 − gider oranı)</code> — giderler satış fiyatı üzerinden alındığı için<br><b>KDV dahil fiyat</b> <code>= satış fiyatı × (1 + KDV oranı)</code></div>
+<p class="hm-not">Kâr marjı ve kâr oranı sıkça karıştırılır: %25 kâr marjı, maliyet üzerine %33,3 kâr eklemek demektir. Fiyatlandırmada hangi oranın kastedildiğini netleştirmek önemlidir.</p>
+<!--PDFALT-->
+</section>
+<script>
+(function(){var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};
+ function etiket(){var y=el('k-yon').value;el('k-deg-et').firstChild.textContent=y==='marj'?'Hedef kâr marjı (%)':y==='oran'?'Kâr oranı / markup (%)':'Satış fiyatı (KDV hariç)'}
+ function fiyatMarj(m,marj,g){var d=1-marj-g;return d>0?m/d:NaN}
+ function hes(){var m=S(el('k-mal').value),y=el('k-yon').value,v=S(el('k-deg').value),g=(S(el('k-gid').value)||0)/100,k=+el('k-kdv').value/100,pb=el('k-pb').value||'TL';
+  function P(x,d){return isFinite(x)?F(x,d==null?2:d)+' '+pb:'–'}
+  var fiyat=NaN;if(m>0&&isFinite(v)){if(y==='marj')fiyat=fiyatMarj(m,v/100,g);else if(y==='oran'){fiyat=m*(1+v/100)/(1-g)}else fiyat=v}
+  var gid=fiyat*g,kar=fiyat-m-gid;
+  el('r-fiyat').textContent=P(fiyat);el('r-kdvli').textContent=isFinite(fiyat)?'KDV dahil: '+P(fiyat*(1+k)):'';
+  el('r-kar').textContent=P(kar);el('r-gider').textContent=g&&isFinite(fiyat)?'Satış giderleri: '+P(gid):'';
+  el('r-marj').textContent=isFinite(fiyat)&&fiyat>0?'%'+F(kar/fiyat*100,1):'–';el('r-oran').textContent=isFinite(fiyat)&&m>0?'%'+F(kar/m*100,1):'–';
+  el('k-sen').innerHTML=m>0?[10,15,20,25,30,35,40,50].map(function(p){var f=fiyatMarj(m,p/100,g),kk=f-m-f*g;return '<tr><td>%'+p+'</td><td class="sag">'+P(f)+'</td><td class="sag">'+P(f*(1+k))+'</td><td class="sag">'+P(kk)+'</td><td class="sag">'+(isFinite(f)?'%'+F(kk/m*100,1):'–')+'</td></tr>'}).join(''):'<tr><td colspan="5" style="color:#666C72">Birim maliyet girildiğinde senaryolar listelenir.</td></tr>'}
+ ['k-mal','k-deg','k-gid','k-pb'].forEach(function(i){el(i).addEventListener('input',hes)});['k-kdv'].forEach(function(i){el(i).addEventListener('change',hes)});
+ el('k-yon').addEventListener('change',function(){etiket();el('k-deg').value='';hes()});
+ el('k-ornek').addEventListener('click',function(){el('k-mal').value='6.178,57';el('k-pb').value='TL';el('k-yon').value='marj';etiket();el('k-deg').value='25';el('k-gid').value='3';el('k-kdv').value='20';hes()});
+ el('k-pdf').addEventListener('click',function(){HM.pdf('Kâr marjı')});
+ var h=location.hash.slice(1).split('&').reduce(function(o,p){var a=p.split('=');o[a[0]]=decodeURIComponent(a[1]||'');return o},{});
+ if(h.maliyet){el('k-mal').value=F(+h.maliyet);if(h.pb)el('k-pb').value=h.pb;var a=el('k-aktar');a.hidden=false;a.textContent='İthalat maliyeti aracından gelen birim maliyet aktarıldı.'}
+ etiket();hes();})();
+</script>

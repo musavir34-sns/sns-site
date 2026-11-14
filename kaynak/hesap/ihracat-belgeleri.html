@@ -1,4 +1,4 @@
-<!--META {"yol":"/hesaplama-merkezi/ihracat-belgeleri/","baslik":"Commercial Invoice ve Packing List hazırlama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Kendi logonuzla İngilizce Commercial Invoice ve Packing List hazırlayın: kalemler, GTİP, ambalaj, brüt/net ağırlık, hacim, banka bilgileri ve tutarın yazıyla gösterimi. PDF ve düzenlenebilir Excel olarak indirin."} -->
+<!--META {"yol":"/hesaplama-merkezi/ihracat-belgeleri/","baslik":"Commercial Invoice, Proforma Invoice ve Packing List hazırlama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Kendi logonuzla İngilizce Commercial Invoice ve Packing List hazırlayın: kalemler, GTİP, ambalaj, brüt/net ağırlık, hacim, banka bilgileri ve tutarın yazıyla gösterimi. PDF ve düzenlenebilir Excel olarak indirin."} -->
 <style>
 .ib-bolum{margin-top:18px}
 .ib-bolum>summary{cursor:pointer;font:500 21px/1.3 Fraunces,serif;color:#2B2F33;padding:6px 0;list-style:none}
@@ -7,6 +7,7 @@
 .ib-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:10px}
 .ib-grid label,.ib-tam{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#4A5056}
 .ib-tam{grid-column:1/-1}
+.ib-pro-gizli .ib-pro{display:none}
 .hm textarea{font:400 15px/1.45 Manrope,sans-serif;color:#2B2F33;border:1px solid #D7DBD4;border-radius:8px;padding:10px;min-height:76px;resize:vertical;width:100%;box-sizing:border-box}
 .ib-logo{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .ib-logo img{max-height:56px;max-width:180px;border:1px solid #E1E4DE;border-radius:6px;padding:4px;background:#FFF}
@@ -62,7 +63,7 @@
 <section class="hm">
 <p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › İhracat belgeleri</p>
 <p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
-<h1>Commercial Invoice ve Packing List</h1>
+<h1>Commercial Invoice, Proforma ve Packing List</h1>
 <p class="hm-giris">Firma bilgilerinizi ve logonuzu girin, kalemleri ve ambalaj bilgilerini doldurun; İngilizce ticari fatura ve çeki listesi kendi kurumsal görünümünüzle hazırlansın. PDF olarak alabilir ya da Excel'e aktarıp üzerinde çalışmaya devam edebilirsiniz.</p>
 <p class="ib-gizlilik">Girdiğiniz bilgiler ve logonuz yalnızca kendi tarayıcınızda işlenir; sunucumuza gönderilmez, bizde saklanmaz. Taslağınız bu cihazda hatırlanır; isterseniz dosya olarak kaydedip başka cihazda açabilirsiniz.</p>
 
@@ -90,6 +91,7 @@
 
 <details class="ib-bolum" open><summary>3 · Fatura bilgileri</summary>
 <div class="ib-grid">
+<label>Belge türü<select data-b="inv.type"><option value="commercial">Commercial Invoice (ticari fatura)</option><option value="proforma">Proforma Invoice (proforma fatura)</option></select></label>
 <label>Fatura no<input data-b="inv.no"></label>
 <label>Fatura tarihi<input type="date" data-b="inv.date"></label>
 <label>Para birimi<select data-b="inv.cur"><option>USD</option><option>EUR</option><option>GBP</option><option>TRY</option><option>CNY</option><option>AED</option><option>QAR</option><option>SAR</option><option>CHF</option><option>RUB</option><option>LYD</option><option>IQD</option></select></label>
@@ -101,6 +103,8 @@
 <label>Taşıma şekli<select data-b="inv.mode"><option>Sea</option><option>Road</option><option>Air</option><option>Rail</option><option>Courier</option><option>Multimodal</option></select></label>
 <label>Konteyner / araç bilgisi<input data-b="inv.cont" placeholder="3 × 40′ HC"></label>
 <label>Ödeme şekli<input data-b="inv.pay" placeholder="T/T in advance"></label>
+<label class="ib-pro">Proforma geçerlilik tarihi<input type="date" data-b="inv.valid"></label>
+<label class="ib-pro">Teslim / hazırlık süresi<input data-b="inv.lead" placeholder="4–6 weeks after advance payment"></label>
 <label class="ib-tam">Belge konusu (başlığın altında görünür)<input data-b="inv.subject" placeholder="LED Screen Construction & Accessories — Export Shipment"></label>
 </div></details>
 
@@ -182,18 +186,18 @@
  function imza(b){return '<div class="imza"><div>'+(D.stamp?'<img src="'+D.stamp+'" alt="">':'')+'<b>Authorized Signature</b><br>'+esc(D.seller.name)+(D.ex.signer?'<br>'+esc(D.ex.signer):'')+'</div><div><b>'+b+'</b><br>'+esc(D.buyer.name)+'</div></div>'}
  function ayak(s){return '<div class="ayak"><span>'+esc(D.seller.name)+' · '+s+' '+esc(D.inv.no)+'</span><span></span></div>'}
  function cizim(){var H=hesap(),c=D.inv.cur||'USD',sb=SB[c]||'',I=D.inv,uni=D.pk.unit||'cm',kind=D.pk.kind||'packages';tabloGuncelle(H);
-  var term=(I.terms||'')+(I.place?' '+esc(I.place):'');
-  var f='<div class="doc" id="doc-fatura" style="--renk:'+esc(D.color)+'">'+ust('Invoice','Commercial','INVOICE')+
-  '<div class="bilgi"><div><small>Invoice No.</small><b>'+esc(I.no)+'</b></div><div><small>Invoice Date</small><b>'+tarih(I.date)+'</b></div><div><small>Currency</small><b>'+esc(c)+(sb?' ('+sb+')':'')+'</b></div><div><small>Delivery Terms</small><b>'+term+'</b></div></div>'+
+  var term=(I.terms||'')+(I.place?' '+esc(I.place):''),pro=I.type==='proforma';document.querySelector('.hm-kart').classList.toggle('ib-pro-gizli',!pro);
+  var f='<div class="doc" lang="en" id="doc-fatura" style="--renk:'+esc(D.color)+'">'+ust('Invoice',pro?'Proforma':'Commercial',pro?'PROFORMA INVOICE':'INVOICE')+
+  '<div class="bilgi"><div><small>'+(pro?'Proforma No.':'Invoice No.')+'</small><b>'+esc(I.no)+'</b></div><div><small>'+(pro?'Date':'Invoice Date')+'</small><b>'+tarih(I.date)+'</b></div><div><small>Currency</small><b>'+esc(c)+(sb?' ('+sb+')':'')+'</b></div><div><small>Delivery Terms</small><b>'+term+'</b></div></div>'+
   taraf('Issued by (Seller / Exporter)','Billed to (Buyer / Consignee)')+
   '<table><thead><tr><th>#</th><th>Description</th><th>HS Code</th><th class="s">Qty</th><th>Unit</th><th class="s">Unit Value ('+esc(c)+')</th><th class="s">Total Value ('+esc(c)+')</th></tr></thead><tbody>'+
   H.it.filter(function(x){return x.r.desc||x.r.qty}).map(function(x,i){return '<tr><td>'+(i+1)+'</td><td><b>'+esc(x.r.desc)+'</b></td><td>'+esc(x.r.hs)+'</td><td class="s">'+f2(x.q,0)+'</td><td>'+esc(x.r.unit)+'</td><td class="s">'+f2(x.p)+'</td><td class="s"><b>'+f2(x.t)+'</b></td></tr>'}).join('')+
   (H.fr||H.ins||H.dc?'<tr><td colspan="6" class="s">Subtotal</td><td class="s">'+f2(H.ara)+'</td></tr>':'')+(H.fr?'<tr><td colspan="6" class="s">Freight</td><td class="s">'+f2(H.fr)+'</td></tr>':'')+(H.ins?'<tr><td colspan="6" class="s">Insurance</td><td class="s">'+f2(H.ins)+'</td></tr>':'')+(H.dc?'<tr><td colspan="6" class="s">Discount</td><td class="s">−'+f2(H.dc)+'</td></tr>':'')+
   '</tbody></table><div class="alt-izgara"><div class="banka"><h4>Payment &amp; Banking Details</h4>'+[['Beneficiary',D.bank.benef],['Bank',D.bank.name],['Account',D.bank.acc],['IBAN',D.bank.iban],['SWIFT',D.bank.swift],['Bank Address',D.bank.addr],['Payment Terms',I.pay]].filter(function(x){return x[1]}).map(function(x){return '<div><small style="margin:0">'+x[0]+'</small><span>'+esc(x[1])+'</span></div>'}).join('')+'</div>'+
-  '<div class="ozet">'+[['Country of Origin',I.origin],['Port of Loading',I.pol],['Port of Discharge',I.pod],['Mode of Transport',I.mode],['Packages',H.T.pk?f2(H.T.pk,0)+' '+kind:''],['Gross / Net Weight',H.T.gw?f2(H.T.gw,0)+' kg / '+f2(H.T.nw,0)+' kg':''],['Containers',I.cont]].filter(function(x){return x[1]}).map(function(x){return '<div><span>'+x[0]+'</span><b>'+esc(x[1])+'</b></div>'}).join('')+
+  '<div class="ozet">'+[['Valid Until',pro?tarih(I.valid):''],['Delivery Time',pro?I.lead:''],['Country of Origin',I.origin],['Port of Loading',I.pol],['Port of Discharge',I.pod],['Mode of Transport',I.mode],['Packages',H.T.pk?f2(H.T.pk,0)+' '+kind:''],['Gross / Net Weight',H.T.gw?f2(H.T.gw,0)+' kg / '+f2(H.T.nw,0)+' kg':''],['Containers',I.cont]].filter(function(x){return x[1]}).map(function(x){return '<div><span>'+x[0]+'</span><b>'+esc(x[1])+'</b></div>'}).join('')+
   '<div class="toplam"><span>TOTAL ('+esc(c)+(I.terms?', '+esc(I.terms):'')+')</span><b>'+sb+f2(H.top)+(sb?'':' '+esc(c))+'</b></div><div class="yazi">'+yazi(H.top,c)+'</div></div></div>'+
-  (D.ex.note?'<div class="not">'+esc(D.ex.note)+'</div>':'')+imza('Received by (Buyer)')+ayak('Commercial Invoice')+'</div>';
-  var p='<div class="doc" id="doc-paket" style="--renk:'+esc(D.color)+'">'+ust('List','Packing','PACKING LIST')+
+  (D.ex.note||pro?'<div class="not">'+esc(D.ex.note||'')+(pro?(D.ex.note?'\n':'')+'This proforma invoice is issued for quotation and advance payment purposes only and is not a commercial or tax invoice.':'')+'</div>':'')+imza(pro?'Accepted by (Buyer)':'Received by (Buyer)')+ayak(pro?'Proforma Invoice':'Commercial Invoice')+'</div>';
+  var p='<div class="doc" lang="en" id="doc-paket" style="--renk:'+esc(D.color)+'">'+ust('List','Packing','PACKING LIST')+
   '<div class="bilgi"><div><small>Invoice Ref.</small><b>'+esc(I.no)+'</b></div><div><small>Date</small><b>'+tarih(I.date)+'</b></div><div><small>Delivery Terms</small><b>'+term+(I.cont?' · '+esc(I.cont):'')+'</b></div><div><small>Country of Origin</small><b>'+esc(I.origin)+'</b></div></div>'+
   taraf('Shipper / Exporter','Consignee')+
   '<table><thead><tr><th>#</th><th>Container No.</th><th>Description</th><th class="s">Pkgs</th><th class="s">Qty</th><th class="s">G.W. kg</th><th class="s">N.W. kg</th><th class="s">Dimensions ('+uni+')</th><th class="s">m³</th><th>HS Code</th></tr></thead><tbody>'+
@@ -214,13 +218,13 @@
  [['ib-logo','logo',700],['ib-imza','stamp',500]].forEach(function(x){el(x[0]).addEventListener('change',function(){var f=this.files[0];if(!f)return;resim(f,x[2],function(u){D[x[1]]=u;gorsel();cizim();kaydet()});this.value=''})});
  el('ib-logo-sil').addEventListener('click',function(){D.logo='';gorsel();cizim();kaydet()});el('ib-imza-sil').addEventListener('click',function(){D.stamp='';gorsel();cizim();kaydet()});
  document.querySelectorAll('.ib-sekme button').forEach(function(b){b.addEventListener('click',function(){D.view=b.getAttribute('data-g');document.querySelectorAll('.ib-sekme button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});cizim();kaydet()})});
- el('ib-pdf').addEventListener('click',function(){oku();cizim();var e=document.title;document.title=(D.view==='paket'?'Packing List ':D.view==='fatura'?'Commercial Invoice ':'Invoice & Packing List ')+(D.inv.no||'');window.print();setTimeout(function(){document.title=e},500)});
+ el('ib-pdf').addEventListener('click',function(){oku();cizim();var e=document.title;var tip=D.inv.type==='proforma'?'Proforma Invoice ':'Commercial Invoice ';document.title=(D.view==='paket'?'Packing List ':D.view==='fatura'?tip:tip.trim()+' & Packing List ')+(D.inv.no||'');window.print();setTimeout(function(){document.title=e},500)});
  el('ib-json-kaydet').addEventListener('click',function(){oku();var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));a.download='ihracat-belgesi-'+(D.inv.no||'taslak')+'.json';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)});
  el('ib-json-ac').addEventListener('change',function(){var f=this.files[0];if(!f)return;var fr=new FileReader();fr.onload=function(){try{var d=JSON.parse(fr.result);D=Object.assign(D,d);yaz();cizim();kaydet()}catch(e){alert('Dosya okunamadı.')}};fr.readAsText(f);this.value=''});
- el('ib-yeni').addEventListener('click',function(){oku();D.buyer={};D.inv={cur:D.inv.cur,terms:D.inv.terms,origin:D.inv.origin,mode:D.inv.mode,pol:D.inv.pol};D.items=[];D.pkgs=[];D.ex={note:D.ex.note,signer:D.ex.signer};yaz();cizim();kaydet()});
+ el('ib-yeni').addEventListener('click',function(){oku();D.buyer={};D.inv={type:D.inv.type,cur:D.inv.cur,terms:D.inv.terms,origin:D.inv.origin,mode:D.inv.mode,pol:D.inv.pol};D.items=[];D.pkgs=[];D.ex={note:D.ex.note,signer:D.ex.signer};yaz();cizim();kaydet()});
  el('ib-ornek').addEventListener('click',function(){D=Object.assign(D,{seller:{name:'Örnek Endüstri Ürünleri Tic. A.Ş.',addr:'Örnek Mah. Sanayi Cad. No: 10\n34000 İstanbul, Türkiye',tel:'+90 212 000 00 00',tax:'Örnek Tax Office · Tax ID 000 000 0000',web:'www.ornek.com.tr'},
   buyer:{name:'Sample Trading Co.',addr:'Industrial Zone, Street 5\nDoha / Qatar',contact:'+974 0000 0000 · info@sample.qa',notify:''},
-  inv:{no:'EXP-2026-001',date:new Date().toISOString().slice(0,10),cur:'USD',terms:'CIF',place:'Hamad Port',origin:'Türkiye',pol:'Ambarlı, İstanbul',pod:'Hamad Port, Doha',mode:'Sea',cont:'1 × 40′ HC',pay:'T/T 30% advance, 70% against B/L copy',subject:'Steel Structures & Fasteners — Export Shipment to Qatar'},
+  inv:{type:D.inv.type||'commercial',valid:'',lead:'4–6 weeks after advance payment',no:'EXP-2026-001',date:new Date().toISOString().slice(0,10),cur:'USD',terms:'CIF',place:'Hamad Port',origin:'Türkiye',pol:'Ambarlı, İstanbul',pod:'Hamad Port, Doha',mode:'Sea',cont:'1 × 40′ HC',pay:'T/T 30% advance, 70% against B/L copy',subject:'Steel Structures & Fasteners — Export Shipment to Qatar'},
   items:[{desc:'Steel Construction Frame',hs:'7308.90.98.00.18',qty:'12',unit:'PCS',price:'4.200'},{desc:'Construction Legs',hs:'7308.90.98.00.18',qty:'48',unit:'PCS',price:'150'},{desc:'M20×50 Bolt',hs:'7318.15.95.00.12',qty:'300',unit:'PCS',price:'1,20'},{desc:'Epoxy Adhesive',hs:'3506.10.00.90.19',qty:'150',unit:'PCS',price:'6,50'}],
   pkgs:[{cont:'XXXU 0000001',desc:'Steel Construction Frame',pk:'12',qty:'12',unit:'PCS',gw:'5.400',nw:'5.300',l:'300',w:'80',h:'60',hs:'7308.90.98.00.18'},{cont:'XXXU 0000001',desc:'Construction Legs',pk:'4',qty:'48',unit:'PCS',gw:'1.300',nw:'1.250',l:'200',w:'60',h:'40',hs:'7308.90.98.00.18'},{cont:'XXXU 0000001',desc:'Fasteners & Adhesive (mixed pallet)',pk:'1',qty:'450',unit:'PCS',gw:'390',nw:'365',l:'150',w:'150',h:'150',hs:'7318.15.95.00.12'}],
   bank:{benef:'Örnek Endüstri Ürünleri Tic. A.Ş.',name:'Sample Bank / Istanbul Branch',acc:'USD / 000-0000000',iban:'TR00 0000 0000 0000 0000 0000 00',swift:'XXXXTRISXXX',addr:'Istanbul / Türkiye'},
@@ -244,8 +248,8 @@
    for(var i=0;i<Math.max(sol.length,sag.length);i++){if(sol[i]){var x=ws.getCell(r+1+i,1);x.value=sol[i];x.font={size:9.5,bold:!i}}if(sag[i]){var z=ws.getCell(r+1+i,c2);z.value=sag[i];z.font={size:9.5,bold:!i}}}return r+1+Math.max(sol.length,sag.length)}
   function tabloBaslik(ws,r,b){b.forEach(function(t,i){var x=ws.getCell(r,i+1);x.value=t;x.font={bold:true,size:8,color:{argb:'FF555555'}};x.border={bottom:kalin};x.alignment={wrapText:true,vertical:'bottom'}});ws.getRow(r).height=26}
   // FATURA
-  var f=wb.addWorksheet('Commercial Invoice');sayfaKur(f,[5,34,18,9,7,15,17]);baslik(f,7,'Commercial','Invoice');
-  etiket(f,11,1,'Invoice No.',I.no||'');etiket(f,11,3,'Invoice Date',tarih(I.date));etiket(f,11,5,'Currency',c);etiket(f,11,7,'Delivery Terms',(I.terms||'')+(I.place?' '+I.place:''));
+  var pro=I.type==='proforma';var f=wb.addWorksheet(pro?'Proforma Invoice':'Commercial Invoice');sayfaKur(f,[5,34,18,9,7,15,17]);baslik(f,7,pro?'Proforma':'Commercial','Invoice');
+  etiket(f,11,1,pro?'Proforma No.':'Invoice No.',I.no||'');etiket(f,11,3,pro?'Date':'Invoice Date',tarih(I.date));etiket(f,11,5,'Currency',c);etiket(f,11,7,'Delivery Terms',(I.terms||'')+(I.place?' '+I.place:''));
   var r=taraflar(f,14,5,'Issued by (Seller / Exporter)','Billed to (Buyer / Consignee)')+1;
   tabloBaslik(f,r,['#','Description','HS Code','Qty','Unit','Unit Value ('+c+')','Total Value ('+c+')']);var ilk=r+1;
   H.it.filter(function(x){return x.r.desc||x.r.qty}).forEach(function(x,i){r++;var row=f.getRow(r);row.getCell(1).value=i+1;row.getCell(2).value=x.r.desc;row.getCell(2).font={bold:true,size:10};row.getCell(3).value=x.r.hs;row.getCell(4).value=isFinite(x.q)?x.q:null;row.getCell(5).value=x.r.unit;row.getCell(6).value=isFinite(x.p)?x.p:null;row.getCell(7).value={formula:'D'+r+'*F'+r,result:isFinite(x.t)?x.t:0};
@@ -255,14 +259,14 @@
   f.getCell(r,6).value='TOTAL ('+c+(I.terms?', '+I.terms:'')+')';f.getCell(r,7).value={formula:'SUM(G'+araRow+':G'+(r-1)+')',result:H.top};f.getCell(r,7).numFmt='#,##0.00';
   [6,7].forEach(function(k){var x=f.getCell(r,k);x.font={bold:true,color:{argb:'FFFFFFFF'},size:k===7?13:9};x.fill={type:'pattern',pattern:'solid',fgColor:{argb:renk}};x.alignment={horizontal:'right'}});
   r++;f.getCell(r,2).value=yazi(H.top,c);f.getCell(r,2).font={italic:true,size:9};f.mergeCells(r,2,r,7);r+=2;
-  var bilgiler=[['Country of Origin',I.origin],['Port of Loading',I.pol],['Port of Discharge',I.pod],['Mode of Transport',I.mode],['Packages',H.T.pk?H.T.pk+' '+(D.pk.kind||'packages'):''],['Gross / Net Weight',H.T.gw?f2(H.T.gw,0)+' kg / '+f2(H.T.nw,0)+' kg':''],['Containers',I.cont]].filter(function(x){return x[1]});
+  var bilgiler=[['Valid Until',pro?tarih(I.valid):''],['Delivery Time',pro?I.lead:''],['Country of Origin',I.origin],['Port of Loading',I.pol],['Port of Discharge',I.pod],['Mode of Transport',I.mode],['Packages',H.T.pk?H.T.pk+' '+(D.pk.kind||'packages'):''],['Gross / Net Weight',H.T.gw?f2(H.T.gw,0)+' kg / '+f2(H.T.nw,0)+' kg':''],['Containers',I.cont]].filter(function(x){return x[1]});
   var banka=[['Beneficiary',D.bank.benef],['Bank',D.bank.name],['Account',D.bank.acc],['IBAN',D.bank.iban],['SWIFT',D.bank.swift],['Bank Address',D.bank.addr],['Payment Terms',I.pay]].filter(function(x){return x[1]});
   f.getCell(r,1).value='PAYMENT & BANKING DETAILS';f.getCell(r,1).font={bold:true,size:9};f.getCell(r,5).value='SHIPMENT DETAILS';f.getCell(r,5).font={bold:true,size:9};
   for(var i=0;i<Math.max(bilgiler.length,banka.length);i++){r++;if(banka[i]){f.getCell(r,1).value=banka[i][0];f.getCell(r,1).font={size:8,color:{argb:'FF777777'}};f.mergeCells(r,1,r,2);f.getCell(r,3).value=banka[i][1];f.getCell(r,3).font={size:9};f.mergeCells(r,3,r,4)}
    if(bilgiler[i]){f.getCell(r,5).value=bilgiler[i][0];f.mergeCells(r,5,r,6);f.getCell(r,5).font={size:8,color:{argb:'FF777777'}};f.getCell(r,7).value=bilgiler[i][1];f.getCell(r,7).alignment={horizontal:'right'};f.getCell(r,7).font={size:9,bold:true}}}
-  r+=2;if(D.ex.note){f.getCell(r,1).value=D.ex.note;f.getCell(r,1).font={size:8.5,color:{argb:'FF444444'}};f.getCell(r,1).alignment={wrapText:true};f.mergeCells(r,1,r,7);f.getRow(r).height=36;r+=2}
+  r+=2;var notMetni=(D.ex.note||'')+(pro?((D.ex.note?' ':'')+'This proforma invoice is issued for quotation and advance payment purposes only and is not a commercial or tax invoice.'):'');if(notMetni){f.getCell(r,1).value=notMetni;f.getCell(r,1).font={size:8.5,color:{argb:'FF444444'}};f.getCell(r,1).alignment={wrapText:true};f.mergeCells(r,1,r,7);f.getRow(r).height=36;r+=2}
   if(stampId!==null)f.addImage(stampId,{tl:{col:1,row:r-1},ext:{width:170,height:64}});r+=4;
-  f.getCell(r,1).value='Authorized Signature';f.getCell(r,1).font={bold:true,size:9};f.getCell(r,1).border={top:kalin};f.getCell(r,2).border={top:kalin};f.getCell(r,6).value='Received by (Buyer)';f.getCell(r,6).font={bold:true,size:9};f.getCell(r,6).border={top:kalin};f.getCell(r,7).border={top:kalin};
+  f.getCell(r,1).value='Authorized Signature';f.getCell(r,1).font={bold:true,size:9};f.getCell(r,1).border={top:kalin};f.getCell(r,2).border={top:kalin};f.getCell(r,6).value=pro?'Accepted by (Buyer)':'Received by (Buyer)';f.getCell(r,6).font={bold:true,size:9};f.getCell(r,6).border={top:kalin};f.getCell(r,7).border={top:kalin};
   f.getCell(r+1,1).value=D.seller.name||'';f.getCell(r+1,1).font={size:9};f.getCell(r+1,6).value=D.buyer.name||'';f.getCell(r+1,6).font={size:9};
   // PACKING LIST
   var p=wb.addWorksheet('Packing List');var uni=D.pk.unit||'cm',bol=uni==='mm'?1e9:1e6;sayfaKur(p,[5,17,28,8,11,11,11,9,9,9,10,18]);baslik(p,12,'Packing','List');
@@ -279,7 +283,7 @@
   p.getCell(r,1).value='Authorized Signature';p.getCell(r,1).font={bold:true,size:9};[1,2,3].forEach(function(k){p.getCell(r,k).border={top:kalin}});p.getCell(r,9).value='Received by (Consignee)';p.getCell(r,9).font={bold:true,size:9};[9,10,11,12].forEach(function(k){p.getCell(r,k).border={top:kalin}});
   p.getCell(r+1,1).value=D.seller.name||'';p.getCell(r+1,9).value=D.buyer.name||'';
   wb.eachSheet(function(ws){ws.eachRow({includeEmpty:false},function(row){row.eachCell({includeEmpty:false},function(cel){cel.font=Object.assign({name:'Calibri',size:10},cel.font||{})})})});
-  wb.xlsx.writeBuffer().then(function(buf){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));a.download='Invoice_PackingList_'+((I.no||'taslak').replace(/[^\w.-]+/g,'_'))+'.xlsx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},3000)})}
+  wb.xlsx.writeBuffer().then(function(buf){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));a.download=(pro?'Proforma_':'Invoice_')+'PackingList_'+((I.no||'taslak').replace(/[^\w.-]+/g,'_'))+'.xlsx';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},3000)})}
  // başlangıç
  try{var k=localStorage.getItem(ANAHTAR);if(k)D=Object.assign(D,JSON.parse(k))}catch(e){}
  if(!D.inv.date)D.inv.date=new Date().toISOString().slice(0,10);if(!D.inv.origin)D.inv.origin='Türkiye';

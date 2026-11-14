@@ -291,7 +291,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 <div class="hm-kutu vurgu"><small>Toplam maliyet</small><b id="r-mal">–</b><span id="r-mal2"></span></div>
 <div class="hm-kutu"><small>Birim maliyet</small><b id="r-birim">–</b><span id="r-birim2"></span></div>
 </div>
-<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="i-pdf">PDF olarak kaydet</button></div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="i-pdf">PDF olarak kaydet</button><a class="hm-btn" id="i-kar" href="/hesaplama-merkezi/kar-marji/" style="text-decoration:none;display:inline-flex;align-items:center">Bu birim maliyetle satış fiyatı hesapla →</a></div>
 <h2>Nasıl hesaplanır?</h2>
 <div class="hm-formul">
 <b>Gümrük kıymeti (CIF)</b> <code>= (mal bedeli + navlun + sigorta) × kur</code><br>
@@ -320,7 +320,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
    ['Gümrük vergisi',tl(gv),''],['İlave gümrük vergisi',tl(igv),''],['Diğer vergi, resim ve harçlar',tl(harc),''],['Beyanname öncesi giderler',tl(once),''],['ÖTV matrahı',tl(otvM),'k'],['ÖTV',tl(otv),''],['KDV matrahı',tl(kdvM),'k'],['KDV (%'+kdvO+')',tl(kdv),''],['Gümrükleme sonrası masraflar',tl(sonra),'']];
   el('i-dokum').innerHTML=satir.map(function(s){return '<tr><td style="'+(s[2]==='b'?'font-weight:600':s[2]==='k'?'color:#666C72':'')+'">'+s[0]+'</td><td class="sag" style="'+(s[2]==='b'?'font-weight:600':s[2]==='k'?'color:#666C72':'')+'">'+s[1]+'</td></tr>'}).join('');
   el('r-vergi').textContent=tl(vergi);el('r-mal').textContent=tl(mal);el('r-mal2').textContent=ok?(indir?'KDV hariç · ':'KDV dahil · ')+'≈ '+F(mal/kur)+' '+pb:'';
-  el('r-birim').textContent=ok&&mik>0?F(mal/mik)+' TL':'–';el('r-birim2').textContent=ok&&mik>0?'1 '+bir+' · ≈ '+F(mal/mik/kur,4)+' '+pb+' · CIF\'e göre ×'+F(mal/gk,3):'Miktar girilirse hesaplanır';}
+  el('r-birim').textContent=ok&&mik>0?F(mal/mik)+' TL':'–';el('i-kar').href='/hesaplama-merkezi/kar-marji/'+(ok&&mik>0?'#maliyet='+(mal/mik).toFixed(2)+'&pb=TL':'');el('r-birim2').textContent=ok&&mik>0?'1 '+bir+' · ≈ '+F(mal/mik/kur,4)+' '+pb+' · CIF\'e göre ×'+F(mal/gk,3):'Miktar girilirse hesaplanır';}
  ALAN.concat(['i-bir']).forEach(function(i){el(i).addEventListener('input',hes)});['i-kdv','i-indir'].forEach(function(i){el(i).addEventListener('change',hes)});
  el('i-kur').addEventListener('input',function(){kurElle=true;hes()});el('i-pb').addEventListener('change',function(){kurElle=false;kurYaz();hes()});
  el('i-ornek').addEventListener('click',function(){var v={'i-fob':'100.000','i-nav':'4.500','i-sig':'340','i-mik':'1.000','i-gv':'6,5','i-igv':'10','i-otv':'0','i-harc':'0','i-once':'0','i-sonra':'35.000'};Object.keys(v).forEach(function(k){el(k).value=v[k]});el('i-bir').value='adet';el('i-tanim').value='Örnek: endüstriyel bağlantı elemanı';el('i-mense').value='Çin';hes()});
@@ -396,7 +396,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
     {b:'Yazılar · medya ve sinema',l:[['Türk dizi sektörünün finansal analizi','/yazilar/#dizi-ihracat'],['Yapım şirketlerinde mali yapı','/yazilar/#kamera-arkasi'],['Sinema salonu işletmeciliği','/yazilar/#sinema-salon']]}]},
   '/pratik-bilgiler/':{t:'Hesaplama Merkezi',g:'SNS İş Dünyası Hesaplama Merkezi',a:'Dış ticaret, vergi, personel ve finans hesaplamaları; her araçta formül ve kaynak gösterilir.',h:'/hesaplama-merkezi/',k:[
     {b:'Dış ticaret',l:[['Commercial Invoice ve Packing List','/hesaplama-merkezi/ihracat-belgeleri/'],['Packing list ve taşıma ağırlığı','/hesaplama-merkezi/packing-list/'],['CBM ve konteyner doluluğu','/hesaplama-merkezi/konteyner/'],['FOB · CFR · CIF kıymet','/hesaplama-merkezi/fob-cif/'],['İthalat maliyet tahmini','/hesaplama-merkezi/ithalat-maliyeti/'],['Kur dönüşümü','/hesaplama-merkezi/kur-donusumu/'],['Tüm araçlar','/hesaplama-merkezi/']]},
-    {b:'Vergi ve personel',l:[['KDV hesaplama','/pratik-bilgiler/#h-kdv'],['Net – brüt maaş','/pratik-bilgiler/#h-maas'],['Kıdem ve ihbar tazminatı','/pratik-bilgiler/#h-kidem'],['Gelir vergisi','/pratik-bilgiler/#h-gv'],['Gecikme zammı','/pratik-bilgiler/#h-gz'],['Damga vergisi','/pratik-bilgiler/#h-dv']]},
+    {b:'Vergi, personel ve finans',l:[['KDV tevkifatı','/hesaplama-merkezi/kdv-tevkifati/'],['Kâr marjı / kâr oranı','/hesaplama-merkezi/kar-marji/'],['KDV hesaplama','/pratik-bilgiler/#h-kdv'],['Net – brüt maaş','/pratik-bilgiler/#h-maas'],['Kıdem ve ihbar tazminatı','/pratik-bilgiler/#h-kidem'],['Gelir vergisi','/pratik-bilgiler/#h-gv'],['Gecikme zammı','/pratik-bilgiler/#h-gz'],['Damga vergisi','/pratik-bilgiler/#h-dv']]},
     {b:'Pratik bilgiler',l:[['Oranlar ve tutarlar 2026','/pratik-bilgiler/#oranlar'],['Vergi takvimi','/pratik-bilgiler/#takvim'],['Sık sorulan sorular','/pratik-bilgiler/#sss'],['Pişmanlık dilekçesi','/pratik-bilgiler/#pismanlik'],['Uzlaşma talebi','/pratik-bilgiler/#uzlasma'],['Şirket kuruluşu bilgileri','/pratik-bilgiler/#kurulus-listesi']]}]}
  };
  var ok='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';

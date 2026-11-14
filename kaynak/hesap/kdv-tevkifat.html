@@ -1,0 +1,68 @@
+<!--META {"yol":"/hesaplama-merkezi/kdv-tevkifati/","baslik":"KDV tevkifatı hesaplama 2026 · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Kısmi KDV tevkifatında alıcının beyan edeceği ve satıcıya ödenecek KDV, fatura toplamı ve 2026 tevkifat sınırı (12.000 TL) kontrolü; işlem türüne göre tevkifat oranları."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Vergi › KDV tevkifatı</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Vergi</p>
+<h1>KDV tevkifatı</h1>
+<p class="hm-giris">İşlem türünü ya da tevkifat oranını seçin; hesaplanan KDV'nin alıcı tarafından beyan edilecek kısmı, satıcıya ödenecek kısmı ve fatura toplamı hesaplanır.</p>
+<div class="hm-kart"><div class="hm-ayar">
+<label>Matrah (KDV hariç tutar, TL)<input id="t-mat" inputmode="decimal" placeholder="100.000"></label>
+<label>KDV oranı<select id="t-oran"><option value="20" selected>%20</option><option value="10">%10</option><option value="1">%1</option></select></label>
+<label style="grid-column:1/-1">İşlem türü<select id="t-tur"></select></label>
+<label>Tevkifat oranı<select id="t-tev"><option value="2">2/10</option><option value="3">3/10</option><option value="4">4/10</option><option value="5">5/10</option><option value="7">7/10</option><option value="9" selected>9/10</option><option value="10">10/10 (tam tevkifat)</option></select></label>
+<label>Tevkifat sınırı (KDV dahil, TL)<input id="t-sinir" inputmode="decimal" value="12.000"></label>
+</div>
+<p class="hm-not" id="t-kosul"></p>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="t-ornek">Örnek veriyle doldur</button></div></div>
+<h2>Sonuç</h2>
+<div class="hm-izgara">
+<div class="hm-kutu"><small>Hesaplanan KDV</small><b id="r-kdv">–</b></div>
+<div class="hm-kutu vurgu"><small>Tevkif edilen KDV</small><b id="r-tev">–</b><span>Alıcı, 2 No.lu KDV beyannamesiyle beyan eder</span></div>
+<div class="hm-kutu"><small>Satıcıya ödenecek KDV</small><b id="r-sat">–</b></div>
+<div class="hm-kutu"><small>Alıcının satıcıya ödeyeceği toplam</small><b id="r-top">–</b><span>Matrah + satıcıya ödenecek KDV</span></div>
+</div>
+<p class="hm-not" id="r-sinir-not"></p>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="t-pdf">PDF olarak kaydet</button></div>
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul"><b>Hesaplanan KDV</b> <code>= matrah × KDV oranı</code><br><b>Tevkif edilen KDV</b> <code>= hesaplanan KDV × tevkifat oranı</code> — alıcı tarafından sorumlu sıfatıyla beyan edilip ödenir, aynı dönemde indirim konusu yapılabilir.<br><b>Satıcıya ödenecek KDV</b> <code>= hesaplanan KDV − tevkif edilen KDV</code><br><b>Sınır:</b> kısmi tevkifata tabi işlemlerde KDV dahil bedel, VUK 232. maddedeki fatura düzenleme sınırını aşmıyorsa tevkifat uygulanmaz; aşıyorsa tutarın tamamı üzerinden uygulanır. İşlem bedeli bu sınırın altında kalacak şekilde kasıtlı olarak bölünemez.</div>
+<p style="margin:16px 0 6px;font-weight:600;font-size:14px">Kaynaklar</p>
+<ul class="hm-kaynak"><li>KDV Genel Uygulama Tebliği, I/C-2.1.3 Kısmi tevkifat (hizmetler 2.1.3.2, teslimler 2.1.3.3, sınır 2.1.3.4.1)</li><li>VUK Genel Tebliği (Sıra No: 588): 2026 yılı fatura düzenleme sınırı 12.000 TL</li><li>Oran listesi 14.11.2026 itibarıyla derlenmiştir; işlemin kapsamı ve alıcının “belirlenmiş alıcı” olup olmadığı ayrıca değerlendirilmelidir.</li></ul>
+<div class="hm-uyari">Tevkifat oranı ve kapsamı işlemin niteliğine ve alıcıya göre değişir. Listede bulunmayan ya da tereddüt edilen işlemlerde Gelir İdaresi düzenlemelerini kontrol edin veya bir meslek mensubuna danışın.</div>
+<!--PDFALT-->
+</section>
+<script>
+(function(){var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};
+ var L=[['', 'İşlem türü seçin (ya da oranı doğrudan seçin)',0,''],
+ ['h','Yapım işleri ve birlikte ifa edilen mühendislik-mimarlık, etüt-proje hizmetleri',4,'Belirlenmiş alıcılara; alıcı ve tutar koşulları vardır.'],
+ ['h','Etüt, plan-proje, danışmanlık, denetim ve benzeri hizmetler',9,'Belirlenmiş alıcılara.'],
+ ['h','Makine, teçhizat, demirbaş ve taşıtlara ait tadil, bakım ve onarım hizmetleri',7,'Belirlenmiş alıcılara.'],
+ ['h','Yemek servis ve organizasyon hizmetleri',5,'Belirlenmiş alıcılara.'],
+ ['h','İşgücü temin hizmetleri (özel güvenlik dahil)',9,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Yapı denetim hizmetleri',9,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Fason tekstil, konfeksiyon, çanta ve ayakkabı dikim işleri ve aracılık',7,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Turistik mağazalara müşteri bulma / götürme hizmetleri',9,'KDV mükelleflerine.'],
+ ['h','Spor kulüplerinin yayın, reklam ve isim hakkı gelirleri',9,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Temizlik, çevre ve bahçe bakım hizmetleri',9,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Servis taşımacılığı hizmeti',5,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Yük taşımacılığı hizmeti (karayolu)',2,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Her türlü baskı ve basım hizmetleri',7,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','Ticari reklam hizmetleri',3,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['h','5018 sayılı Kanun cetvellerindeki idarelere ifa edilen diğer hizmetler',5,'Yalnız bu idarelere ifa edilen, listede sayılmayan hizmetler.'],
+ ['t','Külçe metal teslimleri (bakır, alüminyum, çinko külçe)',7,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['t','Bakır, çinko ve alüminyum ürünlerinin teslimi',7,'İlk üretici ve ithalatçı teslimleri hariç.'],
+ ['t','Hurda ve atık teslimi (istisnadan vazgeçilmesi halinde)',7,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['t','Hurda ve atıktan elde edilen hammadde teslimi',9,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['t','Pamuk, tiftik, yün, yapağı ile ham post ve deri teslimleri',9,'KDV mükelleflerine ve belirlenmiş alıcılara.'],
+ ['t','Ağaç ve orman ürünleri teslimi',5,'KDV mükelleflerine ve belirlenmiş alıcılara.']];
+ el('t-tur').innerHTML=L.map(function(x,i){return '<option value="'+i+'">'+(x[0]==='h'?'Hizmet · ':x[0]==='t'?'Teslim · ':'')+x[1]+(x[2]?' — '+x[2]+'/10':'')+'</option>'}).join('');
+ function hes(){var m=S(el('t-mat').value),r=+el('t-oran').value/100,t=+el('t-tev').value/10,sn=S(el('t-sinir').value);
+  var x=L[+el('t-tur').value];el('t-kosul').textContent=x&&x[3]?'Kapsam: '+x[3]:'';
+  if(!(m>0)){['r-kdv','r-tev','r-sat','r-top'].forEach(function(i){el(i).textContent='–'});el('r-sinir-not').textContent='';return}
+  var kdv=m*r,dahil=m+kdv,alt=t<1&&sn>0&&dahil<=sn,tev=alt?0:kdv*t;
+  el('r-kdv').textContent=F(kdv)+' TL';el('r-tev').textContent=F(tev)+' TL';el('r-sat').textContent=F(kdv-tev)+' TL';el('r-top').textContent=F(m+kdv-tev)+' TL';
+  el('r-sinir-not').textContent=alt?'KDV dahil bedel ('+F(dahil)+' TL) tevkifat sınırının altında kaldığı için tevkifat uygulanmaz.':(t<1&&sn>0?'KDV dahil bedel '+F(dahil)+' TL; sınır aşıldığı için tevkifat tutarın tamamı üzerinden uygulanır.':'')}
+ el('t-tur').addEventListener('change',function(){var x=L[+this.value];if(x&&x[2])el('t-tev').value=String(x[2]);hes()});
+ ['t-mat','t-sinir'].forEach(function(i){el(i).addEventListener('input',hes)});['t-oran','t-tev'].forEach(function(i){el(i).addEventListener('change',hes)});
+ el('t-ornek').addEventListener('click',function(){el('t-mat').value='100.000';el('t-oran').value='20';el('t-tur').value='10';el('t-tev').value='9';hes()});
+ el('t-pdf').addEventListener('click',function(){HM.pdf('KDV tevkifatı')});hes();})();
+</script>
