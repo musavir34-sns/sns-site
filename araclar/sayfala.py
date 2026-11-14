@@ -127,6 +127,13 @@ def esc(t):
 
 
 def bas_yap(yol, baslik, aciklama, ek=""):
+    if yol.startswith("/hesaplama-merkezi/"):
+        gorsel, galt = "/og-hesaplama.png", "SNS İş Dünyası Hesaplama Merkezi"
+    else:
+        gorsel, galt = "/og-sns.png", "SNS Danışmanlık · Serdar Saraç, SMMM"
+    ek = ('<meta property="og:site_name" content="SNS Danışmanlık">\n<meta property="og:image" content="%s%s">\n'
+          '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+          '<meta property="og:image:alt" content="%s">\n<meta name="twitter:card" content="summary_large_image">\n' % (ALAN, gorsel, esc(galt))) + ek
     return ('<!doctype html>\n<html lang="tr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
             '<title>%s</title>\n<meta name="description" content="%s">\n%s<link rel="canonical" href="%s%s">\n'
             '<meta property="og:type" content="website">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
