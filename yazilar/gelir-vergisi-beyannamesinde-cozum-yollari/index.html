@@ -47,6 +47,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 .wa{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;width:56px;height:56px;border-radius:50%;background:var(--emerald);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.45)}
 .wa svg{width:28px;height:28px}
 .taslak{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--panel);border:1px solid var(--line);color:#B9BEC2;font:500 12px/1.4 Manrope,system-ui,sans-serif;letter-spacing:.08em;padding:8px 12px}
+.ms{display:flex;flex-direction:column}.ms-satir{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #E1E4DE;padding:9px 0}.ms-satir b{display:block;font-weight:600;font-size:15.5px}.ms-satir small{display:block;font-size:12px;color:#666C72;margin-top:1px}.ms-sag{display:flex;align-items:center;gap:10px;flex:none}.ms-saat{font:600 19px/1 "JetBrains Mono",monospace;letter-spacing:.02em;color:#2B2F33;min-width:58px;text-align:right}.ms-saat i{font-style:normal;animation:msNokta 1s steps(1) infinite}@keyframes msNokta{50%{opacity:.15}}.ms-durum{font:600 11px/1 Manrope,sans-serif;padding:5px 8px;border-radius:999px;white-space:nowrap;background:#EEF0EC;color:#666C72}.ms-durum.acik{background:#DDF7EA;color:#0F5A3A}.ms-durum.acik::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#1FA86D;margin-right:5px;vertical-align:1px}@media (prefers-reduced-motion:reduce){.ms-saat i{animation:none}}
 .kurbant{flex-wrap:wrap;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media (max-width:700px){.kurbant{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:10px 16px!important}.kurbant::-webkit-scrollbar{display:none}.kurbant .kur-tarih{margin-left:0!important}}
 
@@ -202,6 +203,13 @@ html,body{overflow-x:clip}
 (function(){
  function saat(){document.querySelectorAll('[data-tz]').forEach(function(e){try{e.textContent=new Intl.DateTimeFormat('tr-TR',{hour:'2-digit',minute:'2-digit',timeZone:e.getAttribute('data-tz')}).format(new Date())}catch(x){}})}
  saat();setInterval(saat,30000);
+ function parca(tz,d){var o={};new Intl.DateTimeFormat('en-GB',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',weekday:'short'}).formatToParts(d).forEach(function(p){o[p.type]=p.value});o.gun=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(o.weekday);o.utc=Date.UTC(+o.year,+o.month-1,+o.day,+o.hour,+o.minute);return o}
+ function mesai(){document.querySelectorAll('[data-mesai]').forEach(function(kap){var L;try{L=JSON.parse(kap.getAttribute('data-mesai'))}catch(x){return}
+  var d=new Date(),ist=parca('Europe/Istanbul',d),acik=0,h='';
+  L.forEach(function(c){var p;try{p=parca(c[2],d)}catch(x){return}var fark=Math.round((p.utc-ist.utc)/36e5),dk=(+p.hour)*60+(+p.minute),hs=c[3].indexOf(p.gun)>=0,ms=!hs&&dk>=540&&dk<1080;if(ms)acik++;
+   h+='<div class="ms-satir"><div><b>'+c[0]+'</b><small>'+c[1]+' · '+(fark===0?'aynı saat':(fark>0?'+':'−')+Math.abs(fark)+' sa')+'</small></div><div class="ms-sag"><span class="ms-durum'+(ms?' acik':'')+'">'+(hs?'Hafta sonu':ms?'Mesaide':'Mesai dışı')+'</span><span class="ms-saat">'+p.hour+'<i>:</i>'+p.minute+'</span></div></div>'});
+  kap.innerHTML=h;var oz=kap.parentNode.querySelector('.ms-ozet');if(oz)oz.textContent='Şu an '+L.length+' şehirden '+acik+' tanesinde mesai saati';})}
+ mesai();setInterval(mesai,20000);
  var bantlar=[];document.querySelectorAll('[data-kurbant]').forEach(function(e){bantlar.push(e.parentNode)});
  function gizle(){bantlar.forEach(function(b){var d=b.parentNode;if(d)d.style.display='none'})}
  fetch('/kurlar.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(k){
@@ -209,7 +217,13 @@ html,body{overflow-x:clip}
   bantlar.forEach(function(b){
    b.querySelectorAll('[data-kod]').forEach(function(sp){var v=k.kurlar[sp.getAttribute('data-kod')];var st=sp.querySelector('strong');
     if(v&&st){st.textContent=Number(v).toLocaleString('tr-TR',{minimumFractionDigits:4,maximumFractionDigits:4})}else{sp.style.display='none'}});
-   var t=b.querySelector('.kur-tarih');if(t)t.textContent='TCMB gösterge kuru · '+k.tarih;
+   var t=b.querySelector('.kur-tarih');if(t)t.textContent='TCMB · '+k.tarih;
+   var K=k.kurlar,P=k.parite||{},f=function(x){return isFinite(x)&&x>0?x.toLocaleString('tr-TR',{minimumFractionDigits:4,maximumFractionDigits:4}):null};
+   var eu=P['EUR/USD']||K.EUR/K.USD,gu=P['GBP/USD']||K.GBP/K.USD,uq=P['USD/QAR']||K.USD/K.QAR;
+   var L=[['EUR/USD',eu],['GBP/USD',gu],['EUR/GBP',P['EUR/GBP']||eu/gu],['USD/QAR',uq]].filter(function(x){return f(+x[1])});
+   if(L.length&&t&&!b.querySelector('.kur-parite')){var sp=document.createElement('span');sp.className='kur-parite';sp.style.cssText='margin-left:auto;display:flex;gap:18px;flex-wrap:nowrap;white-space:nowrap;color:#C9CDD0';sp.title='Çapraz kurlar (TCMB)';
+    sp.innerHTML='<span style="color:#3DDC97;font-weight:600;letter-spacing:.04em">Parite</span>'+L.map(function(x){return '<span>'+x[0]+' <strong style="color:#FFFFFF;font-weight:600">'+f(+x[1])+'</strong></span>'}).join('');
+    t.style.marginLeft='0';b.insertBefore(sp,t)}
   });
  }).catch(gizle);
 })();
