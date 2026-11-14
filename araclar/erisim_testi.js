@@ -14,7 +14,8 @@ const GORUNUM = [['masaüstü', { width: 1366, height: 900 }], ['mobil', { width
   const tarayici = await chromium.launch();
   const bulgular = [];
   for (const [ad, boyut] of GORUNUM) {
-    const sayfa = await tarayici.newPage({ viewport: boyut });
+    const baglam = await tarayici.newContext({ viewport: boyut });
+    const sayfa = await baglam.newPage();
     for (const yol of adresler) {
       await sayfa.goto(KOK + yol, { waitUntil: 'networkidle' });
       await sayfa.waitForTimeout(300);
@@ -26,7 +27,7 @@ const GORUNUM = [['masaüstü', { width: 1366, height: 900 }], ['mobil', { width
                         ornek: v.nodes.slice(0, 2).map(n => n.target.join(' ')).join(' | ') });
       }
     }
-    await sayfa.close();
+    await baglam.close();
   }
   await tarayici.close();
 
