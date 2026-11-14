@@ -1,0 +1,125 @@
+<!--META {"yol":"/hesaplama-merkezi/packing-list/","baslik":"Packing list ve taşıma ağırlığı hesaplama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Koli ölçüleri ve ağırlıklarından toplam hacim (CBM), brüt/net ağırlık, desi, ekspres kargo hacimsel ağırlığı (÷5000), hava kargo (÷6000), karayolu ve deniz yolu (W/M) taşıma ağırlığını hesaplayın; sonucu PDF olarak alın."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › Packing list</p>
+<div class="pdf-baslik"><svg aria-hidden="true" height="34" viewBox="8 10 80 76" width="36"><rect fill="#1FA86D" height="10" width="80" x="8" y="10"></rect><rect fill="#1FA86D" height="38" width="10" x="8" y="10"></rect><rect fill="#2B2F33" height="10" width="80" x="8" y="43"></rect><rect fill="#1FA86D" height="38" width="10" x="78" y="48"></rect><rect fill="#1FA86D" height="10" width="80" x="8" y="76"></rect></svg><div><b>SNS Danışmanlık</b> · Serdar Saraç, SMMM<br>snsdanismanlik.com.tr · Hesaplama tarihi: <span class="pdf-tarih"></span></div></div>
+<p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
+<h1>Packing list ve taşıma ağırlığı</h1>
+<p class="hm-giris">Koli tiplerini satır satır girin. Toplam hacim, brüt ve net ağırlık ile ekspres kargo, hava kargo, karayolu ve deniz yolunda fiyatlandırmaya esas alınabilecek ağırlık birlikte hesaplanır. Sonucu PDF olarak kaydedebilirsiniz.</p>
+
+<div class="hm-kart hm-ekte">
+<details class="hm-acilir" open style="margin-top:0"><summary>Belge bilgileri (isteğe bağlı, PDF'te görünür)</summary>
+<div class="hm-belge" style="margin-top:14px">
+<label>İhracatçı / gönderici<input id="b-gon" autocomplete="organization"></label>
+<label>Alıcı<input id="b-alici"></label>
+<label>Fatura / proforma no<input id="b-fatura"></label>
+<label>Varış ülkesi / yeri<input id="b-varis"></label>
+</div></details>
+</div>
+<div class="hm-belge-ozet" hidden></div>
+
+<h2>Koliler</h2>
+<div class="hm-kart">
+<div class="hm-tablo-kap">
+<table class="hm-tablo" id="pl-tablo">
+<thead><tr><th>#</th><th>Açıklama / koli işareti</th><th class="sag">Koli adedi</th><th class="sag">Boy (cm)</th><th class="sag">En (cm)</th><th class="sag">Yükseklik (cm)</th><th class="sag">Brüt kg / koli</th><th class="sag">Net kg / koli</th><th class="sag">Toplam brüt kg</th><th class="sag">Toplam m³</th><th></th></tr></thead>
+<tbody></tbody>
+<tfoot><tr><th></th><th>Toplam</th><th class="sag" id="t-koli">0</th><th></th><th></th><th></th><th></th><th class="sag" id="t-net-h"></th><th class="sag" id="t-brut-h">0</th><th class="sag" id="t-m3-h">0</th><th></th></tr></tfoot>
+</table>
+</div>
+<div class="hm-dugmeler">
+<button type="button" class="hm-btn" id="pl-ekle">+ Koli tipi ekle</button>
+<button type="button" class="hm-btn" id="pl-ornek">Örnek veriyle doldur</button>
+<button type="button" class="hm-btn" id="pl-temizle">Temizle</button>
+</div>
+</div>
+
+<h2>Sonuç</h2>
+<div class="hm-izgara">
+<div class="hm-kutu"><small>Toplam koli</small><b id="r-koli">0</b></div>
+<div class="hm-kutu"><small>Brüt ağırlık</small><b id="r-brut">0 kg</b></div>
+<div class="hm-kutu"><small>Net ağırlık</small><b id="r-net">0 kg</b></div>
+<div class="hm-kutu vurgu"><small>Toplam hacim</small><b id="r-m3">0 m³</b><span id="r-m3-not">CBM</span></div>
+<div class="hm-kutu"><small>Yurt içi kargo desi</small><b id="r-desi">0</b><span>(boy × en × yükseklik) ÷ 3.000</span></div>
+</div>
+
+<h2>Taşıma şekline göre esas ağırlık</h2>
+<div class="hm-ayar hm-ekte" style="margin-bottom:16px">
+<label>Ekspres kargo hacim böleni<select id="o-ekspres"><option value="5000" selected>5.000 (DHL, UPS, FedEx uluslararası)</option><option value="4000">4.000</option><option value="6000">6.000</option></select></label>
+<label>Karayolu parsiyel oranı<select id="o-kara"><option value="333" selected>1 m³ = 333 kg (yaygın)</option><option value="300">1 m³ = 300 kg</option><option value="250">1 m³ = 250 kg</option></select></label>
+</div>
+<div class="hm-tasima">
+<div class="hm-kart"><h3>Ekspres kargo</h3><p>Kurye/ekspres gönderiler</p><div class="hm-satir"><span>Gerçek ağırlık</span><b id="e-g">–</b></div><div class="hm-satir"><span>Hacimsel ağırlık</span><b id="e-h">–</b></div><div class="hm-satir esas"><span>Esas ağırlık</span><b id="e-e">–</b></div></div>
+<div class="hm-kart"><h3>Hava kargo</h3><p>IATA oranı · 1 m³ = 166,67 kg</p><div class="hm-satir"><span>Gerçek ağırlık</span><b id="h-g">–</b></div><div class="hm-satir"><span>Hacimsel ağırlık</span><b id="h-h">–</b></div><div class="hm-satir esas"><span>Esas ağırlık</span><b id="h-e">–</b></div></div>
+<div class="hm-kart"><h3>Karayolu parsiyel</h3><p id="k-not">1 m³ = 333 kg</p><div class="hm-satir"><span>Gerçek ağırlık</span><b id="k-g">–</b></div><div class="hm-satir"><span>Hacimsel ağırlık</span><b id="k-h">–</b></div><div class="hm-satir esas"><span>Esas ağırlık</span><b id="k-e">–</b></div></div>
+<div class="hm-kart"><h3>Deniz yolu (LCL)</h3><p>W/M · 1 m³ = 1.000 kg</p><div class="hm-satir"><span>Ağırlık (ton)</span><b id="d-g">–</b></div><div class="hm-satir"><span>Hacim (m³)</span><b id="d-h">–</b></div><div class="hm-satir esas"><span>Navlun birimi (W/M)</span><b id="d-e">–</b></div></div>
+</div>
+<p class="hm-not" id="kont-not"></p>
+
+<div class="hm-dugmeler">
+<button type="button" class="hm-btn ana" id="pl-pdf">PDF olarak kaydet</button>
+</div>
+<p class="hm-not hm-ekran">Düğme, tarayıcınızın yazdırma penceresini açar; hedef olarak <b>“PDF olarak kaydet”</b> seçin. Telefonda paylaş menüsünden PDF olarak kaydedilebilir.</p>
+
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul">
+<b>Hacim:</b> <code>boy × en × yükseklik ÷ 1.000.000</code> = m³ (CBM), koli adedi ile çarpılır.<br>
+<b>Ekspres kargo hacimsel ağırlık:</b> <code>boy × en × yükseklik ÷ 5.000</code> (cm/kg). Gerçek ve hacimsel ağırlıktan büyük olan esas alınır.<br>
+<b>Hava kargo:</b> <code>m³ × 166,67</code> (6.000 cm³ = 1 kg). Büyük olan esas alınır.<br>
+<b>Karayolu parsiyel:</b> <code>m³ × 333</code> (seçilen orana göre). Büyük olan esas alınır.<br>
+<b>Deniz yolu LCL:</b> navlun “W/M” (weight or measurement) birimiyle fiyatlanır: <code>en büyük(ağırlık ton, hacim m³)</code>.<br>
+<b>Yurt içi desi:</b> <code>boy × en × yükseklik ÷ 3.000</code>.
+</div>
+<p class="hm-not">Hesaplamalar gönderi toplamı üzerinden yapılır. Taşıyıcılar ağırlığı genellikle koli bazında ve 0,5 kg ya da 1 kg'a yuvarlayarak hesaplar; asgari ücret, yakıt ve ek ücretler ayrıca uygulanır.</p>
+<p style="margin:16px 0 6px;font-weight:600;font-size:14px">Kaynaklar</p>
+<ul class="hm-kaynak">
+<li>DHL Express, hacimsel ağırlık hesaplama: (U × G × Y) ÷ 5.000, parça başına</li>
+<li>IATA hava kargo kuralları: hacim oranı 6.000 cm³/kg (1:6)</li>
+<li>Deniz yolu parsiyel (LCL) taşımacılıkta W/M uygulaması: 1 m³ = 1.000 kg</li>
+<li>Karayolu parsiyel oranı taşıyıcıya göre 250–333 kg/m³ arasında değişir; teklif koşullarını kontrol edin.</li>
+</ul>
+<div class="hm-uyari">Bu araç bilgilendirme amaçlı tahmini hesap yapar; taşıyıcının teklif ve tarife koşulları esastır. Gümrük beyanı ve fatura düzenlemesinde belgelerdeki ölçü ve ağırlıkların fiilî tartım ve ölçümle uyumlu olması gerekir.</div>
+<div class="pdf-alt">Bu belge snsdanismanlik.com.tr Hesaplama Merkezi ile oluşturulmuştur. Tahmini hesaptır; taşıyıcının tarife ve teklif koşulları esastır. SNS Danışmanlık · Serdar Saraç, Serbest Muhasebeci Mali Müşavir · İSMMMO sicil no 60446</div>
+</section>
+<script>
+(function(){
+ var tb=document.querySelector('#pl-tablo tbody');if(!tb)return;
+ var S=HM.sayi,F=HM.f;
+ function satir(d){d=d||{};var tr=document.createElement('tr');
+  tr.innerHTML='<td class="no"></td><td><input class="aciklama" data-k="a" placeholder="Örn. Koli A"></td>'+
+  ['n','l','w','h','g','nk'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right"></td>'}).join('')+
+  '<td class="sag" data-o="g"></td><td class="sag" data-o="m3"></td><td><button type="button" class="hm-sil" aria-label="Satırı sil">×</button></td>';
+  Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});
+  tb.appendChild(tr);hesapla();return tr}
+ function hesapla(){
+  var T={n:0,g:0,nk:0,m3:0,desi:0,ex:0},bolen=+document.getElementById('o-ekspres').value,kara=+document.getElementById('o-kara').value,dolu=false;
+  [].forEach.call(tb.rows,function(tr,i){tr.querySelector('.no').textContent=i+1;
+   var v={};['n','l','w','h','g','nk'].forEach(function(k){v[k]=S(tr.querySelector('[data-k="'+k+'"]').value)});
+   var n=isFinite(v.n)?v.n:0,hc=(v.l*v.w*v.h);var ok=n>0&&hc>0;
+   var g=n*(isFinite(v.g)?v.g:0),m3=ok?n*hc/1e6:0;
+   tr.querySelector('[data-o="g"]').textContent=n&&isFinite(v.g)?F(g):'';
+   tr.querySelector('[data-o="m3"]').textContent=ok?F(m3,3):'';
+   if(n>0)dolu=true;
+   T.n+=n;T.g+=g;T.nk+=n*(isFinite(v.nk)?v.nk:0);T.m3+=m3;if(ok){T.desi+=n*hc/3000;T.ex+=n*hc/bolen}});
+  function y(id,t){document.getElementById(id).textContent=t}
+  y('t-koli',F(T.n,0));y('t-brut-h',F(T.g));y('t-m3-h',F(T.m3,3));y('t-net-h',T.nk?F(T.nk)+' net':'');
+  y('r-koli',F(T.n,0));y('r-brut',F(T.g)+' kg');y('r-net',F(T.nk)+' kg');y('r-m3',F(T.m3,3)+' m³');y('r-desi',F(T.desi,1));
+  y('r-m3-not',T.m3?('= '+F(T.m3*1e6/1000,0)+' dm³ · '+F(T.m3*35.3147,1)+' ft³'):'CBM');
+  var hv=T.m3*1e6/6000,kr=T.m3*kara,ton=T.g/1000;
+  y('e-g',F(T.g)+' kg');y('e-h',F(T.ex)+' kg');y('e-e',F(Math.max(T.g,T.ex))+' kg');
+  y('h-g',F(T.g)+' kg');y('h-h',F(hv)+' kg');y('h-e',F(Math.max(T.g,hv))+' kg');
+  y('k-g',F(T.g)+' kg');y('k-h',F(kr)+' kg');y('k-e',F(Math.max(T.g,kr))+' kg');y('k-not','1 m³ = '+kara+' kg');
+  y('d-g',F(ton,3)+' t');y('d-h',F(T.m3,3)+' m³');var wm=Math.max(ton,T.m3);y('d-e',F(wm,3)+' W/M'+(wm>0&&wm<1?' (çoğu tarifede en az 1)':''));
+  var k='';if(T.m3>0){k='Konteyner iç hacmine göre yaklaşık doluluk: 20′ (≈33 m³) %'+F(T.m3/33*100,0)+' · 40′ (≈67 m³) %'+F(T.m3/67*100,0)+' · 40′ HC (≈76 m³) %'+F(T.m3/76*100,0)+'. Pratikte iç hacmin yaklaşık %85\'i kullanılabilir.'}
+  y('kont-not',k);
+ }
+ tb.addEventListener('input',hesapla);
+ tb.addEventListener('click',function(e){var b=e.target.closest('.hm-sil');if(b){b.closest('tr').remove();if(!tb.rows.length)satir();hesapla()}});
+ document.getElementById('o-ekspres').addEventListener('change',hesapla);document.getElementById('o-kara').addEventListener('change',hesapla);
+ document.getElementById('pl-ekle').addEventListener('click',function(){satir().querySelector('input').focus()});
+ document.getElementById('pl-temizle').addEventListener('click',function(){tb.innerHTML='';satir()});
+ document.getElementById('pl-ornek').addEventListener('click',function(){tb.innerHTML='';
+  satir({a:'Koli A · tekstil',n:12,l:60,w:40,h:40,g:'14,5',nk:'13,8'});satir({a:'Koli B · aksesuar',n:6,l:50,w:30,h:30,g:'8,2',nk:'7,6'});satir({a:'Koli C · numune',n:2,l:40,w:30,h:20,g:'3,1',nk:'2,7'})});
+ document.getElementById('pl-pdf').addEventListener('click',function(){HM.pdf('Packing list')});
+ satir();
+})();
+</script>

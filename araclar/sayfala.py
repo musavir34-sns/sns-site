@@ -85,8 +85,7 @@ def baglanti_cevir(html, bu_sayfa):
         yeni = adres(hedef)
         if yeni is None:
             return m.group(0)
-        sayfa_adresi = SAYFALAR[bu_sayfa][0]
-        if yeni.startswith(sayfa_adresi + "#") and kimlik_sayfa.get(hedef) == bu_sayfa:
+        if bu_sayfa is not None and yeni.startswith(SAYFALAR[bu_sayfa][0] + "#") and kimlik_sayfa.get(hedef) == bu_sayfa:
             yeni = "#" + hedef  # aynı sayfadaki bölüme kaydırma
         return 'href="%s"' % yeni
     return re.sub(r'href="#([A-Za-z0-9_-]+)"', f, html)
@@ -127,6 +126,14 @@ def esc(t):
     return t.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
 
 
+def bas_yap(yol, baslik, aciklama, ek=""):
+    return ('<!doctype html>\n<html lang="tr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            '<title>%s</title>\n<meta name="description" content="%s">\n%s<link rel="canonical" href="%s%s">\n'
+            '<meta property="og:type" content="website">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
+            '<meta property="og:url" content="%s%s">\n<meta property="og:locale" content="tr_TR">\n%s</head>\n<body>\n'
+            % (esc(baslik), esc(aciklama), ikonlar, ALAN, yol, esc(baslik), esc(aciklama), ALAN, yol, ek))
+
+
 uretilen = []
 for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     a, b = bolumler[pid]
@@ -134,14 +141,7 @@ for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     govde = re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="%s">' % pid, govde, count=1)
     govde = baglanti_cevir(govde, pid)
     govde = govde.replace('href="#ana"', 'href="/"')
-    bas = ('<!doctype html>\n<html lang="tr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-           '<title>%s</title>\n<meta name="description" content="%s">\n%s<link rel="canonical" href="%s%s">\n'
-           '<meta property="og:type" content="website">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
-           '<meta property="og:url" content="%s%s">\n<meta property="og:locale" content="tr_TR">\n'
-           % (esc(baslik), esc(aciklama), ikonlar, ALAN, yol, esc(baslik), esc(aciklama), ALAN, yol))
-    if pid == "ana":
-        bas += "<script>%s</script>\n" % eski_js
-    bas += "</head>\n<body>\n"
+    bas = bas_yap(yol, baslik, aciklama, ("<script>%s</script>\n" % eski_js) if pid == "ana" else "")
     js = [yeni_yonlendirme, canli_js, menu_js, gundem_js]
     if pid == "pratik-sayfa":
         js.insert(0, hesap_js)
@@ -151,9 +151,32 @@ for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     open(hedef, "w", encoding="utf-8").write(sayfa)
     uretilen.append((hedef, yol, len(sayfa)))
 
+# --- Hesaplama Merkezi sayfaları (kaynak/hesap/*.html) ---
+import glob
+a, b = bolumler["hizmet-sayfa"]
+iskelet = baglanti_cevir(s[a:b], None).replace('href="#ana"', 'href="/"')
+iskelet = iskelet.replace(" border-bottom: 1px solid #1FA86D; padding-bottom: 3px", "")
+ust = iskelet[:iskelet.find("</header>") + len("</header>")]
+k = iskelet.find("Büro sahibi"); alt = iskelet[iskelet.rfind("<section", 0, k):]
+ortak_css = open("kaynak/hesap/_ortak.css", encoding="utf-8").read()
+ortak_js = open("kaynak/hesap/_ortak.js", encoding="utf-8").read()
+ek_adresler = []
+for dosya in sorted(glob.glob("kaynak/hesap/*.html")):
+    metin = open(dosya, encoding="utf-8").read()
+    m = re.match(r"<!--META (\{.*?\}) -->\n", metin, re.S)
+    meta = json.loads(m.group(1)); icerik = metin[m.end():]
+    pid = "hesap-" + os.path.basename(dosya)[:-5]
+    govde = re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="%s">' % pid, ust, count=1) + "\n<script>%s</script>\n" % ortak_js + icerik + "\n" + alt
+    sayfa = (bas_yap(meta["yol"], meta["baslik"], meta["aciklama"]) + govde_on + "<style>%s</style>\n" % ortak_css + govde + "\n"
+             + "".join("<script>%s</script>\n" % x for x in [yeni_yonlendirme, canli_js, menu_js]) + "</body>\n</html>\n")
+    hedef = meta["yol"].strip("/") + "/index.html"
+    os.makedirs(os.path.dirname(hedef), exist_ok=True)
+    open(hedef, "w", encoding="utf-8").write(sayfa)
+    uretilen.append((hedef, meta["yol"], len(sayfa))); ek_adresler.append(meta["yol"])
+
 open("sitemap.xml", "w", encoding="utf-8").write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    + "".join("  <url><loc>%s%s</loc></url>\n" % (ALAN, y) for y in (v[0] for v in SAYFALAR.values()))
+    + "".join("  <url><loc>%s%s</loc></url>\n" % (ALAN, y) for y in [v[0] for v in SAYFALAR.values()] + ek_adresler)
     + "</urlset>\n")
 open("robots.txt", "w", encoding="utf-8").write("User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % ALAN)
 for h, y, n in uretilen:
