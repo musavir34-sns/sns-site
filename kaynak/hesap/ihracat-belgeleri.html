@@ -49,6 +49,10 @@
 .doc .toplam span{font-size:9px;letter-spacing:.16em}.doc .toplam b{font-size:20px}
 .doc .yazi{font-size:10px;color:#333;margin-top:6px;font-style:italic}
 .doc .not{margin-top:12px;font-size:9.8px;color:#444;white-space:pre-line}
+.doc .mb{margin-top:12px;border:1px solid #D7DBD4;border-left:3px solid var(--renk);padding:8px 12px;font-size:9.8px;line-height:1.5;color:#333}
+.doc .mb h4{margin:0 0 4px;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:#666}.doc .mb p{margin:0}.doc .mb .mb-yer{margin-top:4px;color:#555}
+.ib-mbx{display:none}.ib-mb-acik .ib-mbx{display:flex}.ib-com-gizli .ib-com{display:none!important}
+#ib-mb-not{margin:0;padding:10px 12px;border-radius:8px;background:#F9FAF8;border-left:3px solid #3DDC97;font-size:13px;line-height:1.55;color:#4A5056}#ib-mb-not.uyari{background:#FFF6E5;border-left-color:#E0A100;color:#6B4E00}
 .doc .imza{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:auto;padding-top:24px}
 .doc .imza div{border-top:1px solid #222;padding-top:5px;font-size:10px;position:relative}
 .doc .imza img{position:absolute;bottom:22px;left:0;max-height:78px;max-width:220px}
@@ -62,6 +66,8 @@
   .doc{box-shadow:none;margin:0;width:210mm;min-height:296mm;break-after:page}
   .doc:last-child{break-after:auto}
   .doc[hidden]{display:none!important}
+  .doc:has(.mb){padding-top:36px;padding-bottom:26px}.doc:has(.mb) .bilgi{margin:10px 0}.doc:has(.mb) .taraf{margin-bottom:10px}.doc:has(.mb) .taraf div{padding:9px 12px}
+  .doc:has(.mb) td{padding:4px}.doc:has(.mb) .alt-izgara{margin-top:10px}.doc:has(.mb) .imza{padding-top:12px}.doc:has(.mb) .ayak{margin-top:8px}
 }
 </style>
 <section class="hm">
@@ -142,6 +148,13 @@
 <label class="ib-tam">Beyan / not (faturanın altında görünür)<textarea data-b="ex.note">We hereby certify that this invoice shows the actual price of the goods described, that all particulars are true and correct, and that the origin of the goods is as stated.</textarea></label>
 <div class="ib-tam ib-logo"><span>Kaşe-imza görseli (isteğe bağlı)</span><img id="ib-imza-img" alt="" hidden><label class="hm-btn" style="display:inline-flex;align-items:center;font-weight:600">Görsel yükle<input type="file" id="ib-imza" accept="image/png,image/jpeg,image/webp" hidden></label><button type="button" class="hm-btn" id="ib-imza-sil">Kaldır</button></div>
 <label>İmza yetkilisi (isteğe bağlı)<input data-b="ex.signer" placeholder="Ad Soyad, Unvan"></label>
+<label class="ib-com">Menşe beyanı (origin declaration)<select data-b="mb.on"><option value="">Ekleme</option><option value="1">Faturaya ekle</option></select></label>
+<label class="ib-com ib-mbx">Onaylanmış ihracatçı yetki no<input data-b="mb.auth" placeholder="6.000 EUR üzerinde zorunlu"></label>
+<label class="ib-com ib-mbx">Menşe (beyandaki ifade)<input data-b="mb.origin" placeholder="Turkish"></label>
+<label class="ib-com ib-mbx">Kümülasyon ifadesi<select data-b="mb.cum"><option value="">Kullanılmıyor</option><option value="no">No cumulation applied</option><option value="with">Cumulation applied with …</option></select></label>
+<label class="ib-com ib-mbx">Kümülasyon yapılan ülke(ler)<input data-b="mb.cumc" placeholder="EU"></label>
+<label class="ib-com ib-mbx">Beyan yeri<input data-b="mb.place" placeholder="Istanbul"></label>
+<p class="ib-tam ib-com" id="ib-mb-not">Menşe beyanı, ürünün serbest ticaret anlaşması kapsamında tercihli menşeli olduğunu gösterir ve alıcının indirimli gümrük vergisinden yararlanmasını sağlar. Yalnızca ticari faturada yer alır.</p>
 </div></details>
 </div>
 
@@ -154,7 +167,7 @@
 <script>
 (function(){
  var S=HM.sayi,el=function(i){return document.getElementById(i)},ANAHTAR='sns-ihracat-belge-v1';
- var D={seller:{},buyer:{},inv:{},ex:{},bank:{},pk:{unit:'cm',kind:'packages'},items:[],pkgs:[],color:'#2B2F33',logo:'',stamp:'',view:'ikisi'};
+ var D={seller:{},buyer:{},inv:{},ex:{},bank:{},mb:{},pk:{unit:'cm',kind:'packages'},items:[],pkgs:[],color:'#2B2F33',logo:'',stamp:'',view:'ikisi'};
  function f2(n,d){if(!isFinite(n))return '';return n.toLocaleString('en-US',{minimumFractionDigits:d==null?2:d,maximumFractionDigits:d==null?2:d})}
  function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
  function get(o,p){return p.split('.').reduce(function(a,k){return a?a[k]:undefined},o)}
@@ -190,8 +203,19 @@
  function taraf(a,b){return '<div class="taraf"><div><small>'+a+'</small><b>'+esc(D.seller.name)+'</b>\n'+esc(D.seller.addr)+(D.seller.web?'\n'+esc(D.seller.web):'')+'</div><div><small>'+b+'</small><b>'+esc(D.buyer.name)+'</b>\n'+esc(D.buyer.addr)+(D.buyer.contact?'\n'+esc(D.buyer.contact):'')+(D.buyer.notify?'\n\nNotify: '+esc(D.buyer.notify):'')+'</div></div>'}
  function imza(b){return '<div class="imza"><div>'+(D.stamp?'<img src="'+D.stamp+'" alt="">':'')+'<b>Authorized Signature</b><br>'+esc(D.seller.name)+(D.ex.signer?'<br>'+esc(D.ex.signer):'')+'</div><div><b>'+b+'</b><br>'+esc(D.buyer.name)+'</div></div>'}
  function ayak(s){return '<div class="ayak"><span>'+esc(D.seller.name)+' · '+s+' '+esc(D.inv.no)+'</span><span></span></div>'}
+ function mbMetin(){var m=D.mb||{};return 'The exporter of the products covered by this document'+(m.auth?' (customs authorisation No '+m.auth+')':'')+' declares that, except where otherwise clearly indicated, these products are of '+(m.origin||'Turkish')+' preferential origin.'}
+ function mbKum(){var m=D.mb||{};return m.cum==='with'?'Cumulation applied with '+(m.cumc||'…'):m.cum==='no'?'No cumulation applied':''}
+ function mbYer(){return [(D.mb&&D.mb.place)||'',tarih(D.inv.date)].filter(Boolean).join(', ')}
+ var MB_GENEL='Menşe beyanı, ürünün serbest ticaret anlaşması kapsamında tercihli menşeli olduğunu gösterir ve alıcının indirimli gümrük vergisinden yararlanmasını sağlar. Yalnızca ticari faturada yer alır.';
+ function mbKontrol(H){var n=el('ib-mb-not'),m=D.mb||{};if(m.on!=='1'){n.className='ib-tam ib-com';n.textContent=MB_GENEL;return}
+  var c=D.inv.cur||'USD',ek=' AB\'ye Gümrük Birliği kapsamındaki sanayi ürünlerinde menşe beyanı değil A.TR dolaşım belgesi kullanılır. Beyan metni ve kümülasyon ifadesi, malın gideceği ülkeyle yapılan anlaşmanın menşe protokolüne göre kontrol edilmelidir.';
+  function yaz(eur){var asim=isFinite(eur)&&eur>6000;n.className='ib-tam ib-com'+(asim&&!m.auth?' uyari':'');
+   n.textContent=(isFinite(eur)?'Fatura toplamı yaklaşık '+eur.toLocaleString('tr-TR',{maximumFractionDigits:0})+' EUR. ':'')+
+    (asim?(m.auth?'6.000 EUR üzerinde beyan onaylanmış ihracatçı yetki numarasıyla düzenleniyor.':'6.000 EUR üzerindeki gönderilerde menşe beyanını yalnızca onaylanmış ihracatçılar düzenleyebilir: yetki numaranızı girin ya da EUR.1 dolaşım belgesi alın.'):'6.000 EUR\'ya kadar her ihracatçı menşe beyanı düzenleyebilir.')+ek}
+  if(c==='EUR'){yaz(H.top);return}
+  HM.kurlar().then(function(k){var K=k&&k.kurlar||{};yaz(K[c]&&K.EUR?H.top*K[c]/K.EUR:NaN)})}
  function cizim(){var H=hesap(),c=D.inv.cur||'USD',sb=SB[c]||'',I=D.inv,uni=D.pk.unit||'cm',kind=D.pk.kind||'packages';tabloGuncelle(H);
-  var term=(I.terms||'')+(I.place?' '+esc(I.place):''),pro=I.type==='proforma';document.querySelectorAll('.ib-tur button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-t')===(pro?'proforma':'commercial')?'true':'false')});document.querySelector('.hm-kart').classList.toggle('ib-pro-gizli',!pro);
+  var term=(I.terms||'')+(I.place?' '+esc(I.place):''),pro=I.type==='proforma';document.querySelectorAll('.ib-tur button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-t')===(pro?'proforma':'commercial')?'true':'false')});document.querySelector('.hm-kart').classList.toggle('ib-pro-gizli',!pro);document.querySelector('.hm-kart').classList.toggle('ib-com-gizli',pro);document.querySelector('.hm-kart').classList.toggle('ib-mb-acik',!pro&&D.mb&&D.mb.on==='1');
   var f='<div class="doc" lang="en" id="doc-fatura" style="--renk:'+esc(D.color)+'">'+ust('Invoice',pro?'Proforma':'Commercial',pro?'PROFORMA INVOICE':'INVOICE')+
   '<div class="bilgi"><div><small>'+(pro?'Proforma No.':'Invoice No.')+'</small><b>'+esc(I.no)+'</b></div><div><small>'+(pro?'Date':'Invoice Date')+'</small><b>'+tarih(I.date)+'</b></div><div><small>Currency</small><b>'+esc(c)+(sb?' ('+sb+')':'')+'</b></div><div><small>Delivery Terms</small><b>'+term+'</b></div></div>'+
   taraf('Issued by (Seller / Exporter)','Billed to (Buyer / Consignee)')+
@@ -201,7 +225,7 @@
   '</tbody></table><div class="alt-izgara"><div class="banka"><h4>Payment &amp; Banking Details</h4>'+[['Beneficiary',D.bank.benef],['Bank',D.bank.name],['Account',D.bank.acc],['IBAN',D.bank.iban],['SWIFT',D.bank.swift],['Bank Address',D.bank.addr],['Payment Terms',I.pay]].filter(function(x){return x[1]}).map(function(x){return '<div><small style="margin:0">'+x[0]+'</small><span>'+esc(x[1])+'</span></div>'}).join('')+'</div>'+
   '<div class="ozet">'+[['Valid Until',pro?tarih(I.valid):''],['Delivery Time',pro?I.lead:''],['Country of Origin',I.origin],['Port of Loading',I.pol],['Port of Discharge',I.pod],['Mode of Transport',I.mode],['Packages',H.T.pk?f2(H.T.pk,0)+' '+kind:''],['Gross / Net Weight',H.T.gw?f2(H.T.gw,0)+' kg / '+f2(H.T.nw,0)+' kg':''],['Containers',I.cont]].filter(function(x){return x[1]}).map(function(x){return '<div><span>'+x[0]+'</span><b>'+esc(x[1])+'</b></div>'}).join('')+
   '<div class="toplam"><span>TOTAL ('+esc(c)+(I.terms?', '+esc(I.terms):'')+')</span><b>'+sb+f2(H.top)+(sb?'':' '+esc(c))+'</b></div><div class="yazi">'+yazi(H.top,c)+'</div></div></div>'+
-  (D.ex.note||pro?'<div class="not">'+esc(D.ex.note||'')+(pro?(D.ex.note?'\n':'')+'This proforma invoice is issued for quotation and advance payment purposes only and is not a commercial or tax invoice.':'')+'</div>':'')+imza(pro?'Accepted by (Buyer)':'Received by (Buyer)')+ayak(pro?'Proforma Invoice':'Commercial Invoice')+'</div>';
+  (D.ex.note||pro?'<div class="not">'+esc(D.ex.note||'')+(pro?(D.ex.note?'\n':'')+'This proforma invoice is issued for quotation and advance payment purposes only and is not a commercial or tax invoice.':'')+'</div>':'')+(!pro&&D.mb&&D.mb.on==='1'?'<div class="mb"><h4>Origin Declaration</h4><p>'+esc(mbMetin())+'</p>'+(mbKum()?'<p>'+esc(mbKum())+'</p>':'')+'<p class="mb-yer">'+esc(mbYer())+(D.ex.signer?' · '+esc(D.ex.signer):'')+'</p></div>':'')+imza(pro?'Accepted by (Buyer)':'Received by (Buyer)')+ayak(pro?'Proforma Invoice':'Commercial Invoice')+'</div>';
   var p='<div class="doc" lang="en" id="doc-paket" style="--renk:'+esc(D.color)+'">'+ust('List','Packing','PACKING LIST')+
   '<div class="bilgi"><div><small>Invoice Ref.</small><b>'+esc(I.no)+'</b></div><div><small>Date</small><b>'+tarih(I.date)+'</b></div><div><small>Delivery Terms</small><b>'+term+(I.cont?' · '+esc(I.cont):'')+'</b></div><div><small>Country of Origin</small><b>'+esc(I.origin)+'</b></div></div>'+
   taraf('Shipper / Exporter','Consignee')+
@@ -210,7 +234,7 @@
   '<tr><td colspan="3" class="s"><b>Total</b></td><td class="s"><b>'+f2(H.T.pk,0)+'</b></td><td></td><td class="s"><b>'+f2(H.T.gw,0)+'</b></td><td class="s"><b>'+f2(H.T.nw,0)+'</b></td><td></td><td class="s"><b>'+f2(H.T.m3,3)+'</b></td><td></td></tr></tbody></table>'+
   '<div class="pl-ozet"><div><small>Total '+esc(kind)+'</small><b>'+f2(H.T.pk,0)+'</b></div><div><small>Gross Weight</small><b>'+f2(H.T.gw,0)+' kg</b></div><div><small>Net Weight</small><b>'+f2(H.T.nw,0)+' kg</b></div><div><small>Volume</small><b>'+f2(H.T.m3,3)+' m³</b></div><div><small>Shipment</small><b>'+esc(I.cont||I.mode||'')+'</b></div></div>'+
   imza('Received by (Consignee)')+ayak('Packing List')+'</div>';
-  el('ib-onizleme').innerHTML=f+p;var v=D.view;el('doc-fatura').hidden=v==='paket';el('doc-paket').hidden=v==='fatura';return H}
+  el('ib-onizleme').innerHTML=f+p;if(!pro)mbKontrol(H);var v=D.view;el('doc-fatura').hidden=v==='paket';el('doc-paket').hidden=v==='fatura';return H}
  function kaydet(){try{localStorage.setItem(ANAHTAR,JSON.stringify(D))}catch(e){}}
  var zz;function degisti(){oku();cizim();clearTimeout(zz);zz=setTimeout(kaydet,400)}
  document.querySelector('.hm').addEventListener('input',function(e){if(e.target.type!=='file')degisti()});
@@ -270,6 +294,8 @@
   for(var i=0;i<Math.max(bilgiler.length,banka.length);i++){r++;if(banka[i]){f.getCell(r,1).value=banka[i][0];f.getCell(r,1).font={size:8,color:{argb:'FF777777'}};f.mergeCells(r,1,r,2);f.getCell(r,3).value=banka[i][1];f.getCell(r,3).font={size:9};f.mergeCells(r,3,r,4)}
    if(bilgiler[i]){f.getCell(r,5).value=bilgiler[i][0];f.mergeCells(r,5,r,6);f.getCell(r,5).font={size:8,color:{argb:'FF777777'}};f.getCell(r,7).value=bilgiler[i][1];f.getCell(r,7).alignment={horizontal:'right'};f.getCell(r,7).font={size:9,bold:true}}}
   r+=2;var notMetni=(D.ex.note||'')+(pro?((D.ex.note?' ':'')+'This proforma invoice is issued for quotation and advance payment purposes only and is not a commercial or tax invoice.'):'');if(notMetni){f.getCell(r,1).value=notMetni;f.getCell(r,1).font={size:8.5,color:{argb:'FF444444'}};f.getCell(r,1).alignment={wrapText:true};f.mergeCells(r,1,r,7);f.getRow(r).height=36;r+=2}
+  if(!pro&&D.mb&&D.mb.on==='1'){f.getCell(r,1).value='ORIGIN DECLARATION';f.getCell(r,1).font={bold:true,size:8,color:{argb:'FF666666'}};r++;
+   [[mbMetin(),30],[mbKum(),14],[mbYer()+(D.ex.signer?' · '+D.ex.signer:''),14]].forEach(function(x){if(!x[0])return;var g=f.getCell(r,1);g.value=x[0];g.font={size:9};g.alignment={wrapText:true,vertical:'top'};f.mergeCells(r,1,r,7);f.getRow(r).height=x[1];r++});r++}
   if(stampId!==null)f.addImage(stampId,{tl:{col:1,row:r-1},ext:{width:170,height:64}});r+=4;
   f.getCell(r,1).value='Authorized Signature';f.getCell(r,1).font={bold:true,size:9};f.getCell(r,1).border={top:kalin};f.getCell(r,2).border={top:kalin};f.getCell(r,6).value=pro?'Accepted by (Buyer)':'Received by (Buyer)';f.getCell(r,6).font={bold:true,size:9};f.getCell(r,6).border={top:kalin};f.getCell(r,7).border={top:kalin};
   f.getCell(r+1,1).value=D.seller.name||'';f.getCell(r+1,1).font={size:9};f.getCell(r+1,6).value=D.buyer.name||'';f.getCell(r+1,6).font={size:9};
