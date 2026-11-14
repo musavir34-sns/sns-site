@@ -1,0 +1,31 @@
+name: Duyuru kaynak kesfi (gecici)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  kesif:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sayfalari indir
+        run: |
+          mkdir -p out
+          i=0
+          for u in \
+            "https://www.turmob.org.tr/" \
+            "https://www.turmob.org.tr/ekutuphane/e2f9f8fd-af81-456b-8626-2e938f66dd45/mevzuat-sirkuleri/1" \
+            "https://www.turmob.org.tr/ekutuphane/5a9b323d-2a6b-4cb8-b6e5-37c035ec18a8/mevzuat-sirkuleri/1" \
+            "https://www.ismmmo.org.tr/" \
+            "https://www.ismmmo.org.tr/duyurular" \
+            "https://www.ismmmo.org.tr/mevzuat" ; do
+            i=$((i+1))
+            curl -sSL -m 40 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36" -o out/$i.html -w "$i %{http_code} %{size_download} %{url_effective}\n" "$u" >> out/ozet.txt || echo "$i HATA $u" >> out/ozet.txt
+          done
+          cat out/ozet.txt
+      - name: Kesif dalina yaz
+        run: |
+          cd out
+          git init -q -b kesif
+          git config user.name "kesif-botu"; git config user.email "kesif-botu@users.noreply.github.com"
+          git add -A; git commit -qm "kesif"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" kesif
