@@ -3,7 +3,7 @@
 .ib-bolum{margin-top:18px}
 .ib-bolum>summary{cursor:pointer;font:500 21px/1.3 Fraunces,serif;color:#2B2F33;padding:6px 0;list-style:none}
 .ib-bolum>summary::-webkit-details-marker{display:none}
-.ib-bolum>summary::before{content:"▸ ";color:#1FA86D}.ib-bolum[open]>summary::before{content:"▾ "}
+.ib-bolum>summary::before{content:"▸ ";color:#157A4F}.ib-bolum[open]>summary::before{content:"▾ "}
 .ib-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:10px}
 .ib-grid label,.ib-tam{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#4A5056}
 .ib-tam{grid-column:1/-1}
@@ -106,7 +106,7 @@
 <label>Fatura no<input data-b="inv.no"></label>
 <label>Fatura tarihi<input type="date" data-b="inv.date"></label>
 <label>Para birimi<select data-b="inv.cur"><option>USD</option><option>EUR</option><option>GBP</option><option>TRY</option><option>CNY</option><option>AED</option><option>QAR</option><option>SAR</option><option>CHF</option><option>RUB</option><option>LYD</option><option>IQD</option></select></label>
-<label><span>Teslim şekli (Incoterms 2020) · <a href="/hesaplama-merkezi/incoterms/" target="_blank" rel="noopener" style="color:#1FA86D;font-weight:600">hangisi? ↗</a></span><select data-b="inv.terms"><option>EXW</option><option>FCA</option><option>FAS</option><option>FOB</option><option>CFR</option><option selected>CIF</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option><option>DDP</option></select></label>
+<label><span>Teslim şekli (Incoterms 2020) · <a href="/hesaplama-merkezi/incoterms/" target="_blank" rel="noopener" style="color:#157A4F;font-weight:600">hangisi? ↗</a></span><select data-b="inv.terms"><option>EXW</option><option>FCA</option><option>FAS</option><option>FOB</option><option>CFR</option><option selected>CIF</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option><option>DDP</option></select></label>
 <label>Teslim yeri<input data-b="inv.place" placeholder="Tripoli Port"></label>
 <label>Menşe ülke<input data-b="inv.origin" value="Türkiye"></label>
 <label>Yükleme limanı / yeri<input data-b="inv.pol" placeholder="Ambarlı, İstanbul"></label>
@@ -181,10 +181,12 @@
  function yazi(n,cur){if(!isFinite(n)||n<0)return '';var t=Math.floor(n+1e-9),c=Math.round((n-t)*100);if(c===100){t++;c=0}
   var g=[[1e9,'Billion'],[1e6,'Million'],[1e3,'Thousand']],p=[],r=t;g.forEach(function(x){if(r>=x[0]){p.push(uc(Math.floor(r/x[0]))+' '+x[1]);r%=x[0]}});if(r)p.push(uc(r));if(!p.length)p.push('Zero');
   var a=PB[cur]||[cur,'Cents'];return 'Say: '+a[0]+' '+p.join(' ')+(c?' and '+uc(c)+' '+a[1]:'')+' Only'}
+ var ETK={desc:'Açıklama',hs:'GTİP',qty:'Miktar',unit:'Birim',price:'Birim fiyat',cont:'Konteyner no',pk:'Koli adedi',gw:'Brüt ağırlık',nw:'Net ağırlık',l:'Boy',w:'En',h:'Yükseklik'};
+ function etiketle(tr){tr.querySelectorAll('input[data-k]').forEach(function(i){if(!i.getAttribute('aria-label'))i.setAttribute('aria-label',ETK[i.getAttribute('data-k')]||i.getAttribute('data-k'))});return tr}
  function kalemSatir(d){d=d||{};var tr=document.createElement('tr');tr.innerHTML='<td class="no"></td><td><input class="aciklama" data-k="desc"></td><td><input data-k="hs" placeholder="7308.90.98.00.18" style="min-width:140px"></td><td><input data-k="qty" inputmode="decimal" style="text-align:right"></td><td><input data-k="unit" value="PCS" style="min-width:60px"></td><td><input data-k="price" inputmode="decimal" style="text-align:right"></td><td class="sag" data-o="tot"></td><td><button type="button" class="hm-sil" aria-label="Sil">×</button></td>';
-  Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});el('ib-kalem').tBodies[0].appendChild(tr);return tr}
+  Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});el('ib-kalem').tBodies[0].appendChild(tr);return etiketle(tr)}
  function paketSatir(d){d=d||{};var tr=document.createElement('tr');tr.innerHTML='<td class="no"></td><td><input data-k="cont" style="min-width:110px"></td><td><input class="aciklama" data-k="desc"></td>'+['pk','qty'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right"></td>'}).join('')+'<td><input data-k="unit" value="PCS" style="min-width:56px"></td>'+['gw','nw','l','w','h'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right"></td>'}).join('')+'<td><input data-k="hs" style="min-width:130px"></td><td><button type="button" class="hm-sil" aria-label="Sil">×</button></td>';
-  Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});el('ib-paket').tBodies[0].appendChild(tr);return tr}
+  Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});el('ib-paket').tBodies[0].appendChild(tr);return etiketle(tr)}
  function tabloOku(id,keys){return [].map.call(el(id).tBodies[0].rows,function(tr){var o={};keys.forEach(function(k){o[k]=tr.querySelector('[data-k="'+k+'"]').value});return o})}
  function oku(){document.querySelectorAll('[data-b]').forEach(function(i){set(D,i.getAttribute('data-b'),i.value)});
   D.items=tabloOku('ib-kalem',['desc','hs','qty','unit','price']);D.pkgs=tabloOku('ib-paket',['cont','desc','pk','qty','unit','gw','nw','l','w','h','hs'])}

@@ -57,6 +57,9 @@ assert set(bolumler) == set(SAYFALAR), set(bolumler) ^ set(SAYFALAR)
 
 ilk = min(v[0] for v in bolumler.values()); son = max(v[1] for v in bolumler.values())
 govde_on = s[s.find("<body>") + len("<body>"):ilk]          # yazı tipi bağlantıları + stil
+_k = govde_on.find("<style>")
+FONT_BAS = govde_on[:_k].strip() + "\n"                       # yazı tipi bağlantıları <head> içine taşınır
+govde_on = govde_on[_k:]
 arka = s[son:s.rfind("</body>")]                            # ortak betikler
 betikler = re.findall(r"<script>(.*?)</script>", arka, re.S)
 assert len(betikler) == 5, len(betikler)
@@ -144,6 +147,7 @@ def bas_yap(yol, baslik, aciklama, ek="", gorsel_ozel=None, tur="website"):
     ek = ('<meta property="og:site_name" content="SNS Danışmanlık">\n<meta property="og:image" content="%s%s">\n'
           '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
           '<meta property="og:image:alt" content="%s">\n<meta name="twitter:card" content="summary_large_image">\n' % (ALAN, gorsel, esc(galt))) + ek
+    ek = FONT_BAS + ek
     return ('<!doctype html>\n<html lang="tr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
             '<title>%s</title>\n<meta name="description" content="%s">\n%s<link rel="canonical" href="%s%s">\n'
             '<meta property="og:type" content="%s">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
@@ -210,13 +214,13 @@ YZ_CSS = (".yz{max-width:760px;margin:0 auto;padding:64px 24px 0;color:#2B2F33;f
           ".yz h1{margin:14px 0 14px;font:300 clamp(32px,4.4vw,48px)/1.15 Fraunces,serif}"
           ".yz-meta{margin:0 0 34px;padding-bottom:18px;border-bottom:1px solid #E1E4DE;font-size:14px;color:#666C72}"
           ".yz p{margin:0 0 18px;font-size:17.5px;line-height:1.8;color:#2F3437}"
-          ".yz h3{margin:34px 0 12px;font:500 24px/1.3 Fraunces,serif}"
+          ".yz h3,.yz h2.yz-ara{margin:34px 0 12px;font:500 24px/1.3 Fraunces,serif}"
           ".yz ul{margin:0 0 18px;padding-left:22px}.yz li{font-size:17px;line-height:1.7;color:#2F3437;margin:0 0 6px}"
           ".yz blockquote{margin:28px 0;padding:4px 0 4px 22px;border-left:2px solid #1FA86D;font:400 20px/1.6 Fraunces,serif}"
           ".yz-dayanak{margin:34px 0 0;padding:16px 18px;background:#FFF;border:1px solid #E1E4DE;border-radius:10px;font-size:14px;line-height:1.6;color:#4A5056}"
           ".yz-not{margin:14px 0 0;font-size:14px;line-height:1.7;color:#5F656B}"
           ".yz-diger{margin:44px 0 0;border-top:1px solid #2B2F33;padding-top:18px}.yz-diger h2{margin:0 0 6px;font:400 22px/1.3 Fraunces,serif}"
-          ".yz-diger a{display:block;padding:12px 0;border-bottom:1px solid #E1E4DE;color:#2B2F33;text-decoration:none;font:400 18px/1.4 Fraunces,serif}.yz-diger a:hover{color:#1FA86D}"
+          ".yz-diger a{display:block;padding:12px 0;border-bottom:1px solid #E1E4DE;color:#2B2F33;text-decoration:none;font:400 18px/1.4 Fraunces,serif}.yz-diger a:hover{color:#157A4F}"
           ".yz-diger small{display:block;font:600 11.5px/1.3 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#666C72;margin-bottom:3px}"
           "@media(max-width:700px){.yz{padding:40px 16px 0}.yz p{font-size:16.5px}}")
 yz_meta = {}
@@ -246,7 +250,7 @@ for i, slug in enumerate(YAZI_SIRASI):
              + '<p class="yz-not">Bu yazı genel bilgilendirme amaçlıdır; mevzuat değişebileceğinden somut durumlar için güncel mevzuat ayrıca değerlendirilmelidir.</p>'
              + '<nav class="yz-diger" aria-label="Diğer yazılar"><h2>Diğer yazılar</h2>'
              + "".join('<a href="/yazilar/%s/"><small>%s</small>%s</a>' % (d, yz_meta[d][0]["kategori"].split(" · ")[0], yz_meta[d][0]["baslik"]) for d in diger)
-             + '<a href="/yazilar/" style="font:600 13px/1 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1FA86D;border:0">Tüm yazılar →</a></nav></article>\n' + yz_alt)
+             + '<a href="/yazilar/" style="font:600 13px/1 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#157A4F;border:0">Tüm yazılar →</a></nav></article>\n' + yz_alt)
     gorsel = ("/og/yazilar/%s.png" % slug, meta["baslik"]) if os.path.exists("og/yazilar/%s.png" % slug) else None
     sayfa = (bas_yap(yol, meta["baslik"] + " · SNS Danışmanlık", meta["ozet"],
                      '<script type="application/ld+json">%s</script>\n' % json.dumps(ld, ensure_ascii=False), gorsel, "article")
@@ -256,6 +260,45 @@ for i, slug in enumerate(YAZI_SIRASI):
     os.makedirs(os.path.dirname(hedef), exist_ok=True)
     open(hedef, "w", encoding="utf-8").write(sayfa)
     uretilen.append((hedef, yol, len(sayfa))); ek_adresler.append(yol)
+
+# --- Son işlem: menü etiketleri ve kur bandı sunucu tarafında hazır gelsin (sayfa yüklenirken kayma olmasın) ---
+MENU_ETIKET = dict(re.findall(r"'([^']+)':\{t:'([^']+)'", menu_js))
+try:
+    KUR = json.load(open("kurlar.json", encoding="utf-8"))
+except Exception:
+    KUR = {}
+def tr4(x):
+    return ("%.4f" % float(x)).replace(".", ",")
+def kur_bandi(html):
+    K = KUR.get("kurlar") or {}
+    if not K.get("USD"):
+        return html
+    html = re.sub(r'(<span data-kod="([A-Z]{3})">\2 <strong[^>]*>)–(</strong>)',
+                  lambda m: m.group(1) + (tr4(K[m.group(2)]) if m.group(2) in K else "–") + m.group(3), html)
+    P = KUR.get("parite") or {}
+    try:
+        eu = P.get("EUR/USD") or float(K["EUR"]) / float(K["USD"]); gu = P.get("GBP/USD") or float(K["GBP"]) / float(K["USD"])
+        L = [("EUR/USD", eu), ("GBP/USD", gu), ("EUR/GBP", P.get("EUR/GBP") or eu / gu), ("USD/QAR", P.get("USD/QAR") or float(K["USD"]) / float(K["QAR"]))]
+    except Exception:
+        return html
+    par = ('<span class="kur-parite" style="margin-left:auto;display:flex;gap:18px;flex-wrap:nowrap;white-space:nowrap;color:#C9CDD0" title="Çapraz kurlar (TCMB)">'
+           '<span style="color:#3DDC97;font-weight:600;letter-spacing:.04em">Parite</span>'
+           + "".join('<span>%s <strong style="color:#FFFFFF;font-weight:600">%s</strong></span>' % (a, tr4(v)) for a, v in L) + '</span>\n')
+    return re.sub(r'<span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>',
+                  par + '<span style="margin-left: 0; color: #B9BEC2" class="kur-tarih">TCMB · %s</span>' % KUR.get("tarih", ""), html)
+def menu_etiket(html):
+    def nav(m):
+        return re.sub(r'<a href="([^"]+)" style="([^"]*)">([^<]*)</a>',
+                      lambda a: '<a class="mm-on" href="%s" style="%s">%s</a>' % (a.group(1), a.group(2), MENU_ETIKET[a.group(1)]) if a.group(1) in MENU_ETIKET else a.group(0), m.group(0))
+    return re.sub(r'<nav aria-label="Ana menü".*?</nav>', nav, html, flags=re.S)
+for h, y, n in uretilen:
+    t = open(h, encoding="utf-8").read()
+    t2 = menu_etiket(kur_bandi(t))
+    if h.startswith("yazilar/") and h != "yazilar/index.html":
+        a = t2.find('<article class="yz">'); b = t2.find('</article>', a)
+        t2 = t2[:a] + t2[a:b].replace("<h3>", '<h2 class="yz-ara">').replace("</h3>", "</h2>") + t2[b:]
+    if t2 != t:
+        open(h, "w", encoding="utf-8").write(t2)
 
 open("sitemap.xml", "w", encoding="utf-8").write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

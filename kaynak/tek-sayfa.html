@@ -14,12 +14,14 @@
 <body>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Noto+Naskh+Arabic:wght@400;600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Noto+Naskh+Arabic:wght@400;600&amp;display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500&amp;family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Noto+Naskh+Arabic:wght@400;600&amp;display=swap"></noscript>
 <style>
 :root{--bg:#F4F4F2;--fg:#2B2F33;--gold:#1FA86D;--emerald:#2B2F33;--panel:#FFFFFF;--line:#E1E4DE;color-scheme:light}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg)}
-a{color:#2B2F33;text-decoration-color:#1FA86D;text-underline-offset:3px}a:hover{color:#1FA86D}
+a{color:#2B2F33;text-decoration-color:#1FA86D;text-underline-offset:3px}a:hover{color: #157A4F}
 a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .sayfa[hidden]{display:none!important}
 .menu-btn{display:none;align-items:center;gap:10px;background:none;border:1px solid var(--gold);color:var(--gold);font:600 13px/1 Manrope,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:12px 16px;min-height:44px;cursor:pointer}
@@ -41,9 +43,10 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 /* acilir menu */
 header{position:relative;z-index:26}
 .mm-item{display:flex;align-items:center}
+header nav[aria-label="Ana menü"] > a.mm-on{padding-right:16px}
 .mm-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;margin:0;color:#2F3437;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
 .mm-btn svg{width:10px;height:10px;transition:transform .2s}
-.mm-item.acik .mm-btn,.mm-btn:hover{color:#1FA86D}
+.mm-item.acik .mm-btn,.mm-btn:hover{color: #157A4F}
 .mm-item.acik .mm-btn svg{transform:rotate(180deg)}
 .mm-panel{display:none;position:absolute;left:0;right:0;top:100%;z-index:30;background:#FFFFFF;box-shadow:0 0 0 100vmax #FFFFFF;clip-path:inset(0 -100vmax -40px);border-top:3px solid #3DDC97;text-transform:none;letter-spacing:normal}
 .mm-item.acik .mm-panel{display:grid;animation:mmAc .22s ease-out}
@@ -52,13 +55,13 @@ header{position:relative;z-index:26}
 .mm-panel{grid-template-columns:minmax(220px,300px) 1fr;gap:48px;padding:36px 24px 44px}
 .mm-giris h3{margin:0 0 10px;font:400 28px/1.15 Fraunces,serif;color:#2B2F33}
 .mm-giris p{margin:0 0 18px;font:400 15px/1.55 Manrope,sans-serif;color:#4A5056}
-.mm-giris a{font:600 14px/1 Manrope,sans-serif;color:#1FA86D;text-decoration:none}
+.mm-giris a{font:600 14px/1 Manrope,sans-serif;color: #157A4F;text-decoration:none}
 .mm-giris a:hover{text-decoration:underline}
 .mm-kolonlar{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:28px 36px;align-content:start}
 .mm-grup h4{margin:0 0 10px;font:600 12px/1.3 Manrope,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#666C72}
 .mm-grup ul{list-style:none;margin:0;padding:0}
 .mm-grup li a{display:block;padding:7px 0;font:500 15px/1.4 Manrope,sans-serif;color:#2B2F33;text-decoration:none;border-bottom:1px solid #EEF0EC}
-.mm-grup li a:hover{color:#1FA86D}
+.mm-grup li a:hover{color: #157A4F}
 .mm-grup li a::after{content:" →";color:#3DDC97;opacity:0;transition:opacity .15s}
 .mm-grup li a:hover::after{opacity:1}
 .mm-perde{display:none;position:fixed;inset:0;z-index:25;background:rgba(43,47,51,.18)}
@@ -91,15 +94,15 @@ html,body{overflow-x:clip}
 .gd-ara input{font:400 15px/1.2 Manrope,sans-serif;border:1px solid #D7DBD4;border-radius:999px;padding:11px 16px;min-width:240px;background:#FFFFFF;color:#2B2F33}
 .gd-ara input:focus{outline:2px solid #1FA86D;outline-offset:1px}
 .gd-gizli{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.gd-liste{border-top:1px solid #2B2F33}
+.gd-liste{border-top:1px solid #2B2F33;min-height:100vh}
 .gd-oge{display:grid;grid-template-columns:200px 1fr 24px;gap:8px 28px;align-items:start;padding:20px 4px;border-bottom:1px solid #E1E4DE;text-decoration:none;color:#2B2F33}
 .gd-oge:hover{background:#FFFFFF}
-.gd-oge:hover .gd-baslik{color:#1FA86D}
+.gd-oge:hover .gd-baslik{color: #157A4F}
 .gd-kaynak{display:flex;flex-direction:column;gap:6px;font:500 13px/1.3 Manrope,sans-serif;color:#666C72}
 .gd-rozet{align-self:flex-start;font:600 11px/1 Manrope,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:6px 8px;border-radius:4px;background:#E9F8F0;color:#17734B}
 .gd-rozet.turmob{background:#2B2F33;color:#FFFFFF}
 .gd-rozet.ismmmo{background:#EEF0EC;color:#2B2F33}
-.gd-konu{font:600 12px/1.3 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1FA86D;margin-bottom:6px}
+.gd-konu{font:600 12px/1.3 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color: #157A4F;margin-bottom:6px}
 .gd-baslik{font:400 20px/1.35 Fraunces,serif}
 .gd-ok{color:#3DDC97;font-size:18px;padding-top:2px}
 .gd-bos{padding:28px 4px;color:#666C72}
@@ -107,7 +110,7 @@ html,body{overflow-x:clip}
 .dy-oge{margin:0;border-top:1px solid #E1E4DE;padding-top:12px}
 .dy-oge small{display:block;font:500 12px/1.3 Manrope,sans-serif;color:#666C72;margin-bottom:4px}
 .dy-oge a{font-size:15px;line-height:1.45;text-decoration:none;color:#2B2F33}
-.dy-oge a:hover{color:#1FA86D}
+.dy-oge a:hover{color: #157A4F}
 @media (max-width:700px){.gd-oge{grid-template-columns:1fr 20px}.gd-kaynak{grid-column:1/-1;flex-direction:row;align-items:center;gap:10px}.gd-ara,.gd-ara input{width:100%;min-width:0;box-sizing:border-box}.gd-baslik{font-size:18px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -175,9 +178,9 @@ html,body{overflow-x:clip}
 <section style="border: 1px solid #E1E4DE; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 22px">Vergi takvimi</h3>
 <p style="margin: 0; font-size: 14px; color: #666C72">Her ay tekrarlanan son beyan ve ödeme günleri</p>
-<p style="margin: 0; border-top: 1px solid #E1E4DE; padding-top: 12px; display: flex; gap: 16px; align-items: center; font-size: 16px"><span style="font-family: Fraunces, serif; font-size: 28px; color: #1FA86D; min-width: 48px">26</span>Muhtasar ve prim hizmet beyannamesi · ödeme</p>
-<p style="margin: 0; border-top: 1px solid #E1E4DE; padding-top: 12px; display: flex; gap: 16px; align-items: center; font-size: 16px"><span style="font-family: Fraunces, serif; font-size: 28px; color: #1FA86D; min-width: 48px">28</span>KDV beyannamesi · ödeme</p>
-<p style="margin: 0; border-top: 1px solid #E1E4DE; padding-top: 12px; display: flex; gap: 16px; align-items: center; font-size: 16px"><span style="font-family: Fraunces, serif; font-size: 28px; color: #1FA86D; min-width: 48px">17</span>Geçici vergi (Mayıs, Ağustos, Kasım)</p>
+<p style="margin: 0; border-top: 1px solid #E1E4DE; padding-top: 12px; display: flex; gap: 16px; align-items: center; font-size: 16px"><span style="font-family: Fraunces, serif; font-size: 28px; color: #157A4F; min-width: 48px">26</span>Muhtasar ve prim hizmet beyannamesi · ödeme</p>
+<p style="margin: 0; border-top: 1px solid #E1E4DE; padding-top: 12px; display: flex; gap: 16px; align-items: center; font-size: 16px"><span style="font-family: Fraunces, serif; font-size: 28px; color: #157A4F; min-width: 48px">28</span>KDV beyannamesi · ödeme</p>
+<p style="margin: 0; border-top: 1px solid #E1E4DE; padding-top: 12px; display: flex; gap: 16px; align-items: center; font-size: 16px"><span style="font-family: Fraunces, serif; font-size: 28px; color: #157A4F; min-width: 48px">17</span>Geçici vergi (Mayıs, Ağustos, Kasım)</p>
 <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #666C72">Son gün resmî tatile denk gelirse süre izleyen ilk iş gününe uzar. Kesin tarihler için GİB vergi takvimine bakınız.</p>
 </section>
 <section style="border: 1px solid #E1E4DE; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 10px">
@@ -234,7 +237,7 @@ html,body{overflow-x:clip}
 <div style="flex: 1 1 380px; min-width: 0">
 <p style="margin: 0; font-size: 13px; letter-spacing: 0.26em; text-transform: uppercase; color: #2B2F33; border-left: 3px solid #1FA86D; padding-left: 10px">Uluslararası</p>
 <h2 style="margin: 14px 0 0; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.12">Uluslararası ticaret ve yabancı sermayeli şirketler</h2>
-<p dir="rtl" lang="ar" style="margin: 22px 0 0; font-size: 24px; line-height: 1.6; color: #1FA86D">مكتب محاسبة ومستشار مالي معتمد – إسطنبول</p>
+<p dir="rtl" lang="ar" style="margin: 22px 0 0; font-size: 24px; line-height: 1.6; color: #157A4F">مكتب محاسبة ومستشار مالي معتمد – إسطنبول</p>
 <p style="margin: 18px 0 0; font-size: 17px; line-height: 1.7; color: #4A5056">Yurt dışında yaşayan Türkler ve Katar, Libya, Irak başta olmak üzere Orta Doğu firmaları için Türkçe ve İngilizce hizmet.</p>
 </div>
 <div style="flex: 1 1 480px; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE; align-self: start">
@@ -309,7 +312,7 @@ html,body{overflow-x:clip}
 <a href="https://maps.app.goo.gl/cFQW46cwXkV8Dpcw6" style="color: #3DDC97; text-decoration: none; font-size: 15px">Yol tarifi al →</a>
 </div>
 </div>
-<a aria-label="SNS Danışmanlık ofisini Google Haritalar'da aç" href="https://maps.app.goo.gl/cFQW46cwXkV8Dpcw6" style="display: block; position: relative; height: 320px; background-color: #2E3337; background-image: linear-gradient(#1C2420 1px, transparent 1px), linear-gradient(90deg, #1C2420 1px, transparent 1px); background-size: 48px 48px; text-decoration: none; overflow: hidden">
+<a href="https://maps.app.goo.gl/cFQW46cwXkV8Dpcw6" style="display: block; position: relative; height: 320px; background-color: #2E3337; background-image: linear-gradient(#1C2420 1px, transparent 1px), linear-gradient(90deg, #1C2420 1px, transparent 1px); background-size: 48px 48px; text-decoration: none; overflow: hidden">
 <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; gap: 8px">
 <span style="background: #2B2F33; color: #F4F4F2; border: 1px solid #3DDC97; padding: 10px 16px; font-size: 14px; letter-spacing: 0.08em; white-space: nowrap">SNS Danışmanlık</span>
 <svg aria-hidden="true" height="30" viewbox="0 0 22 30" width="22"><path d="M11 29C11 29 21 17 21 11A10 10 0 0 0 1 11C1 17 11 29 11 29Z" fill="#3DDC97"></path><circle cx="11" cy="11" fill="#24282B" r="4"></circle></svg>
@@ -1177,17 +1180,17 @@ EK: ……………</pre>
 <h2 id="yat-kapsam" style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
 <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE">
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">01</span>
+<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #157A4F">01</span>
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 24px">Satın alma süreci</h3>
 <p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3A3F44">Yurt içi veya yurt dışından alım<br/>Şirket mi, şahıs mı? Mülkiyet yapısı<br/>İthalat ve vergi yükünün önceden hesabı<br/>Bayrak şahadetnamesi ve tescil</p>
 </li>
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">02</span>
+<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #157A4F">02</span>
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 24px">İşletme fizibilitesi</h3>
 <p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3A3F44">Doluluk senaryoları ve sezon fiyatı<br/>Mürettebat, marina, bakım, yakıt<br/>Finansman ve geri dönüş süresi<br/>Kış dönemi nakit ihtiyacı</p>
 </li>
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">03</span>
+<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #157A4F">03</span>
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 24px">Charter işletmesi</h3>
 <p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3A3F44">Yabancı müşteriye döviz faturalama<br/>Acente ve broker komisyonları<br/>Mürettebat bordrosu ve SGK<br/>Sezonluk muhasebe ve raporlama</p>
 </li>
@@ -1323,17 +1326,17 @@ EK: ……………</pre>
 <h2 id="ulus-kapsam" style="margin: 14px 0 44px; font-family: Fraunces, serif; font-weight: 300; font-size: clamp(34px, 3.6vw, 50px); line-height: 1.1">Hizmet kapsamı</h2>
 <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1px; background: #E1E4DE; border: 1px solid #E1E4DE">
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">01</span>
+<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #157A4F">01</span>
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 24px">İthalat planlaması</h3>
 <p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3A3F44">Tedarikçi ve fatura yapısı<br/>Teslim şekli (Incoterms) seçimi<br/>Ödeme ve akreditif planı<br/>Belge listesinin baştan kurulması</p>
 </li>
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">02</span>
+<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #157A4F">02</span>
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 24px">Navlun planlaması</h3>
 <p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3A3F44">Deniz, kara, hava karşılaştırması<br/>Sigorta ve liman masrafları<br/>Konşimento, AWB, menşe belgesi<br/>Teslim süresi ve nakit etkisi</p>
 </li>
 <li style="background: #FFFFFF; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px">
-<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #1FA86D">03</span>
+<span style="font-family: Fraunces, serif; font-size: 44px; line-height: 1; color: #157A4F">03</span>
 <h3 style="margin: 0; font-family: Fraunces, serif; font-weight: 500; font-size: 24px">Kârlılık analizi</h3>
 <p style="margin: 0; font-size: 15px; line-height: 1.85; color: #3A3F44">Kapıya teslim toplam maliyet<br/>Kur riski ve fiyat senaryoları<br/>Ürün ve sevkiyat bazında marj<br/>Satış fiyatı alt sınırı</p>
 </li>
@@ -1555,9 +1558,9 @@ function hDv(){var t=sayi(_v('d-t'));if(!(t>0))return _hata('d-c','Geçerli bir 
    var K=k.kurlar,P=k.parite||{},f=function(x){return isFinite(x)&&x>0?x.toLocaleString('tr-TR',{minimumFractionDigits:4,maximumFractionDigits:4}):null};
    var eu=P['EUR/USD']||K.EUR/K.USD,gu=P['GBP/USD']||K.GBP/K.USD,uq=P['USD/QAR']||K.USD/K.QAR;
    var L=[['EUR/USD',eu],['GBP/USD',gu],['EUR/GBP',P['EUR/GBP']||eu/gu],['USD/QAR',uq]].filter(function(x){return f(+x[1])});
-   if(L.length&&t&&!b.querySelector('.kur-parite')){var sp=document.createElement('span');sp.className='kur-parite';sp.style.cssText='margin-left:auto;display:flex;gap:18px;flex-wrap:nowrap;white-space:nowrap;color:#C9CDD0';sp.title='Çapraz kurlar (TCMB)';
-    sp.innerHTML='<span style="color:#3DDC97;font-weight:600;letter-spacing:.04em">Parite</span>'+L.map(function(x){return '<span>'+x[0]+' <strong style="color:#FFFFFF;font-weight:600">'+f(+x[1])+'</strong></span>'}).join('');
-    t.style.marginLeft='0';b.insertBefore(sp,t)}
+   var sp=b.querySelector('.kur-parite');if(L.length&&t&&!sp){sp=document.createElement('span');sp.className='kur-parite';sp.style.cssText='margin-left:auto;display:flex;gap:18px;flex-wrap:nowrap;white-space:nowrap;color:#C9CDD0';sp.title='Çapraz kurlar (TCMB)';b.insertBefore(sp,t)}
+   if(L.length&&sp){sp.innerHTML='<span style="color:#3DDC97;font-weight:600;letter-spacing:.04em">Parite</span>'+L.map(function(x){return '<span>'+x[0]+' <strong style="color:#FFFFFF;font-weight:600">'+f(+x[1])+'</strong></span>'}).join('');
+    t.style.marginLeft='0'}
   });
  }).catch(gizle);
 })();
