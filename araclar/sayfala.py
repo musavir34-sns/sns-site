@@ -261,6 +261,23 @@ for i, slug in enumerate(YAZI_SIRASI):
     open(hedef, "w", encoding="utf-8").write(sayfa)
     uretilen.append((hedef, yol, len(sayfa))); ek_adresler.append(yol)
 
+# --- Özel sayfalar (kaynak/sayfalar/*.html): yazı iskeletiyle, "Diğer yazılar" olmadan ---
+for dosya in sorted(glob.glob("kaynak/sayfalar/*.html")):
+    metin = open(dosya, encoding="utf-8").read()
+    m = re.match(r"<!--META (\{.*?\}) -->\n", metin, re.S)
+    meta = json.loads(m.group(1)); icerik = metin[m.end():]
+    kaynak = re.search(r"<!--KAYNAK (.*?) -->", icerik, re.S)
+    icerik = re.sub(r"<!--KAYNAK .*? -->", "", icerik, flags=re.S).strip()
+    govde = (re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="ozel-%s">' % os.path.basename(dosya)[:-5], yz_ust, count=1)
+             + '\n<article class="yz"><p class="yz-ust">%s</p><h1>%s</h1><p class="yz-meta">Son güncelleme: %s</p>\n%s\n' % (meta["kategori"], meta["baslik"], meta["guncelleme"], icerik)
+             + ('<p class="yz-dayanak"><b>Dayanak:</b> %s</p>' % kaynak.group(1).strip() if kaynak else "") + '</article>\n' + yz_alt)
+    sayfa = (bas_yap(meta["yol"], meta["baslik"] + " · SNS Danışmanlık", meta["aciklama"]) + govde_on + "<style>%s</style>\n" % YZ_CSS + govde + "\n"
+             + "".join("<script>%s</script>\n" % x for x in [yeni_yonlendirme, canli_js, menu_js]) + "</body>\n</html>\n")
+    hedef = meta["yol"].strip("/") + "/index.html"
+    os.makedirs(os.path.dirname(hedef), exist_ok=True)
+    open(hedef, "w", encoding="utf-8").write(sayfa)
+    uretilen.append((hedef, meta["yol"], len(sayfa))); ek_adresler.append(meta["yol"])
+
 # --- Son işlem: menü etiketleri ve kur bandı sunucu tarafında hazır gelsin (sayfa yüklenirken kayma olmasın) ---
 MENU_ETIKET = dict(re.findall(r"'([^']+)':\{t:'([^']+)'", menu_js))
 try:
@@ -294,6 +311,14 @@ def menu_etiket(html):
 for h, y, n in uretilen:
     t = open(h, encoding="utf-8").read()
     t2 = menu_etiket(kur_bandi(t))
+    # erişilebilirlik: içeriğe geç bağlantısı, kur bandı etiketi, hesap sonuçlarının ekran okuyucuya bildirilmesi
+    t2 = t2.replace("<body>\n", '<body>\n<a class="atla" href="#icerik">İçeriğe geç</a>\n', 1)
+    k = t2.find("</header>")
+    if k > 0 and 'id="icerik"' not in t2:
+        t2 = t2[:k + 9] + '\n<span id="icerik" tabindex="-1"></span>' + t2[k + 9:]
+    t2 = t2.replace('<div class="kurdis" style=', '<div class="kurdis" role="region" aria-label="TCMB döviz kurları ve pariteler" style=')
+    if h.startswith("hesaplama-merkezi/"):
+        t2 = re.sub(r'class="hm-izgara"(?![^>]*aria-live)', 'class="hm-izgara" aria-live="polite"', t2, count=1)
     if h.startswith("yazilar/") and h != "yazilar/index.html":
         a = t2.find('<article class="yz">'); b = t2.find('</article>', a)
         t2 = t2[:a] + t2[a:b].replace("<h3>", '<h2 class="yz-ara">').replace("</h3>", "</h2>") + t2[b:]

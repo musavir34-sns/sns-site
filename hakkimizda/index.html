@@ -27,12 +27,17 @@
 <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
+<a class="atla" href="#icerik">İçeriğe geç</a>
 <style>
 :root{--bg:#F4F4F2;--fg:#2B2F33;--gold:#1FA86D;--emerald:#2B2F33;--panel:#FFFFFF;--line:#E1E4DE;color-scheme:light}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg)}
 a{color:#2B2F33;text-decoration-color:#1FA86D;text-underline-offset:3px}a:hover{color: #157A4F}
-a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #157A4F;outline-offset:3px;border-radius:2px}
+.atla{position:absolute;left:12px;top:-80px;z-index:200;background:#2B2F33;color:#FFFFFF!important;padding:14px 20px;font:600 16px/1 Manrope,sans-serif;text-decoration:none;border-radius:0 0 10px 10px;box-shadow:0 0 0 3px #3DDC97}
+.atla:focus{top:0;outline:none}
+#icerik{display:block;height:0;outline:none}
+.sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .sayfa[hidden]{display:none!important}
 .menu-btn{display:none;align-items:center;gap:10px;background:none;border:1px solid var(--gold);color:var(--gold);font:600 13px/1 Manrope,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:12px 16px;min-height:44px;cursor:pointer}
 .menu-btn svg{width:18px;height:18px}
@@ -126,7 +131,7 @@ html,body{overflow-x:clip}
 </style>
 <div class="sayfa" id="hakkimizda-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurdis" role="region" aria-label="TCMB döviz kurları ve pariteler" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
 <div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
 <span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
 <span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">50,1926</strong></span>
@@ -154,6 +159,7 @@ html,body{overflow-x:clip}
 <a href="/iletisim/" style="border: 1px solid #1FA86D; color: #2B2F33; padding: 12px 22px; text-decoration: none">İletişim</a>
 </nav>
 </header>
+<span id="icerik" tabindex="-1"></span>
 <section style="max-width: 1248px; margin: 0 auto; padding: 0 24px">
 <div style="border-top: 1px solid #E1E4DE; padding-top: 72px; display: flex; flex-wrap: wrap; gap: 48px 64px; align-items: center">
 <div style="position: relative; width: 240px; height: 240px; flex: none; margin: 10px">
@@ -209,7 +215,7 @@ html,body{overflow-x:clip}
 </section>
 <footer style="max-width: 1248px; margin: 0 auto; padding: 40px 24px 48px; display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; font-size: 14px; color: #666C72">
 <span>© 2026 SNS Danışmanlık</span>
-<span style="display: flex; flex-wrap: wrap; gap: 24px"><a href="/kvkk-ve-cerezler/#kvkk" style="color: #666C72">KVKK Aydınlatma Metni</a><a href="/kvkk-ve-cerezler/#cerez" style="color: #666C72">Çerez Politikası</a><a href="https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/" style="color: #666C72">LinkedIn</a></span>
+<span style="display: flex; flex-wrap: wrap; gap: 24px"><a href="/kvkk-ve-cerezler/#kvkk" style="color: #666C72">KVKK Aydınlatma Metni</a><a href="/kvkk-ve-cerezler/#cerez" style="color: #666C72">Çerez Politikası</a><a href="/erisilebilirlik/" style="color: #666C72">Erişilebilirlik</a><a href="https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/" style="color: #666C72">LinkedIn</a></span>
 </footer>
 </div>
 </div>
@@ -234,7 +240,7 @@ html,body{overflow-x:clip}
  function mesai(){document.querySelectorAll('[data-mesai]').forEach(function(kap){var L;try{L=JSON.parse(kap.getAttribute('data-mesai'))}catch(x){return}
   var d=new Date(),ist=parca('Europe/Istanbul',d),acik=0,h='';
   L.forEach(function(c){var p;try{p=parca(c[2],d)}catch(x){return}var fark=Math.round((p.utc-ist.utc)/36e5),dk=(+p.hour)*60+(+p.minute),hs=c[3].indexOf(p.gun)>=0,ms=!hs&&dk>=540&&dk<1080;if(ms)acik++;
-   h+='<div class="ms-satir"><div><b>'+c[0]+'</b><small>'+c[1]+' · '+(fark===0?'aynı saat':(fark>0?'+':'−')+Math.abs(fark)+' sa')+'</small></div><div class="ms-sag"><span class="ms-durum'+(ms?' acik':'')+'">'+(hs?'Hafta sonu':ms?'Mesaide':'Mesai dışı')+'</span><span class="ms-saat">'+p.hour+'<i>:</i>'+p.minute+'</span></div></div>'});
+   h+='<div class="ms-satir"><div><b>'+c[0]+'</b><small>'+c[1]+' · '+(fark===0?'aynı saat':(fark>0?'+':'−')+Math.abs(fark)+' sa')+'</small></div><div class="ms-sag"><span class="ms-durum'+(ms?' acik':'')+'">'+(hs?'Hafta sonu':ms?'Mesaide':'Mesai dışı')+'</span><span class="ms-saat"><span class="sr">'+p.hour+':'+p.minute+'</span><span aria-hidden="true">'+p.hour+'<i>:</i>'+p.minute+'</span></span></div></div>'});
   kap.innerHTML=h;var oz=kap.parentNode.querySelector('.ms-ozet');if(oz)oz.textContent='Şu an '+L.length+' şehirden '+acik+' tanesinde mesai saati';})}
  mesai();setInterval(mesai,20000);
  function kay(){document.body.classList.toggle('kaydi',window.scrollY>140)}window.addEventListener('scroll',kay,{passive:true});kay();
