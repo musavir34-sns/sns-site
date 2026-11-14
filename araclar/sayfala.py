@@ -98,9 +98,10 @@ menu_js = re.sub(r"'#([A-Za-z0-9_-]+)'", lambda m: "'%s'" % (adres(m.group(1)) o
 a, b = bolumler["yazilar-sayfa"]
 ol = re.search(r"<ol\b.*?</ol>", s[a:b], re.S).group(0)
 yazilar = []
-for href, ic in re.findall(r'<a href="#([^"]+)"[^>]*>(.*?)</a>', ol, re.S):
+for href, ic in re.findall(r'<a href="([^"]+)"[^>]*>(.*?)</a>', ol, re.S):
     sp = [re.sub(r"<[^>]+>", "", x).strip() for x in re.findall(r"<span[^>]*>(.*?)</span>", ic, re.S)]
-    yazilar.append({"tur": "yazi", "konu": sp[0] if sp else "", "baslik": sp[1] if len(sp) > 1 else "", "url": adres(href)})
+    yazilar.append({"tur": "yazi", "konu": sp[0] if sp else "", "baslik": sp[1] if len(sp) > 1 else "",
+                    "url": adres(href[1:]) if href.startswith("#") else href})
 eski = re.search(r"var ol=document\.querySelector\('#yazilar-sayfa ol'\);\n if\(ol\).*?\n", gundem_js).group(0)
 gundem_js = gundem_js.replace(eski, "yazilar=" + json.dumps(yazilar, ensure_ascii=False) + ";\n")
 gundem_js = gundem_js.replace("fetch('duyurular.json'", "fetch('/duyurular.json'")
@@ -116,6 +117,13 @@ eski_harita = {pid: v[0] for pid, v in SAYFALAR.items() if pid != "ana"}
 for k, pid in kimlik_sayfa.items():
     if pid != "ana" and k not in eski_harita:
         eski_harita[k] = SAYFALAR[pid][0] + "#" + k
+ESKI_YAZI = {"madde-18": "madde-18-mi-sirket-mi-2026", "prim-gunu": "emeklilik-prim-gunu-mu-kazanc-mi",
+             "sinema-salon": "sinema-salon-isletmeciligi", "e-ticaret-gumruk": "e-ticaret-yeni-gumruk-kurallari",
+             "kamera-arkasi": "kamera-arkasindaki-gizli-kahraman", "kooperatif-denetim": "kooperatif-dis-denetci-zorunlulugu",
+             "dizi-ihracat": "turk-dizi-sektorunun-finansal-analizi"}
+for k, v in ESKI_YAZI.items():
+    eski_harita[k] = "/yazilar/%s/" % v
+yazi_yonlendir_js = "(function(){var m=%s;var h=location.hash.slice(1);if(h&&m[h])location.replace('/yazilar/'+m[h]+'/');})();" % json.dumps(ESKI_YAZI, separators=(",", ":"))
 eski_js = "(function(){var m=%s;var h=location.hash.slice(1);if(h&&m[h])location.replace(m[h]);})();" % json.dumps(eski_harita, ensure_ascii=False, separators=(",", ":"))
 
 ikonlar = ('<link rel="icon" href="/favicon.svg" type="image/svg+xml">\n<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">\n'
@@ -126,8 +134,10 @@ def esc(t):
     return t.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
 
 
-def bas_yap(yol, baslik, aciklama, ek=""):
-    if yol.startswith("/hesaplama-merkezi/"):
+def bas_yap(yol, baslik, aciklama, ek="", gorsel_ozel=None, tur="website"):
+    if gorsel_ozel:
+        gorsel, galt = gorsel_ozel
+    elif yol.startswith("/hesaplama-merkezi/"):
         gorsel, galt = "/og-hesaplama.png", "SNS İş Dünyası Hesaplama Merkezi"
     else:
         gorsel, galt = "/og-sns.png", "SNS Danışmanlık · Serdar Saraç, SMMM"
@@ -136,9 +146,9 @@ def bas_yap(yol, baslik, aciklama, ek=""):
           '<meta property="og:image:alt" content="%s">\n<meta name="twitter:card" content="summary_large_image">\n' % (ALAN, gorsel, esc(galt))) + ek
     return ('<!doctype html>\n<html lang="tr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
             '<title>%s</title>\n<meta name="description" content="%s">\n%s<link rel="canonical" href="%s%s">\n'
-            '<meta property="og:type" content="website">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
+            '<meta property="og:type" content="%s">\n<meta property="og:title" content="%s">\n<meta property="og:description" content="%s">\n'
             '<meta property="og:url" content="%s%s">\n<meta property="og:locale" content="tr_TR">\n%s</head>\n<body>\n'
-            % (esc(baslik), esc(aciklama), ikonlar, ALAN, yol, esc(baslik), esc(aciklama), ALAN, yol, ek))
+            % (esc(baslik), esc(aciklama), ikonlar, ALAN, yol, tur, esc(baslik), esc(aciklama), ALAN, yol, ek))
 
 
 uretilen = []
@@ -148,7 +158,7 @@ for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     govde = re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="%s">' % pid, govde, count=1)
     govde = baglanti_cevir(govde, pid)
     govde = govde.replace('href="#ana"', 'href="/"')
-    bas = bas_yap(yol, baslik, aciklama, ("<script>%s</script>\n" % eski_js) if pid == "ana" else "")
+    bas = bas_yap(yol, baslik, aciklama, ("<script>%s</script>\n" % eski_js) if pid == "ana" else ("<script>%s</script>\n" % yazi_yonlendir_js) if pid == "yazilar-sayfa" else "")
     js = [yeni_yonlendirme, canli_js, menu_js, gundem_js]
     if pid == "pratik-sayfa":
         js.insert(0, hesap_js)
@@ -187,6 +197,65 @@ for dosya in sorted(glob.glob("kaynak/hesap/*.html")):
     os.makedirs(os.path.dirname(hedef), exist_ok=True)
     open(hedef, "w", encoding="utf-8").write(sayfa)
     uretilen.append((hedef, meta["yol"], len(sayfa))); ek_adresler.append(meta["yol"])
+
+# --- Yazı sayfaları (kaynak/yazilar/*.html) ---
+YAZI_SIRASI = re.findall(r'href="/yazilar/([a-z0-9-]+)/"', re.search(r"<ol\b.*?</ol>", s[bolumler["yazilar-sayfa"][0]:bolumler["yazilar-sayfa"][1]], re.S).group(0))
+a, b = bolumler["yazilar-sayfa"]
+yz_iskelet = baglanti_cevir(s[a:b], None).replace('href="#ana"', 'href="/"')
+yz_ust = yz_iskelet[:yz_iskelet.find("</header>") + len("</header>")]
+k = yz_iskelet.find("Büro sahibi"); yz_alt = yz_iskelet[yz_iskelet.rfind("<section", 0, k):]
+YZ_CSS = (".yz{max-width:760px;margin:0 auto;padding:64px 24px 0;color:#2B2F33;font-family:Manrope,sans-serif}"
+          ".yz-yol{margin:0 0 22px;font-size:13px;color:#666C72}.yz-yol a{color:#666C72}"
+          ".yz-ust{margin:0;font-size:13px;letter-spacing:.26em;text-transform:uppercase;border-left:3px solid #1FA86D;padding-left:10px}"
+          ".yz h1{margin:14px 0 14px;font:300 clamp(32px,4.4vw,48px)/1.15 Fraunces,serif}"
+          ".yz-meta{margin:0 0 34px;padding-bottom:18px;border-bottom:1px solid #E1E4DE;font-size:14px;color:#666C72}"
+          ".yz p{margin:0 0 18px;font-size:17.5px;line-height:1.8;color:#2F3437}"
+          ".yz h3{margin:34px 0 12px;font:500 24px/1.3 Fraunces,serif}"
+          ".yz ul{margin:0 0 18px;padding-left:22px}.yz li{font-size:17px;line-height:1.7;color:#2F3437;margin:0 0 6px}"
+          ".yz blockquote{margin:28px 0;padding:4px 0 4px 22px;border-left:2px solid #1FA86D;font:400 20px/1.6 Fraunces,serif}"
+          ".yz-dayanak{margin:34px 0 0;padding:16px 18px;background:#FFF;border:1px solid #E1E4DE;border-radius:10px;font-size:14px;line-height:1.6;color:#4A5056}"
+          ".yz-not{margin:14px 0 0;font-size:14px;line-height:1.7;color:#5F656B}"
+          ".yz-diger{margin:44px 0 0;border-top:1px solid #2B2F33;padding-top:18px}.yz-diger h2{margin:0 0 6px;font:400 22px/1.3 Fraunces,serif}"
+          ".yz-diger a{display:block;padding:12px 0;border-bottom:1px solid #E1E4DE;color:#2B2F33;text-decoration:none;font:400 18px/1.4 Fraunces,serif}.yz-diger a:hover{color:#1FA86D}"
+          ".yz-diger small{display:block;font:600 11.5px/1.3 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#666C72;margin-bottom:3px}"
+          "@media(max-width:700px){.yz{padding:40px 16px 0}.yz p{font-size:16.5px}}")
+yz_meta = {}
+for dosya in glob.glob("kaynak/yazilar/*.html"):
+    metin = open(dosya, encoding="utf-8").read()
+    m = re.match(r"<!--META (\{.*?\}) -->\n", metin, re.S)
+    yz_meta[json.loads(m.group(1))["slug"]] = (json.loads(m.group(1)), metin[m.end():])
+assert set(YAZI_SIRASI) == set(yz_meta), set(YAZI_SIRASI) ^ set(yz_meta)
+for i, slug in enumerate(YAZI_SIRASI):
+    meta, icerik = yz_meta[slug]
+    kaynak = re.search(r"<!--KAYNAK (.*?) -->", icerik, re.S)
+    icerik = re.sub(r"<!--KAYNAK .*? -->", "", icerik, flags=re.S).strip()
+    if "<ins>" in icerik or "<del>" in icerik:
+        raise SystemExit("İşaretli taslak yayımlanamaz: " + slug)
+    yol = "/yazilar/%s/" % slug
+    tarih_iso = "-".join(reversed(meta["guncelleme"].split(".")))
+    ld = {"@context": "https://schema.org", "@type": "Article", "headline": meta["baslik"], "description": meta["ozet"],
+          "dateModified": tarih_iso, "inLanguage": "tr", "mainEntityOfPage": ALAN + yol, "image": ALAN + "/og/yazilar/%s.png" % slug,
+          "author": {"@type": "Person", "name": "Serdar Saraç", "jobTitle": "Serbest Muhasebeci Mali Müşavir"},
+          "publisher": {"@type": "Organization", "name": "SNS Danışmanlık", "url": ALAN}}
+    diger = [YAZI_SIRASI[(i + j) % len(YAZI_SIRASI)] for j in (1, 2, 3)]
+    govde = (re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="yazi-%s">' % slug, yz_ust, count=1)
+             + '\n<article class="yz"><p class="yz-yol"><a href="/yazilar/">Yazılar</a> › %s</p><p class="yz-ust">%s</p><h1>%s</h1>'
+               '<p class="yz-meta">Serdar Saraç, Serbest Muhasebeci Mali Müşavir · Son güncelleme: %s</p>\n%s\n'
+             % (meta["kategori"], meta["kategori"].split(" · ")[0], meta["baslik"], meta["guncelleme"], icerik)
+             + ('<p class="yz-dayanak"><b>Dayanak:</b> %s</p>' % kaynak.group(1).strip() if kaynak else "")
+             + '<p class="yz-not">Bu yazı genel bilgilendirme amaçlıdır; mevzuat değişebileceğinden somut durumlar için güncel mevzuat ayrıca değerlendirilmelidir.</p>'
+             + '<nav class="yz-diger" aria-label="Diğer yazılar"><h2>Diğer yazılar</h2>'
+             + "".join('<a href="/yazilar/%s/"><small>%s</small>%s</a>' % (d, yz_meta[d][0]["kategori"].split(" · ")[0], yz_meta[d][0]["baslik"]) for d in diger)
+             + '<a href="/yazilar/" style="font:600 13px/1 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1FA86D;border:0">Tüm yazılar →</a></nav></article>\n' + yz_alt)
+    gorsel = ("/og/yazilar/%s.png" % slug, meta["baslik"]) if os.path.exists("og/yazilar/%s.png" % slug) else None
+    sayfa = (bas_yap(yol, meta["baslik"] + " · SNS Danışmanlık", meta["ozet"],
+                     '<script type="application/ld+json">%s</script>\n' % json.dumps(ld, ensure_ascii=False), gorsel, "article")
+             + govde_on + "<style>%s</style>\n" % YZ_CSS + govde + "\n"
+             + "".join("<script>%s</script>\n" % x for x in [yeni_yonlendirme, canli_js, menu_js]) + "</body>\n</html>\n")
+    hedef = yol.strip("/") + "/index.html"
+    os.makedirs(os.path.dirname(hedef), exist_ok=True)
+    open(hedef, "w", encoding="utf-8").write(sayfa)
+    uretilen.append((hedef, yol, len(sayfa))); ek_adresler.append(yol)
 
 open("sitemap.xml", "w", encoding="utf-8").write(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
