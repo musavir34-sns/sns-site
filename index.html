@@ -30,19 +30,21 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 .wa{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;width:56px;height:56px;border-radius:50%;background:var(--emerald);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.45)}
 .wa svg{width:28px;height:28px}
 .taslak{position:fixed;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--panel);border:1px solid var(--line);color:#B9BEC2;font:500 12px/1.4 Manrope,system-ui,sans-serif;letter-spacing:.08em;padding:8px 12px}
+.kurbant{flex-wrap:wrap;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:700px){.kurbant{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:10px 16px!important}.kurbant::-webkit-scrollbar{display:none}.kurbant .kur-tarih{margin-left:0!important}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 <div class="sayfa" id="ana">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -306,15 +308,15 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 </div>
 <div class="sayfa" id="diger-sektorler" hidden>
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -395,15 +397,15 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var
 </div>
 <div class="sayfa" hidden="" id="pratik-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -547,15 +549,15 @@ EK: ……………</pre>
 </div>
 <div class="sayfa" hidden="" id="yasal-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -594,15 +596,15 @@ EK: ……………</pre>
 </div>
 <div class="sayfa" hidden="" id="yazilar-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -649,15 +651,15 @@ EK: ……………</pre>
 </div>
 <div class="sayfa" hidden="" id="hakkimizda-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -738,15 +740,15 @@ EK: ……………</pre>
 </div>
 <div class="sayfa" hidden="" id="hizmet-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -810,15 +812,15 @@ EK: ……………</pre>
 </div>
 <div class="sayfa" hidden="" id="iletisim-sayfa">
 <div style="background: #F4F4F2; color: #2B2F33; font-family: Manrope, sans-serif; min-height: 100vh">
-<div style="background: #2B2F33; color: #E4E5E2; font-family: 'JetBrains Mono', monospace; font-size: 13px">
-<div style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center">
-<span style="color: #3DDC97; letter-spacing: 0.1em" data-kurbant="1">TCMB DÖVİZ ALIŞ</span>
-<span data-kod="USD">USD <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="EUR">EUR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="GBP">GBP <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="QAR">QAR <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="AED">AED <strong style="color: #FFFFFF">–</strong></span>
-<span data-kod="SAR">SAR <strong style="color: #FFFFFF">–</strong></span>
+<div class="kurdis" style="background: #2B2F33; color: #C9CDD0; font-family: Manrope, sans-serif; font-size: 14px">
+<div class="kurbant" style="max-width: 1248px; margin: 0 auto; padding: 10px 24px; display: flex; gap: 8px 28px; align-items: center">
+<span style="color: #3DDC97; font-weight: 600; letter-spacing: 0.04em" data-kurbant="1">TCMB döviz alış</span>
+<span data-kod="USD">USD <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="EUR">EUR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="GBP">GBP <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="QAR">QAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="AED">AED <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
+<span data-kod="SAR">SAR <strong style="color: #FFFFFF; font-weight: 600">–</strong></span>
 <span style="margin-left: auto; color: #B9BEC2" class="kur-tarih">TCMB</span>
 </div>
 </div>
@@ -1460,7 +1462,7 @@ function hDv(){var t=sayi(_v('d-t'));if(!(t>0))return _hata('d-c','Geçerli bir 
   bantlar.forEach(function(b){
    b.querySelectorAll('[data-kod]').forEach(function(sp){var v=k.kurlar[sp.getAttribute('data-kod')];var st=sp.querySelector('strong');
     if(v&&st){st.textContent=Number(v).toLocaleString('tr-TR',{minimumFractionDigits:4,maximumFractionDigits:4})}else{sp.style.display='none'}});
-   var t=b.querySelector('.kur-tarih');if(t)t.textContent=k.tarih+' · TCMB';
+   var t=b.querySelector('.kur-tarih');if(t)t.textContent='TCMB gösterge kuru · '+k.tarih;
   });
  }).catch(gizle);
 })();
