@@ -1,0 +1,19 @@
+name: Kutuphane indir (gecici)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  indir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p vendor
+          npm pack exceljs@4.4.0 --silent
+          tar xzf exceljs-4.4.0.tgz
+          cp package/dist/exceljs.min.js vendor/exceljs.min.js
+          cp package/LICENSE vendor/exceljs-LICENSE.txt
+          ls -la vendor
+          git config user.name "kutuphane-botu"; git config user.email "kutuphane-botu@users.noreply.github.com"
+          git add vendor; git commit -m "ExcelJS 4.4.0 (MIT)"; git pull --rebase -q origin main; git push
