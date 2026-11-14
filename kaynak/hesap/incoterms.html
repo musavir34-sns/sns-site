@@ -87,7 +87,7 @@
 </div>
 
 <h2>Kim neyi üstlenir?</h2>
-<div class="hm-tablo-kap"><table class="hm-tablo it-tablo" style="min-width:620px"><thead><tr><th>Kalem</th><th>Üstlenen</th><th>Açıklama</th></tr></thead><tbody id="r-tablo"></tbody></table></div>
+<div class="hm-tablo-kap"><table class="hm-tablo it-tablo" style="min-width:620px"><caption class="sr">Kim neyi üstlenir?</caption><thead><tr><th>Kalem</th><th>Üstlenen</th><th>Açıklama</th></tr></thead><tbody id="r-tablo"></tbody></table></div>
 
 <h2>Dikkat edilecekler</h2>
 <ul class="it-notlar" id="r-notlar"></ul>
@@ -96,7 +96,7 @@
 
 <div class="it-mat-kap">
 <h2>11 kuralın karşılaştırması</h2>
-<div class="hm-tablo-kap"><table class="hm-tablo it-mat" style="min-width:900px"><thead id="m-bas"></thead><tbody id="m-govde"></tbody></table></div>
+<div class="hm-tablo-kap"><table class="hm-tablo it-mat" style="min-width:900px"><caption class="sr">11 kuralın karşılaştırması</caption><thead id="m-bas"></thead><tbody id="m-govde"></tbody></table></div>
 <div class="it-lejant"><span><span class="it-c S">S</span> Satıcı</span><span><span class="it-c A">A</span> Alıcı</span><span><span class="it-c A">A*</span> Alıcı; satıcının taşıma sözleşmesine dahilse satıcı</span><span><span class="it-c F">T</span> Teslim yerine göre</span><span><span class="it-c O">–</span> Zorunlu değil</span></div>
 </div>
 
@@ -214,7 +214,7 @@
   else if(rk==='cikis'){var sg=el('s-sig').value==='evet';r=m==='her'?(sg?'CIP':'CPT'):(sg?'CIF':'CFR')}
   else{r=el('s-ith').value==='evet'?'DDP':(el('s-bos').value==='evet'?'DPU':'DAP')}
   el('s-oneri').innerHTML='Önerilen kural: <b style="font:500 24px/1 Fraunces,serif">'+r+'</b> · '+esc(K[r].ad)+' <button type="button" class="hm-btn" id="s-sec">Ayrıntıları göster</button>';
-  el('s-sec').addEventListener('click',function(){sec=r;try{history.replaceState(null,'','#'+r)}catch(e){}ciz();el('r-kod').scrollIntoView({behavior:'smooth',block:'start'})});
+  el('s-sec').addEventListener('click',function(){sec=r;try{history.replaceState(null,'','#'+r)}catch(e){}ciz();el('r-kod').scrollIntoView({behavior:(matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'),block:'start'})});
  }
  ['s-mod','s-nav','s-risk','s-sig','s-ith','s-bos','s-yer','s-gemi'].forEach(function(i){el(i).addEventListener('change',oner)});
  el('i-pdf').addEventListener('click',function(){HM.pdf('Incoterms 2020 '+sec)});

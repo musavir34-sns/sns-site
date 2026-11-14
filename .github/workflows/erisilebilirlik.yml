@@ -1,0 +1,25 @@
+name: Erisilebilirlik testi
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["kurlar.json", "duyurular.json"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  axe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Araclari kur
+        run: |
+          npm install --no-save --no-package-lock playwright@1.47.2 @axe-core/playwright@4.10.0
+          npx playwright install --with-deps chromium
+      - name: Siteyi yerelde ac ve tara
+        run: |
+          python3 -m http.server 8080 >/dev/null 2>&1 &
+          sleep 2
+          node araclar/erisim_testi.js

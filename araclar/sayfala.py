@@ -222,7 +222,15 @@ YZ_CSS = (".yz{max-width:760px;margin:0 auto;padding:64px 24px 0;color:#2B2F33;f
           ".yz-diger{margin:44px 0 0;border-top:1px solid #2B2F33;padding-top:18px}.yz-diger h2{margin:0 0 6px;font:400 22px/1.3 Fraunces,serif}"
           ".yz-diger a{display:block;padding:12px 0;border-bottom:1px solid #E1E4DE;color:#2B2F33;text-decoration:none;font:400 18px/1.4 Fraunces,serif}.yz-diger a:hover{color:#157A4F}"
           ".yz-diger small{display:block;font:600 11.5px/1.3 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#666C72;margin-bottom:3px}"
+          ".yz-kisaca{margin:0 0 34px;padding:18px 22px 12px;background:#FFF;border:1px solid #E1E4DE;border-left:4px solid #1FA86D;border-radius:10px}"
+          ".yz-kisaca h2{margin:0 0 10px;font:600 12px/1.3 Manrope,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#157A4F}"
+          ".yz-kisaca ul{margin:0;padding-left:20px}.yz .yz-kisaca li{font-size:16px;line-height:1.65;margin:0 0 8px}"
           "@media(max-width:700px){.yz{padding:40px 16px 0}.yz p{font-size:16.5px}}")
+def kisaca_yap(meta):
+    if not meta.get("kisaca"):
+        return ""
+    return ('<section class="yz-kisaca" aria-labelledby="yz-kisaca-b"><h2 id="yz-kisaca-b">Kısaca</h2><ul>'
+            + "".join("<li>%s</li>" % esc(x).replace("&quot;", '"') for x in meta["kisaca"]) + "</ul></section>\n")
 yz_meta = {}
 for dosya in glob.glob("kaynak/yazilar/*.html"):
     metin = open(dosya, encoding="utf-8").read()
@@ -244,8 +252,8 @@ for i, slug in enumerate(YAZI_SIRASI):
     diger = [YAZI_SIRASI[(i + j) % len(YAZI_SIRASI)] for j in (1, 2, 3)]
     govde = (re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="yazi-%s">' % slug, yz_ust, count=1)
              + '\n<article class="yz"><p class="yz-yol"><a href="/yazilar/">Yazılar</a> › %s</p><p class="yz-ust">%s</p><h1>%s</h1>'
-               '<p class="yz-meta">Serdar Saraç, Serbest Muhasebeci Mali Müşavir · Son güncelleme: %s</p>\n%s\n'
-             % (meta["kategori"], meta["kategori"].split(" · ")[0], meta["baslik"], meta["guncelleme"], icerik)
+               '<p class="yz-meta">Serdar Saraç, Serbest Muhasebeci Mali Müşavir · Son güncelleme: %s</p>\n%s%s\n'
+             % (meta["kategori"], meta["kategori"].split(" · ")[0], meta["baslik"], meta["guncelleme"], kisaca_yap(meta), icerik)
              + ('<p class="yz-dayanak"><b>Dayanak:</b> %s</p>' % kaynak.group(1).strip() if kaynak else "")
              + '<p class="yz-not">Bu yazı genel bilgilendirme amaçlıdır; mevzuat değişebileceğinden somut durumlar için güncel mevzuat ayrıca değerlendirilmelidir.</p>'
              + '<nav class="yz-diger" aria-label="Diğer yazılar"><h2>Diğer yazılar</h2>'
@@ -308,9 +316,30 @@ def menu_etiket(html):
         return re.sub(r'<a href="([^"]+)" style="([^"]*)">([^<]*)</a>',
                       lambda a: '<a class="mm-on" href="%s" style="%s">%s</a>' % (a.group(1), a.group(2), MENU_ETIKET[a.group(1)]) if a.group(1) in MENU_ETIKET else a.group(0), m.group(0))
     return re.sub(r'<nav aria-label="Ana menü".*?</nav>', nav, html, flags=re.S)
+
+# erişilebilirlik: İngilizce terimler ekran okuyucuda İngilizce telaffuzla okunsun (yalnız görünen metin düğümleri)
+EN_TERIM = ["Commercial Invoice", "Proforma Invoice", "Packing List", "packing list", "Origin Declaration", "Incoterms", "Cash Flow", "Notify"]
+_EN_RE = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(EN_TERIM, key=len, reverse=True)) + r")\b")
+_ATLA = ("script", "style", "title", "option", "textarea", "head", "svg")
+def ingilizce_isaretle(html):
+    parca = re.split(r"(<[^>]+>)", html); ic = []; out = []
+    for p in parca:
+        if p.startswith("<"):
+            m = re.match(r"<(/?)([a-zA-Z0-9]+)", p)
+            if m and m.group(2).lower() in _ATLA and not p.endswith("/>"):
+                if m.group(1): 
+                    if ic and ic[-1] == m.group(2).lower(): ic.pop()
+                else: ic.append(m.group(2).lower())
+            out.append(p)
+        elif ic or not p.strip():
+            out.append(p)
+        else:
+            out.append(_EN_RE.sub(r'<span lang="en">\1</span>', p))
+    return "".join(out)
 for h, y, n in uretilen:
     t = open(h, encoding="utf-8").read()
     t2 = menu_etiket(kur_bandi(t))
+    t2 = ingilizce_isaretle(t2)
     # erişilebilirlik: içeriğe geç bağlantısı, kur bandı etiketi, hesap sonuçlarının ekran okuyucuya bildirilmesi
     t2 = t2.replace("<body>\n", '<body>\n<a class="atla" href="#icerik">İçeriğe geç</a>\n', 1)
     k = t2.find("</header>")

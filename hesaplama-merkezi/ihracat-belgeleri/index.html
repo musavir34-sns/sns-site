@@ -127,7 +127,7 @@ html,body{overflow-x:clip}
 .dy-oge a{font-size:15px;line-height:1.45;text-decoration:none;color:#2B2F33}
 .dy-oge a:hover{color: #157A4F}
 @media (max-width:700px){.gd-oge{grid-template-columns:1fr 20px}.gd-kaynak{grid-column:1/-1;flex-direction:row;align-items:center;gap:10px}.gd-ara,.gd-ara input{width:100%;min-width:0;box-sizing:border-box}.gd-baslik{font-size:18px}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 <style>.hm{max-width:1248px;margin:0 auto;padding:56px 24px 24px;color:#2B2F33;font-family:Manrope,system-ui,sans-serif}
 .hm-yol{margin:0 0 18px;font-size:13px;color:#666C72}.hm-yol a{color:#666C72}
@@ -339,11 +339,11 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 <section class="hm">
 <p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › İhracat belgeleri</p>
 <p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
-<h1>Commercial Invoice, Proforma ve Packing List</h1>
+<h1><span lang="en">Commercial Invoice</span>, Proforma ve <span lang="en">Packing List</span></h1>
 <p class="hm-giris">Firma bilgilerinizi ve logonuzu girin, kalemleri ve ambalaj bilgilerini doldurun; İngilizce ticari fatura ve çeki listesi kendi kurumsal görünümünüzle hazırlansın. PDF olarak alabilir ya da Excel'e aktarıp üzerinde çalışmaya devam edebilirsiniz.</p>
 <p class="ib-gizlilik">Girdiğiniz bilgiler ve logonuz yalnızca kendi tarayıcınızda işlenir; sunucumuza gönderilmez, bizde saklanmaz. Taslağınız bu cihazda hatırlanır; isterseniz dosya olarak kaydedip başka cihazda açabilirsiniz.</p>
 
-<div class="ib-tur" role="group" aria-label="Belge türü"><span>Hangi belgeyi hazırlıyorsunuz?</span><button type="button" data-t="commercial" aria-pressed="true">Commercial Invoice</button><button type="button" data-t="proforma" aria-pressed="false">Proforma Invoice</button></div>
+<div class="ib-tur" role="group" aria-label="Belge türü"><span>Hangi belgeyi hazırlıyorsunuz?</span><button type="button" data-t="commercial" aria-pressed="true"><span lang="en">Commercial Invoice</span></button><button type="button" data-t="proforma" aria-pressed="false"><span lang="en">Proforma Invoice</span></button></div>
 <div class="hm-kart">
 <div class="hm-dugmeler" style="margin-top:0"><button type="button" class="hm-btn" id="ib-ornek">Örnek veriyle doldur</button><button type="button" class="hm-btn" id="ib-yeni">Yeni belge (firma bilgileri kalsın)</button><button type="button" class="hm-btn" id="ib-json-kaydet">Taslağı dosyaya kaydet</button><label class="hm-btn" style="display:inline-flex;align-items:center">Taslak dosyası aç<input type="file" id="ib-json-ac" accept=".json,application/json" hidden></label></div>
 
@@ -363,7 +363,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 <label>Alıcı unvanı<input data-b="buyer.name"></label>
 <label>İletişim (telefon, e-posta)<input data-b="buyer.contact"></label>
 <label class="ib-tam">Adres<textarea data-b="buyer.addr"></textarea></label>
-<label class="ib-tam">Notify party (isteğe bağlı)<textarea data-b="buyer.notify" style="min-height:52px"></textarea></label>
+<label class="ib-tam"><span lang="en">Notify</span> party (isteğe bağlı)<textarea data-b="buyer.notify" style="min-height:52px"></textarea></label>
 </div></details>
 
 <details class="ib-bolum" open><summary>3 · Fatura bilgileri</summary>
@@ -372,7 +372,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 <label>Fatura no<input data-b="inv.no"></label>
 <label>Fatura tarihi<input type="date" data-b="inv.date"></label>
 <label>Para birimi<select data-b="inv.cur"><option>USD</option><option>EUR</option><option>GBP</option><option>TRY</option><option>CNY</option><option>AED</option><option>QAR</option><option>SAR</option><option>CHF</option><option>RUB</option><option>LYD</option><option>IQD</option></select></label>
-<label><span>Teslim şekli (Incoterms 2020) · <a href="/hesaplama-merkezi/incoterms/" target="_blank" rel="noopener" style="color:#157A4F;font-weight:600">hangisi? ↗</a></span><select data-b="inv.terms"><option>EXW</option><option>FCA</option><option>FAS</option><option>FOB</option><option>CFR</option><option selected>CIF</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option><option>DDP</option></select></label>
+<label><span>Teslim şekli (<span lang="en">Incoterms</span> 2020) · <a href="/hesaplama-merkezi/incoterms/" target="_blank" rel="noopener" style="color:#157A4F;font-weight:600">hangisi? ↗</a></span><select data-b="inv.terms"><option>EXW</option><option>FCA</option><option>FAS</option><option>FOB</option><option>CFR</option><option selected>CIF</option><option>CPT</option><option>CIP</option><option>DAP</option><option>DPU</option><option>DDP</option></select></label>
 <label>Teslim yeri<input data-b="inv.place" placeholder="Tripoli Port"></label>
 <label>Menşe ülke<input data-b="inv.origin" value="Türkiye"></label>
 <label>Yükleme limanı / yeri<input data-b="inv.pol" placeholder="Ambarlı, İstanbul"></label>
@@ -387,7 +387,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 
 <details class="ib-bolum" open><summary>4 · Fatura kalemleri</summary>
 <p class="hm-not" style="margin-top:6px">GTİP (HS code) kodunu siz girin. Sistem GTİP tahmini yapmaz; yanlış sınıflandırma gümrükte vergi farkı ve ceza doğurabilir. Emin değilseniz <a href="https://uygulama.gtb.gov.tr/Tara/" target="_blank" rel="noopener">TARA tarife sorgulama</a> sisteminden ya da gümrük müşavirinizden teyit edin.</p>
-<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-kalem"><thead><tr><th>#</th><th>Tanım (description)</th><th>GTİP (HS code)</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Birim fiyat</th><th class="sag">Tutar</th><th></th></tr></thead><tbody></tbody></table></div>
+<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-kalem"><caption class="sr">Fatura kalemleri</caption><thead><tr><th>#</th><th>Tanım (description)</th><th>GTİP (HS code)</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Birim fiyat</th><th class="sag">Tutar</th><th></th></tr></thead><tbody></tbody></table></div>
 <div class="hm-dugmeler"><button type="button" class="hm-btn" id="ib-kalem-ekle">+ Kalem ekle</button></div>
 <div class="ib-grid">
 <label>Navlun (CFR/CIF vb. için, isteğe bağlı)<input data-b="ex.freight" inputmode="decimal"></label>
@@ -395,9 +395,9 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 <label>İndirim (isteğe bağlı)<input data-b="ex.disc" inputmode="decimal"></label>
 </div></details>
 
-<details class="ib-bolum" open><summary>5 · Ambalaj (packing list)</summary>
+<details class="ib-bolum" open><summary>5 · Ambalaj (<span lang="en">packing list</span>)</summary>
 <p class="hm-not" style="margin-top:6px">Aynı kaba konan birden fazla kalem için ilk satıra kap adedi ve ağırlığı yazın, diğer satırlarda bu alanları boş bırakın.</p>
-<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-paket" style="min-width:1080px"><thead><tr><th>#</th><th>Konteyner / araç no</th><th>Tanım</th><th class="sag">Kap adedi</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Brüt kg</th><th class="sag">Net kg</th><th class="sag">Boy</th><th class="sag">En</th><th class="sag">Yük.</th><th>GTİP</th><th></th></tr></thead><tbody></tbody></table></div>
+<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-paket" style="min-width:1080px"><caption class="sr">Koli ve paket bilgileri</caption><thead><tr><th>#</th><th>Konteyner / araç no</th><th>Tanım</th><th class="sag">Kap adedi</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Brüt kg</th><th class="sag">Net kg</th><th class="sag">Boy</th><th class="sag">En</th><th class="sag">Yük.</th><th>GTİP</th><th></th></tr></thead><tbody></tbody></table></div>
 <div class="hm-dugmeler"><button type="button" class="hm-btn" id="ib-paket-ekle">+ Ambalaj satırı ekle</button><button type="button" class="hm-btn" id="ib-kalemden">Fatura kalemlerinden aktar</button></div>
 <div class="ib-grid"><label>Ölçü birimi<select data-b="pk.unit"><option value="cm">cm</option><option value="mm">mm</option></select></label><label>Kap türü<input data-b="pk.kind" placeholder="packages / cartons / pallets" value="packages"></label></div>
 </details>
@@ -424,7 +424,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 </div></details>
 </div>
 
-<div class="ib-sekme" role="group" aria-label="Önizleme"><button type="button" data-g="ikisi" aria-pressed="true">İkisi birlikte</button><button type="button" data-g="fatura" aria-pressed="false">Yalnız fatura</button><button type="button" data-g="paket" aria-pressed="false">Yalnız packing list</button></div>
+<div class="ib-sekme" role="group" aria-label="Önizleme"><button type="button" data-g="ikisi" aria-pressed="true">İkisi birlikte</button><button type="button" data-g="fatura" aria-pressed="false">Yalnız fatura</button><button type="button" data-g="paket" aria-pressed="false">Yalnız <span lang="en">packing list</span></button></div>
 <div class="hm-dugmeler" style="margin-top:0;margin-bottom:16px"><button type="button" class="hm-btn ana" id="ib-pdf">PDF olarak kaydet</button><button type="button" class="hm-btn ana" id="ib-excel">Excel olarak indir</button></div>
 <p class="hm-not" style="margin:-6px 0 16px">Excel dosyasında logo ayrı bir görsel olarak yer alır; silip kendi logonuzu yapıştırabilir, tutarlar ve toplamlar formüllerle güncellenir.</p>
 <div class="ib-onizleme" id="ib-onizleme"></div>
@@ -649,6 +649,78 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
   });
  }).catch(gizle);
 })();
+
+ /* vergi takvimi: ziyaretçinin tarihine göre yaklaşan son günler (hafta sonu ve resmî tatil kaydırmalı) */
+ (function(){
+  var k=document.querySelector('[data-takvim]');if(!k)return;
+  var T={2026:'01-01 03-20 03-21 03-22 04-23 05-01 05-19 05-27 05-28 05-29 05-30 07-15 08-30 10-29',
+         2027:'01-01 03-09 03-10 03-11 04-23 05-01 05-16 05-17 05-18 05-19 07-15 08-30 10-29'};
+  var AY=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  var GN=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  function p2(n){return (n<10?'0':'')+n}
+  function tatil(d){var g=d.getDay();if(g===0||g===6)return true;var l=T[d.getFullYear()];return !!l&&l.indexOf(p2(d.getMonth()+1)+'-'+p2(d.getDate()))>=0}
+  function kaydir(d){var x=new Date(d.getTime());while(tatil(x))x.setDate(x.getDate()+1);return x}
+  function ayin(y,m){
+   var L=[],son=new Date(y,m+1,0).getDate(),onc=AY[(m+11)%12];
+   if(m===4||m===7||m===10)L.push([17,'Geçici vergi beyannamesi ve ödemesi',({4:'1.',7:'2.',10:'3.'})[m]+' dönem']);
+   L.push([26,'Muhtasar ve prim hizmet, damga vergisi beyannameleri',onc+' dönemi']);
+   L.push([28,'KDV beyannamesi ve ödemesi',onc+' dönemi']);
+   var e=({0:'MTV 1. taksit',2:'Yıllık gelir vergisi beyannamesi ve 1. taksit',3:'Kurumlar vergisi beyannamesi ve ödemesi',4:'Emlak vergisi 1. taksit',6:'Gelir vergisi 2. taksit · MTV 2. taksit',10:'Emlak vergisi 2. taksit'})[m];
+   if(e)L.push([son,e,'Ay sonu']);
+   L.push([son,'SGK prim ödemesi',onc+' primleri']);
+   return L.map(function(x){var a=new Date(y,m,x[0]);return {a:a,s:kaydir(a),t:x[1],n:x[2]}});
+  }
+  var b=new Date();b=new Date(b.getFullYear(),b.getMonth(),b.getDate());
+  var L=[];for(var i=0;i<3;i++){var d=new Date(b.getFullYear(),b.getMonth()+i,1);L=L.concat(ayin(d.getFullYear(),d.getMonth()))}
+  L=L.filter(function(x){return x.s>=b}).sort(function(x,y){return x.s-y.s}).slice(0,4);
+  if(L.length<4)return;
+  k.innerHTML=L.map(function(x){
+   var g=Math.round((x.s-b)/864e5),kal=g===0?'<b style="color:#B3261E">Bugün son gün</b>':g===1?'Yarın son gün':g+' gün kaldı';
+   var kay=x.s.getTime()!==x.a.getTime()?' · '+x.a.getDate()+' '+AY[x.a.getMonth()]+' '+((x.a.getDay()%6===0)?GN[x.a.getDay()]:'resmî tatil')+' olduğundan uzadı':'';
+   return '<li style="border-top:1px solid #E1E4DE;padding-top:12px;display:flex;gap:16px;align-items:center"><span style="font-family:Fraunces,serif;font-size:28px;line-height:1;color:#157A4F;min-width:52px">'+x.s.getDate()
+    +'<small style="display:block;margin-top:4px;font:600 11px/1.3 Manrope,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#666C72">'+AY[x.s.getMonth()]+'</small></span><span style="font-size:15.5px;line-height:1.4">'+x.t
+    +'<small style="display:block;margin-top:3px;font-size:13px;color:#666C72">'+GN[x.s.getDay()]+' · '+kal+' · '+x.n+kay+'</small></span></li>';
+  }).join('');
+  var alt=document.querySelector('[data-takvim-alt]');if(alt)alt.textContent='Yaklaşan son beyan ve ödeme günleri';
+ })();
+
+ /* hesap sonuçlarını düz metin olarak kopyalama (e-postaya yapıştırmak ve ekran okuyucu kullanıcıları için) */
+ (function(){
+  var dur=document.createElement('span');dur.className='sr';dur.setAttribute('role','status');document.body.appendChild(dur);
+  function temiz(t){return String(t||'').replace(/[ \t]+/g,' ').replace(/\n\s*\n+/g,'\n').trim()}
+  function alt(){return '\n— snsdanismanlik.com.tr Hesaplama Merkezi · '+new Date().toLocaleDateString('tr-TR')+' · Tahmini hesaptır; resmî kayıtlarda belgeler esastır.'}
+  function kopyala(m,b,ilk){
+   function tamam(ok){b.textContent=ok?'Kopyalandı ✓':'Kopyalanamadı';dur.textContent=ok?'Sonuç panoya kopyalandı':'Kopyalama başarısız';setTimeout(function(){b.textContent=ilk},2200)}
+   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(m).then(function(){tamam(true)},function(){eski()})}else eski();
+   function eski(){var t=document.createElement('textarea');t.value=m;t.setAttribute('readonly','');t.style.cssText='position:fixed;top:-1000px;opacity:0';document.body.appendChild(t);t.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}t.remove();tamam(ok)}
+  }
+  function duz(d){var L=[];
+   (function yuru(e){Array.prototype.forEach.call(e.children,function(c){
+    if(c.tagName==='TABLE'){c.querySelectorAll('tr').forEach(function(r){L.push(Array.prototype.map.call(r.children,function(x){return temiz(x.textContent)}).join(' | '))})}
+    else if(c.tagName==='DIV'&&c.children.length===2&&!c.querySelector(':scope div div,:scope table')){L.push(temiz(c.children[0].textContent)+': '+temiz(c.children[1].textContent))}
+    else if(c.children.length&&!/^(P|LI|SPAN|B|STRONG)$/.test(c.tagName))yuru(c);
+    else if(temiz(c.textContent))L.push(temiz(c.textContent));
+   })})(d);
+   return L.join('\n')}
+  function dugme(sinif,stil){var b=document.createElement('button');b.type='button';b.className=sinif;if(stil)b.style.cssText=stil;b.textContent='Sonucu metin olarak kopyala';return b}
+  var iz=document.querySelector('.hm-izgara'),pdf=document.querySelector('.hm-dugmeler .hm-btn[id$="-pdf"]');
+  if(iz&&pdf){
+   var b=dugme('hm-btn');pdf.parentNode.insertBefore(b,pdf.nextSibling);
+   b.addEventListener('click',function(){
+    var h=document.querySelector('h1'),L=[temiz(h&&h.textContent)];
+    iz.querySelectorAll('.hm-kutu').forEach(function(k){var e=k.querySelector('small'),d=k.querySelector('b'),a=k.querySelector('span');
+     if(e&&d)L.push(temiz(e.textContent)+': '+temiz(d.textContent)+(a&&temiz(a.textContent)?' ('+temiz(a.textContent)+')':''))});
+    kopyala(L.join('\n')+alt(),b,'Sonucu metin olarak kopyala');
+   });
+  }
+  document.querySelectorAll('section[id^="h-"] > [aria-live]').forEach(function(d){
+   var b=dugme('','margin-top:14px;font:600 14px/1 Manrope,sans-serif;border-radius:999px;padding:12px 18px;min-height:44px;cursor:pointer;border:1px solid #2B2F33;background:#FFFFFF;color:#2B2F33');
+   d.parentNode.insertBefore(b,d.nextSibling);
+   function gor(){b.hidden=!temiz(d.textContent)}gor();
+   new MutationObserver(gor).observe(d,{childList:true,subtree:true,characterData:true});
+   b.addEventListener('click',function(){var h=d.parentNode.querySelector('h3');kopyala(temiz(h&&h.textContent)+'\n'+duz(d)+alt(),b,'Sonucu metin olarak kopyala')});
+  });
+ })();
 </script>
 <script>
 (function(){

@@ -121,7 +121,7 @@
 
 <details class="ib-bolum" open><summary>4 · Fatura kalemleri</summary>
 <p class="hm-not" style="margin-top:6px">GTİP (HS code) kodunu siz girin. Sistem GTİP tahmini yapmaz; yanlış sınıflandırma gümrükte vergi farkı ve ceza doğurabilir. Emin değilseniz <a href="https://uygulama.gtb.gov.tr/Tara/" target="_blank" rel="noopener">TARA tarife sorgulama</a> sisteminden ya da gümrük müşavirinizden teyit edin.</p>
-<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-kalem"><thead><tr><th>#</th><th>Tanım (description)</th><th>GTİP (HS code)</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Birim fiyat</th><th class="sag">Tutar</th><th></th></tr></thead><tbody></tbody></table></div>
+<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-kalem"><caption class="sr">Fatura kalemleri</caption><thead><tr><th>#</th><th>Tanım (description)</th><th>GTİP (HS code)</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Birim fiyat</th><th class="sag">Tutar</th><th></th></tr></thead><tbody></tbody></table></div>
 <div class="hm-dugmeler"><button type="button" class="hm-btn" id="ib-kalem-ekle">+ Kalem ekle</button></div>
 <div class="ib-grid">
 <label>Navlun (CFR/CIF vb. için, isteğe bağlı)<input data-b="ex.freight" inputmode="decimal"></label>
@@ -131,7 +131,7 @@
 
 <details class="ib-bolum" open><summary>5 · Ambalaj (packing list)</summary>
 <p class="hm-not" style="margin-top:6px">Aynı kaba konan birden fazla kalem için ilk satıra kap adedi ve ağırlığı yazın, diğer satırlarda bu alanları boş bırakın.</p>
-<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-paket" style="min-width:1080px"><thead><tr><th>#</th><th>Konteyner / araç no</th><th>Tanım</th><th class="sag">Kap adedi</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Brüt kg</th><th class="sag">Net kg</th><th class="sag">Boy</th><th class="sag">En</th><th class="sag">Yük.</th><th>GTİP</th><th></th></tr></thead><tbody></tbody></table></div>
+<div class="hm-tablo-kap"><table class="hm-tablo" id="ib-paket" style="min-width:1080px"><caption class="sr">Koli ve paket bilgileri</caption><thead><tr><th>#</th><th>Konteyner / araç no</th><th>Tanım</th><th class="sag">Kap adedi</th><th class="sag">Miktar</th><th>Birim</th><th class="sag">Brüt kg</th><th class="sag">Net kg</th><th class="sag">Boy</th><th class="sag">En</th><th class="sag">Yük.</th><th>GTİP</th><th></th></tr></thead><tbody></tbody></table></div>
 <div class="hm-dugmeler"><button type="button" class="hm-btn" id="ib-paket-ekle">+ Ambalaj satırı ekle</button><button type="button" class="hm-btn" id="ib-kalemden">Fatura kalemlerinden aktar</button></div>
 <div class="ib-grid"><label>Ölçü birimi<select data-b="pk.unit"><option value="cm">cm</option><option value="mm">mm</option></select></label><label>Kap türü<input data-b="pk.kind" placeholder="packages / cartons / pallets" value="packages"></label></div>
 </details>
