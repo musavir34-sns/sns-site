@@ -5,14 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          for d in snsdanismanlik.com.tr; do
-            echo "== MX"; dig +short MX $d
-            echo "== TXT"; dig +short TXT $d
-            echo "== autodiscover"; dig +short autodiscover.$d ANY; dig +short CNAME autodiscover.$d
-            echo "== NS"; dig +short NS $d
-          done
-          echo "== sns-advisory MX"; dig +short MX sns-advisory.com
-          echo "== autodiscover http"; curl -s -o /dev/null -w "%{http_code}\n" -m 10 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.json?Email=serdar.sarac@snsdanismanlik.com.tr&Protocol=ActiveSync" || true
-          curl -s -m 10 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.json?Email=info@snsdanismanlik.com.tr&Protocol=ActiveSync" ; echo
-          curl -s -m 10 "https://autodiscover-s.outlook.com/autodiscover/autodiscover.json?Email=serdar.sarac@snsdanismanlik.com.tr&Protocol=ActiveSync" ; echo
-          curl -s -m 10 "https://login.microsoftonline.com/getuserrealm.srf?login=serdar.sarac@snsdanismanlik.com.tr&json=1" ; echo
+          python3 - <<'P'
+          import smtplib
+          try:
+              s=smtplib.SMTP('snsdanismanlik-com-tr.mail.protection.outlook.com',25,timeout=20)
+              print(s.ehlo('example.org')[0])
+              print(s.mail('kontrol@example.org'))
+              for a in ['serdar.sarac@snsdanismanlik.com.tr','info@snsdanismanlik.com.tr','yokboyle-xyz@snsdanismanlik.com.tr']:
+                  print(a, s.rcpt(a))
+              s.quit()
+          except Exception as e:
+              print('HATA',type(e).__name__,e)
+          P
