@@ -1,0 +1,67 @@
+<!--META {"yol":"/hesaplama-merkezi/konteyner/","baslik":"CBM ve konteyner doluluğu hesaplama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Yükün hacmi ve ağırlığına göre 20′, 40′, 40′ HC konteyner ve tır doluluk oranı, gereken konteyner sayısı ve bir konteynere kaç koli sığacağını hesaplayın."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › CBM ve konteyner</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
+<h1>CBM ve konteyner doluluğu</h1>
+<p class="hm-giris">Yükün toplam hacmini ve ağırlığını girin ya da koli ölçüsünden hesaplatın. Konteyner ve tır seçeneklerinde doluluk oranı, gereken araç sayısı ve tek konteynere sığan koli adedi birlikte gösterilir.</p>
+<div class="hm-kart">
+<div class="hm-ayar">
+<label>Koli boyu (cm)<input id="k-l" inputmode="decimal" placeholder="60"></label>
+<label>Koli eni (cm)<input id="k-w" inputmode="decimal" placeholder="40"></label>
+<label>Koli yüksekliği (cm)<input id="k-h" inputmode="decimal" placeholder="40"></label>
+<label>Koli brüt ağırlığı (kg)<input id="k-g" inputmode="decimal" placeholder="14,5"></label>
+<label>Koli adedi<input id="k-n" inputmode="numeric" placeholder="500"></label>
+<label>Koli yönü<select id="k-yon"><option value="2">Üst yüzey yukarı (yalnız yatay döndürme)</option><option value="6">Her yöne çevrilebilir</option></select></label>
+</div>
+<p class="hm-not">Koli bilgisi yerine doğrudan toplam girmek isterseniz:</p>
+<div class="hm-ayar">
+<label>Toplam hacim (m³)<input id="t-m3" inputmode="decimal" placeholder="koli bilgisinden hesaplanır"></label>
+<label>Toplam brüt ağırlık (kg)<input id="t-kg" inputmode="decimal" placeholder="koli bilgisinden hesaplanır"></label>
+<label>Kullanılabilir hacim oranı<select id="t-oran"><option value="0.85" selected>%85 (paletsiz koli, yaygın)</option><option value="0.75">%75 (paletli yük)</option><option value="0.9">%90</option><option value="1">%100 (teorik)</option></select></label>
+</div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="k-ornek">Örnek veriyle doldur</button><button type="button" class="hm-btn" id="k-temizle">Temizle</button></div>
+</div>
+<h2>Yük</h2>
+<div class="hm-izgara">
+<div class="hm-kutu vurgu"><small>Toplam hacim</small><b id="r-m3">–</b><span id="r-m3k"></span></div>
+<div class="hm-kutu"><small>Toplam brüt ağırlık</small><b id="r-kg">–</b></div>
+<div class="hm-kutu"><small>Koli hacmi</small><b id="r-koli">–</b><span id="r-koli2"></span></div>
+</div>
+<h2>Araç seçenekleri</h2>
+<div class="hm-tablo-kap"><table class="hm-tablo" id="k-tablo"><thead><tr><th>Araç</th><th class="sag">İç ölçü (m)</th><th class="sag">Hacim m³</th><th class="sag">Azami yük kg*</th><th class="sag">Hacim doluluğu</th><th class="sag">Ağırlık doluluğu</th><th class="sag">Gereken adet</th><th class="sag">Tek araca sığan koli</th></tr></thead><tbody></tbody></table></div>
+<p class="hm-not">* Azami yük konteyner ve hatta göre değişir; karayolu ağırlık sınırları fiilî yükü daha da düşürebilir. Gereken adet, hacim (seçilen kullanım oranıyla) ve ağırlıktan hangisi daha çok araç gerektiriyorsa ona göre bulunur.</p>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="k-pdf">PDF olarak kaydet</button></div>
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul"><b>Hacim:</b> <code>boy × en × yükseklik ÷ 1.000.000 × koli adedi</code><br><b>Hacim doluluğu:</b> <code>toplam hacim ÷ (araç hacmi × kullanım oranı)</code><br><b>Gereken adet:</b> <code>en büyük(hacim ihtiyacı, toplam ağırlık ÷ azami yük)</code>, yukarı yuvarlanır.<br><b>Tek araca sığan koli:</b> izin verilen her yönde <code>⌊iç boy ÷ koli boyu⌋ × ⌊iç en ÷ koli eni⌋ × ⌊iç yükseklik ÷ koli yüksekliği⌋</code> hesaplanır, en yüksek sonuç alınır; azami yükü aşmayacak şekilde sınırlanır.</div>
+<p class="hm-not">Tek yönlü düzenli istif varsayılır. Karma istif ve palet kullanımında fiilî adet farklı olabilir.</p>
+<p style="margin:16px 0 6px;font-weight:600;font-size:14px">Kaynaklar</p>
+<ul class="hm-kaynak"><li>ISO 668 / ISO 1496 standart konteyner ölçüleri; iç ölçü ve azami yük taşıyıcı hatlarının yayımladığı tipik değerlerdir.</li><li>Tır ölçüsü: 13,6 m standart tenteli dorse, tipik değerler.</li></ul>
+<div class="hm-uyari">Bu araç planlama amaçlı tahmini hesap yapar. Kesin yükleme planı için taşıyıcı ya da forwarder ile teyit edin.</div>
+<!--PDFALT-->
+</section>
+<script>
+(function(){
+ var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};
+ var A=[['20′ standart konteyner',5.898,2.352,2.393,28200],['40′ standart konteyner',12.032,2.352,2.393,26700],['40′ HC konteyner',12.032,2.352,2.698,26500],['Tır (13,6 m tenteli dorse)',13.6,2.45,2.7,24000]];
+ function sigan(L,W,H,l,w,h,yon){var p=yon==6?[[l,w,h],[l,h,w],[w,l,h],[w,h,l],[h,l,w],[h,w,l]]:[[l,w,h],[w,l,h]];var m=0;
+  p.forEach(function(o){var n=Math.floor(L*100/o[0])*Math.floor(W*100/o[1])*Math.floor(H*100/o[2]);if(n>m)m=n});return m}
+ function hes(){var l=S(el('k-l').value),w=S(el('k-w').value),h=S(el('k-h').value),g=S(el('k-g').value),n=S(el('k-n').value),yon=+el('k-yon').value,oran=+el('t-oran').value;
+  var koliOk=l>0&&w>0&&h>0,km3=koliOk?l*w*h/1e6:NaN;
+  var m3=S(el('t-m3').value);if(!(m3>0))m3=koliOk&&n>0?km3*n:NaN;
+  var kg=S(el('t-kg').value);if(!(kg>0))kg=g>0&&n>0?g*n:NaN;
+  el('r-m3').textContent=m3>0?F(m3,3)+' m³':'–';el('r-m3k').textContent=m3>0?F(m3*35.3147,1)+' ft³':'';
+  el('r-kg').textContent=kg>0?F(kg)+' kg':'–';
+  el('r-koli').textContent=koliOk?F(km3,4)+' m³':'–';el('r-koli2').textContent=koliOk?'Desi (÷3.000): '+F(l*w*h/3000,1):'';
+  el('k-tablo').tBodies[0].innerHTML=A.map(function(a){var v=a[1]*a[2]*a[3];
+   var hd=m3>0?m3/(v*oran)*100:NaN,ad=kg>0?kg/a[4]*100:NaN;
+   var ger=Math.max(m3>0?Math.ceil(m3/(v*oran)-1e-9):0,kg>0?Math.ceil(kg/a[4]-1e-9):0);
+   var s=koliOk?sigan(a[1],a[2],a[3],l,w,h,yon):NaN;var sk=s;if(koliOk&&g>0)sk=Math.min(s,Math.floor(a[4]/g));
+   return '<tr><td>'+a[0]+'</td><td class="sag">'+F(a[1],2)+' × '+F(a[2],2)+' × '+F(a[3],2)+'</td><td class="sag">'+F(v,1)+'</td><td class="sag">'+F(a[4],0)+'</td><td class="sag">'+(isFinite(hd)?'%'+F(hd,0):'–')+'</td><td class="sag">'+(isFinite(ad)?'%'+F(ad,0):'–')+'</td><td class="sag"><b>'+(ger||'–')+'</b></td><td class="sag">'+(isFinite(sk)?F(sk,0)+(sk<s?' (ağırlık sınırı)':''):'–')+'</td></tr>'}).join('');
+ }
+ ['k-l','k-w','k-h','k-g','k-n','t-m3','t-kg'].forEach(function(i){el(i).addEventListener('input',hes)});['k-yon','t-oran'].forEach(function(i){el(i).addEventListener('change',hes)});
+ el('k-ornek').addEventListener('click',function(){el('k-l').value='60';el('k-w').value='40';el('k-h').value='40';el('k-g').value='14,5';el('k-n').value='500';el('t-m3').value='';el('t-kg').value='';hes()});
+ el('k-temizle').addEventListener('click',function(){['k-l','k-w','k-h','k-g','k-n','t-m3','t-kg'].forEach(function(i){el(i).value=''});hes()});
+ el('k-pdf').addEventListener('click',function(){HM.pdf('Konteyner doluluk')});hes();
+})();
+</script>

@@ -161,10 +161,17 @@ k = iskelet.find("Büro sahibi"); alt = iskelet[iskelet.rfind("<section", 0, k):
 ortak_css = open("kaynak/hesap/_ortak.css", encoding="utf-8").read()
 ortak_js = open("kaynak/hesap/_ortak.js", encoding="utf-8").read()
 ek_adresler = []
+PDF_BASLIK = ('<div class="pdf-baslik"><svg aria-hidden="true" height="34" viewBox="8 10 80 76" width="36"><rect fill="#1FA86D" height="10" width="80" x="8" y="10"></rect>'
+              '<rect fill="#1FA86D" height="38" width="10" x="8" y="10"></rect><rect fill="#2B2F33" height="10" width="80" x="8" y="43"></rect>'
+              '<rect fill="#1FA86D" height="38" width="10" x="78" y="48"></rect><rect fill="#1FA86D" height="10" width="80" x="8" y="76"></rect></svg>'
+              '<div><b>SNS Danışmanlık</b> · Serdar Saraç, SMMM<br>snsdanismanlik.com.tr · Hesaplama tarihi: <span class="pdf-tarih"></span></div></div>')
+PDF_ALT = ('<div class="pdf-alt">Bu belge snsdanismanlik.com.tr Hesaplama Merkezi ile oluşturulmuştur. Tahmini hesaptır; resmî kayıt ve beyanlarda ilgili belgeler esastır. '
+           'SNS Danışmanlık · Serdar Saraç, Serbest Muhasebeci Mali Müşavir · İSMMMO sicil no 60446</div>')
 for dosya in sorted(glob.glob("kaynak/hesap/*.html")):
     metin = open(dosya, encoding="utf-8").read()
     m = re.match(r"<!--META (\{.*?\}) -->\n", metin, re.S)
     meta = json.loads(m.group(1)); icerik = metin[m.end():]
+    icerik = icerik.replace("<!--PDFBASLIK-->", PDF_BASLIK).replace("<!--PDFALT-->", PDF_ALT)
     pid = "hesap-" + os.path.basename(dosya)[:-5]
     govde = re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="%s">' % pid, ust, count=1) + "\n<script>%s</script>\n" % ortak_js + icerik + "\n" + alt
     sayfa = (bas_yap(meta["yol"], meta["baslik"], meta["aciklama"]) + govde_on + "<style>%s</style>\n" % ortak_css + govde + "\n"

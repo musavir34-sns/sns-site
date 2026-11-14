@@ -1,0 +1,83 @@
+<!--META {"yol":"/hesaplama-merkezi/ithalat-maliyeti/","baslik":"İthalat maliyeti hesaplama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"FOB, navlun ve sigortadan CIF kıymeti; gümrük vergisi, ilave gümrük vergisi, ÖTV ve KDV ile masrafları ekleyerek tahmini ithalat maliyetini ve birim maliyeti hesaplayın."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › İthalat maliyeti</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
+<h1>İthalat maliyet tahmini</h1>
+<p class="hm-giris">Mal bedeli, navlun ve sigortadan gümrük kıymetini; ardından gümrük vergisi, ilave gümrük vergisi, ÖTV ve KDV'yi hesaplar. Masraflarla birlikte toplam ve birim maliyeti gösterir.</p>
+<div class="hm-uyari" style="margin:0 0 20px">Vergi oranları eşyanın GTİP'ine, menşeine ve ithalat rejimine (AB, serbest ticaret anlaşmaları, ek mali yükümlülük, damping) göre değişir. Oranları Ticaret Bakanlığı <a href="https://uygulama.gtb.gov.tr/Tara/" target="_blank" rel="noopener">TARA tarife sorgulama</a> sisteminden ya da gümrük müşavirinizden teyit ederek girin.</div>
+<div class="hm-kart">
+<details class="hm-acilir" open style="margin-top:0"><summary>Eşya bilgileri (isteğe bağlı, PDF'te görünür)</summary>
+<div class="hm-belge" style="margin-top:14px"><label>Eşyanın tanımı<input id="i-tanim"></label><label>GTİP<input id="i-gtip" placeholder="0000.00.00.00.00"></label><label>Menşe ülke<input id="i-mense"></label></div></details>
+<h2 style="margin-top:22px;font-size:21px">Kıymet</h2>
+<div class="hm-ayar">
+<label>Para birimi<select id="i-pb"></select></label>
+<label>Kur (TL) · TCMB döviz satış<input id="i-kur" inputmode="decimal"></label>
+<label>Mal bedeli (FOB)<input id="i-fob" inputmode="decimal" placeholder="100.000"></label>
+<label>Navlun<input id="i-nav" inputmode="decimal" placeholder="4.500"></label>
+<label>Sigorta<input id="i-sig" inputmode="decimal" placeholder="340"></label>
+<label>Miktar ve birim (birim maliyet için)<span style="display:flex;gap:8px"><input id="i-mik" inputmode="decimal" placeholder="1.000"><input id="i-bir" placeholder="adet" style="max-width:110px"></span></label>
+</div>
+<p class="hm-not" id="i-aktar" hidden></p>
+<h2 style="margin-top:22px;font-size:21px">Vergi oranları</h2>
+<div class="hm-ayar">
+<label>Gümrük vergisi (%)<input id="i-gv" inputmode="decimal" placeholder="0"></label>
+<label>İlave gümrük vergisi (%)<input id="i-igv" inputmode="decimal" placeholder="0"></label>
+<label>ÖTV (%) · oransal ise<input id="i-otv" inputmode="decimal" placeholder="0"></label>
+<label>KDV oranı<select id="i-kdv"><option value="20" selected>%20</option><option value="10">%10</option><option value="1">%1</option><option value="0">%0 / istisna</option></select></label>
+<label>Diğer vergi, resim ve harçlar (TL)<input id="i-harc" inputmode="decimal" placeholder="damga vergisi vb."></label>
+<label>Beyanname öncesi giderler (TL)<input id="i-once" inputmode="decimal" placeholder="antrepo, ardiye vb."></label>
+</div>
+<h2 style="margin-top:22px;font-size:21px">Gümrükleme sonrası masraflar</h2>
+<div class="hm-ayar">
+<label>Gümrük müşavirliği, liman, yurt içi nakliye (TL, KDV hariç)<input id="i-sonra" inputmode="decimal" placeholder="0"></label>
+<label>İthalatta ödenen KDV<select id="i-indir"><option value="1" selected>İndirilebilir (KDV mükellefi)</option><option value="0">İndirilemez, maliyete eklenir</option></select></label>
+</div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="i-ornek">Örnek veriyle doldur</button><button type="button" class="hm-btn" id="i-temizle">Temizle</button></div>
+</div>
+<h2>Sonuç</h2>
+<div class="hm-tablo-kap"><table class="hm-tablo" style="min-width:520px"><tbody id="i-dokum"></tbody></table></div>
+<div class="hm-izgara" style="margin-top:18px">
+<div class="hm-kutu"><small>Gümrüğe ödenecek vergiler</small><b id="r-vergi">–</b><span>GV, İGV, ÖTV, harçlar ve KDV</span></div>
+<div class="hm-kutu vurgu"><small>Toplam maliyet</small><b id="r-mal">–</b><span id="r-mal2"></span></div>
+<div class="hm-kutu"><small>Birim maliyet</small><b id="r-birim">–</b><span id="r-birim2"></span></div>
+</div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="i-pdf">PDF olarak kaydet</button></div>
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul">
+<b>Gümrük kıymeti (CIF)</b> <code>= (mal bedeli + navlun + sigorta) × kur</code><br>
+<b>Gümrük vergisi</b> <code>= gümrük kıymeti × GV oranı</code> · <b>İGV</b> <code>= gümrük kıymeti × İGV oranı</code><br>
+<b>ÖTV matrahı</b> <code>= gümrük kıymeti + GV + İGV + diğer vergi ve harçlar + beyanname öncesi giderler</code> (ÖTV ve KDV hariç)<br>
+<b>KDV matrahı</b> <code>= gümrük kıymeti + GV + İGV + ÖTV + diğer vergi ve harçlar + beyanname öncesi giderler</code><br>
+<b>Toplam maliyet</b> <code>= gümrük kıymeti + GV + İGV + ÖTV + harçlar + öncesi ve sonrası giderler</code>; KDV indirilebiliyorsa maliyete girmez.
+</div>
+<p class="hm-not">Kur alanına sitede yayımlanan son TCMB döviz satış kuru otomatik gelir; beyanname tescil tarihindeki kuru biliyorsanız değiştirin. Maktu ÖTV, ek mali yükümlülüğün maktu kısmı, gözetim ve damping gibi tutarlar varsa “diğer vergi, resim ve harçlar” alanına TL olarak ekleyin.</p>
+<p style="margin:16px 0 6px;font-weight:600;font-size:14px">Kaynaklar</p>
+<ul class="hm-kaynak"><li>4458 sayılı Gümrük Kanunu md. 27 ve Gümrük Yönetmeliği md. 45/e: giriş yerine kadar nakliye ve sigorta gümrük kıymetine eklenir</li><li>3065 sayılı KDV Kanunu md. 21: ithalatta matrah; gümrük vergisi matrahı, ithalat sırasında ödenen vergi, resim, harç ve paylar, beyannameye kadar yapılan diğer giderler ve kur farkları</li><li>4760 sayılı ÖTV Kanunu md. 11: ithalatta ÖTV matrahı KDV Kanununa göre belirlenen matrahtır (ÖTV ve KDV hariç)</li><li>T.C. Ticaret Bakanlığı: gümrük kıymetinin TL'ye çevrilmesinde TCMB döviz satış kuru</li></ul>
+<div class="hm-uyari">Tahmini hesaptır; kesin vergiler gümrük beyannamesinin tescilinde belirlenir. Antrepo, gözetim, ek mali yükümlülük ve ticaret politikası önlemleri ayrıca değerlendirilmelidir.</div>
+<!--PDFALT-->
+</section>
+<script>
+(function(){var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};el('i-pb').innerHTML=HM.pbSecenek('USD');var K={},kurElle=false;
+ var ALAN=['i-fob','i-nav','i-sig','i-mik','i-gv','i-igv','i-otv','i-harc','i-once','i-sonra'];
+ function z(v){return isFinite(v)?v:0}
+ function kurYaz(){if(kurElle)return;var k=+((K.satis||{})[el('i-pb').value]||0);el('i-kur').value=k?F(k,4):''}
+ function hes(){var kur=S(el('i-kur').value),fob=z(S(el('i-fob').value)),nv=z(S(el('i-nav').value)),sg=z(S(el('i-sig').value)),pb=el('i-pb').value;
+  var cifD=fob+nv+sg,gk=cifD*kur;var gv=gk*z(S(el('i-gv').value))/100,igv=gk*z(S(el('i-igv').value))/100,harc=z(S(el('i-harc').value)),once=z(S(el('i-once').value)),sonra=z(S(el('i-sonra').value));
+  var otvM=gk+gv+igv+harc+once,otv=otvM*z(S(el('i-otv').value))/100,kdvM=otvM+otv,kdvO=+el('i-kdv').value,kdv=kdvM*kdvO/100,indir=el('i-indir').value==='1';
+  var vergi=gv+igv+otv+harc+kdv,mal=gk+gv+igv+otv+harc+once+sonra+(indir?0:kdv),mik=S(el('i-mik').value),bir=el('i-bir').value||'birim';
+  var ok=cifD>0&&kur>0;function tl(v){return ok?F(v)+' TL':'–'}
+  var satir=[['Mal bedeli (FOB)',F(fob)+' '+pb,''],['Navlun',F(nv)+' '+pb,''],['Sigorta',F(sg)+' '+pb,''],['CIF',F(cifD)+' '+pb,'b'],['Kur',ok?F(kur,4)+' TL':'–',''],['Gümrük kıymeti',tl(gk),'b'],
+   ['Gümrük vergisi',tl(gv),''],['İlave gümrük vergisi',tl(igv),''],['Diğer vergi, resim ve harçlar',tl(harc),''],['Beyanname öncesi giderler',tl(once),''],['ÖTV matrahı',tl(otvM),'k'],['ÖTV',tl(otv),''],['KDV matrahı',tl(kdvM),'k'],['KDV (%'+kdvO+')',tl(kdv),''],['Gümrükleme sonrası masraflar',tl(sonra),'']];
+  el('i-dokum').innerHTML=satir.map(function(s){return '<tr><td style="'+(s[2]==='b'?'font-weight:600':s[2]==='k'?'color:#666C72':'')+'">'+s[0]+'</td><td class="sag" style="'+(s[2]==='b'?'font-weight:600':s[2]==='k'?'color:#666C72':'')+'">'+s[1]+'</td></tr>'}).join('');
+  el('r-vergi').textContent=tl(vergi);el('r-mal').textContent=tl(mal);el('r-mal2').textContent=ok?(indir?'KDV hariç · ':'KDV dahil · ')+'≈ '+F(mal/kur)+' '+pb:'';
+  el('r-birim').textContent=ok&&mik>0?F(mal/mik)+' TL':'–';el('r-birim2').textContent=ok&&mik>0?'1 '+bir+' · ≈ '+F(mal/mik/kur,4)+' '+pb+' · CIF\'e göre ×'+F(mal/gk,3):'Miktar girilirse hesaplanır';}
+ ALAN.concat(['i-bir']).forEach(function(i){el(i).addEventListener('input',hes)});['i-kdv','i-indir'].forEach(function(i){el(i).addEventListener('change',hes)});
+ el('i-kur').addEventListener('input',function(){kurElle=true;hes()});el('i-pb').addEventListener('change',function(){kurElle=false;kurYaz();hes()});
+ el('i-ornek').addEventListener('click',function(){var v={'i-fob':'100.000','i-nav':'4.500','i-sig':'340','i-mik':'1.000','i-gv':'6,5','i-igv':'10','i-otv':'0','i-harc':'0','i-once':'0','i-sonra':'35.000'};Object.keys(v).forEach(function(k){el(k).value=v[k]});el('i-bir').value='adet';el('i-tanim').value='Örnek: endüstriyel bağlantı elemanı';el('i-mense').value='Çin';hes()});
+ el('i-temizle').addEventListener('click',function(){ALAN.forEach(function(i){el(i).value=''});hes()});
+ el('i-pdf').addEventListener('click',function(){HM.pdf('İthalat maliyeti')});
+ var h=location.hash.slice(1).split('&').reduce(function(o,p){var a=p.split('=');o[a[0]]=a[1];return o},{});
+ if(h.cif){el('i-fob').value=F(+h.cif);if(h.pb)el('i-pb').value=h.pb;var a=el('i-aktar');a.hidden=false;a.textContent='FOB · CFR · CIF aracından gelen CIF kıymeti mal bedeli alanına aktarıldı; navlun ve sigorta bu tutara dahildir, ayrıca girmeyin.'}
+ HM.kurlar().then(function(k){K=k;kurYaz();hes()});hes();})();
+</script>

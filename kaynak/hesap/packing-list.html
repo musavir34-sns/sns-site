@@ -109,7 +109,7 @@
   y('h-g',F(T.g)+' kg');y('h-h',F(hv)+' kg');y('h-e',F(Math.max(T.g,hv))+' kg');
   y('k-g',F(T.g)+' kg');y('k-h',F(kr)+' kg');y('k-e',F(Math.max(T.g,kr))+' kg');y('k-not','1 m³ = '+kara+' kg');
   y('d-g',F(ton,3)+' t');y('d-h',F(T.m3,3)+' m³');var wm=Math.max(ton,T.m3);y('d-e',F(wm,3)+' W/M'+(wm>0&&wm<1?' (çoğu tarifede en az 1)':''));
-  var k='';if(T.m3>0){k='Konteyner iç hacmine göre yaklaşık doluluk: 20′ (≈33 m³) %'+F(T.m3/33*100,0)+' · 40′ (≈67 m³) %'+F(T.m3/67*100,0)+' · 40′ HC (≈76 m³) %'+F(T.m3/76*100,0)+'. Pratikte iç hacmin yaklaşık %85\'i kullanılabilir.'}
+  var k='';if(T.m3>0){k='Konteyner iç hacmine göre yaklaşık doluluk: 20′ (≈33 m³) %'+F(T.m3/33*100,0)+' · 40′ (≈67 m³) %'+F(T.m3/67*100,0)+' · 40′ HC (≈76 m³) %'+F(T.m3/76*100,0)+'. Pratikte iç hacmin yaklaşık %85\'i kullanılabilir. Ayrıntılı hesap için Konteyner aracını kullanın.'}
   y('kont-not',k);
  }
  tb.addEventListener('input',hesapla);

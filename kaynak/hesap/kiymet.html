@@ -1,0 +1,46 @@
+<!--META {"yol":"/hesaplama-merkezi/fob-cif/","baslik":"FOB, CFR ve CIF kıymet hesaplama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Navlun ve sigorta ile FOB, CFR ve CIF kıymetleri arasında dönüşüm yapın. CIF sigortası Incoterms 2020'deki %110 asgari teminat kuralıyla hesaplanır."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › FOB · CFR · CIF</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
+<h1>FOB · CFR · CIF kıymet</h1>
+<p class="hm-giris">Bildiğiniz kıymeti ve teslim şeklini seçin; navlun ve sigorta ile diğer iki kıymet hesaplanır. Türkiye'de ithalatta gümrük vergileri CIF esaslı kıymet üzerinden hesaplandığı için bu dönüşüm ithalat maliyetinin de ilk adımıdır.</p>
+<div class="hm-kart"><div class="hm-ayar">
+<label>Bilinen kıymet<input id="v-tutar" inputmode="decimal" placeholder="100.000"></label>
+<label>Bu kıymetin teslim şekli<select id="v-tur"><option value="FOB">FOB (yükleme limanında, gemi güvertesinde)</option><option value="CFR">CFR (navlun dahil)</option><option value="CIF">CIF (navlun ve sigorta dahil)</option></select></label>
+<label>Para birimi<select id="v-pb"></select></label>
+<label>Navlun (aynı para biriminde)<input id="v-navlun" inputmode="decimal" placeholder="4.500"></label>
+<label>Sigorta prim oranı (%)<input id="v-oran" inputmode="decimal" placeholder="0,30" value="0,30"></label>
+<label>Sigorta tutarı biliniyorsa (isteğe bağlı)<input id="v-sig" inputmode="decimal" placeholder="oran yerine kullanılır"></label>
+</div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="v-ornek">Örnek veriyle doldur</button></div></div>
+<h2>Sonuç</h2>
+<div class="hm-izgara">
+<div class="hm-kutu"><small>FOB</small><b id="r-fob">–</b></div>
+<div class="hm-kutu"><small>Navlun</small><b id="r-nav">–</b></div>
+<div class="hm-kutu"><small>CFR</small><b id="r-cfr">–</b></div>
+<div class="hm-kutu"><small>Sigorta primi</small><b id="r-sig">–</b><span id="r-sig2"></span></div>
+<div class="hm-kutu vurgu"><small>CIF</small><b id="r-cif">–</b><span id="r-tl"></span></div>
+</div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="v-pdf">PDF olarak kaydet</button><a class="hm-btn" id="v-ithalat" href="/hesaplama-merkezi/ithalat-maliyeti/" style="text-decoration:none;display:inline-flex;align-items:center">CIF ile ithalat maliyetini hesapla →</a></div>
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul"><b>CFR</b> <code>= FOB + navlun</code><br><b>Sigorta primi</b> <code>= CIF × %110 × prim oranı</code> (Incoterms 2020: CIF'te asgari teminat sözleşme bedelinin %110'u)<br><b>CIF</b> <code>= CFR ÷ (1 − 1,1 × prim oranı)</code> — prim CIF'in kendisi üzerinden hesaplandığı için<br>Sigorta tutarı girilirse: <code>CIF = CFR + sigorta tutarı</code><br>CIF biliniyorsa: <code>CFR = CIF × (1 − 1,1 × oran)</code>, <code>FOB = CFR − navlun</code></div>
+<p class="hm-not">TL karşılığı, sitede yayımlanan son TCMB döviz satış kuruyla gösterilir. İthalatta gümrük kıymeti, gümrük yükümlülüğünün doğduğu tarihteki TCMB döviz satış kuruyla TL'ye çevrilir.</p>
+<p style="margin:16px 0 6px;font-weight:600;font-size:14px">Kaynaklar</p>
+<ul class="hm-kaynak"><li>ICC Incoterms® 2020, CIF kuralı A5: Institute Cargo Clauses (C) kapsamında, sözleşme bedelinin en az %110'u oranında sigorta</li><li>4458 sayılı Gümrük Kanunu md. 27 ve Gümrük Yönetmeliği md. 45/e: Türkiye'deki giriş yerine kadar yapılan nakliye ve sigorta giderleri gümrük kıymetine eklenir</li><li>T.C. Ticaret Bakanlığı, Gümrük kıymeti sıkça sorulan sorular: TL'ye çevirmede TCMB döviz satış kuru</li></ul>
+<div class="hm-uyari">Prim oranı, teminat kapsamı ve emtiaya göre değişir; poliçedeki oran esastır.</div>
+<!--PDFALT-->
+</section>
+<script>
+(function(){var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};el('v-pb').innerHTML=HM.pbSecenek('USD');var K={};
+ function hes(){var t=S(el('v-tutar').value),tur=el('v-tur').value,nv=S(el('v-navlun').value)||0,r=(S(el('v-oran').value)||0)/100,sg=S(el('v-sig').value),pb=el('v-pb').value;
+  var fob,cfr,cif,prim;if(!(t>0)){['r-fob','r-nav','r-cfr','r-sig','r-cif'].forEach(function(i){el(i).textContent='–'});el('r-tl').textContent='';return}
+  if(tur==='FOB'){fob=t;cfr=t+nv;cif=sg>0?cfr+sg:cfr/(1-1.1*r)}else if(tur==='CFR'){cfr=t;fob=t-nv;cif=sg>0?cfr+sg:cfr/(1-1.1*r)}else{cif=t;cfr=sg>0?cif-sg:cif*(1-1.1*r);fob=cfr-nv}
+  prim=cif-cfr;var u=' '+pb;el('r-fob').textContent=F(fob)+u;el('r-nav').textContent=F(nv)+u;el('r-cfr').textContent=F(cfr)+u;el('r-sig').textContent=F(prim)+u;
+  el('r-sig2').textContent='Teminat (%110): '+F(cif*1.1)+u;el('r-cif').textContent=F(cif)+u;
+  var k=+((K.satis||{})[pb]||0);el('r-tl').textContent=k?'≈ '+F(cif*k)+' TL (TCMB satış '+F(k,4)+', '+K.tarih+')':'';
+  el('v-ithalat').href='/hesaplama-merkezi/ithalat-maliyeti/#cif='+cif.toFixed(2)+'&pb='+pb;}
+ ['v-tutar','v-navlun','v-oran','v-sig'].forEach(function(i){el(i).addEventListener('input',hes)});['v-tur','v-pb'].forEach(function(i){el(i).addEventListener('change',hes)});
+ el('v-ornek').addEventListener('click',function(){el('v-tutar').value='100.000';el('v-tur').value='FOB';el('v-navlun').value='4.500';el('v-oran').value='0,30';el('v-sig').value='';hes()});
+ el('v-pdf').addEventListener('click',function(){HM.pdf('FOB CFR CIF kıymet')});HM.kurlar().then(function(k){K=k;hes()});hes();})();
+</script>

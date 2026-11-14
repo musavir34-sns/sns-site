@@ -235,7 +235,7 @@ details.hm-acilir{margin-top:14px}details.hm-acilir summary{cursor:pointer;font-
 </header>
 <script>var HM=(function(){
  function sayi(v){if(v==null)return NaN;v=String(v).trim().replace(/\s/g,'');if(!v)return NaN;
-  if(v.indexOf(',')>=0){v=v.replace(/\./g,'').replace(',','.')}return parseFloat(v)}
+  if(v.indexOf(',')>=0){v=v.replace(/\./g,'').replace(',','.')}else if(/^-?\d{1,3}(\.\d{3})+$/.test(v)){v=v.replace(/\./g,'')}return parseFloat(v)}
  function f(n,d){if(!isFinite(n))return '–';return n.toLocaleString('tr-TR',{minimumFractionDigits:d==null?2:d,maximumFractionDigits:d==null?2:d})}
  function bugun(){return new Date().toLocaleDateString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric'})}
  function pdf(baslik){var eski=document.title;document.title=baslik+' · '+bugun().replace(/\./g,'-');
@@ -244,6 +244,9 @@ details.hm-acilir{margin-top:14px}details.hm-acilir summary{cursor:pointer;font-
   window.print();setTimeout(function(){document.title=eski},500)}
  return {sayi:sayi,f:f,bugun:bugun,pdf:pdf};
 })();
+HM.kurlar=function(){if(!HM._k)HM._k=fetch('/kurlar.json',{cache:'no-store'}).then(function(r){return r.json()}).catch(function(){return {kurlar:{},satis:{}}});return HM._k};
+HM.PB=[['USD','ABD doları'],['EUR','Euro'],['GBP','İngiliz sterlini'],['CNY','Çin yuanı'],['CHF','İsviçre frangı'],['JPY','Japon yeni'],['RUB','Rus rublesi'],['QAR','Katar riyali'],['AED','BAE dirhemi'],['SAR','Suudi riyali']];
+HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'+p[0]+'"'+(p[0]===sec?' selected':'')+'>'+p[0]+' · '+p[1]+'</option>'}).join('')};
 </script>
 <section class="hm">
 <p class="hm-ust">SNS İş Dünyası</p>
@@ -252,10 +255,10 @@ details.hm-acilir{margin-top:14px}details.hm-acilir summary{cursor:pointer;font-
 <h2>Dış ticaret</h2>
 <div class="hm-katalog">
 <a class="hm-arac" href="/hesaplama-merkezi/packing-list/"><h3>Packing list ve taşıma ağırlığı</h3><p>Koli ölçülerinden hacim (CBM), brüt/net ağırlık, desi; ekspres, hava, karayolu ve deniz yolu esas ağırlığı.</p><em>Aracı aç →</em></a>
-<div class="hm-arac yakinda"><h3>CBM ve konteyner doluluğu</h3><p>20′, 40′ ve 40′ HC konteynerlerde hacim ve ağırlık doluluğu.</p><em>Hazırlanıyor</em></div>
-<div class="hm-arac yakinda"><h3>FOB · CFR · CIF kıymet</h3><p>Navlun ve sigorta ile teslim şekilleri arasında kıymet dönüşümü.</p><em>Hazırlanıyor</em></div>
-<div class="hm-arac yakinda"><h3>İthalat maliyet tahmini</h3><p>CIF kıymet, gümrük vergisi, İGV, ÖTV, KDV ve masraflarla birim maliyet.</p><em>Hazırlanıyor</em></div>
-<div class="hm-arac yakinda"><h3>Kur dönüşümü</h3><p>TCMB gösterge kurları ile döviz–TL dönüşümü.</p><em>Hazırlanıyor</em></div>
+<a class="hm-arac" href="/hesaplama-merkezi/konteyner/"><h3>CBM ve konteyner doluluğu</h3><p>20′, 40′, 40′ HC ve tırda hacim/ağırlık doluluğu, gereken araç sayısı, sığan koli adedi.</p><em>Aracı aç →</em></a>
+<a class="hm-arac" href="/hesaplama-merkezi/fob-cif/"><h3>FOB · CFR · CIF kıymet</h3><p>Navlun ve sigorta ile teslim şekilleri arasında kıymet dönüşümü; %110 teminat kuralı.</p><em>Aracı aç →</em></a>
+<a class="hm-arac" href="/hesaplama-merkezi/ithalat-maliyeti/"><h3>İthalat maliyet tahmini</h3><p>Gümrük kıymeti, GV, İGV, ÖTV, KDV ve masraflarla toplam ve birim maliyet.</p><em>Aracı aç →</em></a>
+<a class="hm-arac" href="/hesaplama-merkezi/kur-donusumu/"><h3>Kur dönüşümü</h3><p>TCMB döviz alış ve satış kurlarıyla döviz–TL dönüşümü.</p><em>Aracı aç →</em></a>
 </div>
 <h2>Vergi</h2>
 <div class="hm-katalog">
@@ -341,7 +344,7 @@ details.hm-acilir{margin-top:14px}details.hm-acilir summary{cursor:pointer;font-
     {b:'Yazılar · vergi ve mevzuat',l:[['Madde 18 mi, şirket mi?','/yazilar/#madde-18'],['Prim günü mü, kazanç matrahı mı?','/yazilar/#prim-gunu'],['E-ticarette yeni gümrük kuralları','/yazilar/#e-ticaret-gumruk'],['Kooperatiflerde dış denetçi','/yazilar/#kooperatif-denetim']]},
     {b:'Yazılar · medya ve sinema',l:[['Türk dizi sektörünün finansal analizi','/yazilar/#dizi-ihracat'],['Yapım şirketlerinde mali yapı','/yazilar/#kamera-arkasi'],['Sinema salonu işletmeciliği','/yazilar/#sinema-salon']]}]},
   '/pratik-bilgiler/':{t:'Hesaplama Merkezi',g:'SNS İş Dünyası Hesaplama Merkezi',a:'Dış ticaret, vergi, personel ve finans hesaplamaları; her araçta formül ve kaynak gösterilir.',h:'/hesaplama-merkezi/',k:[
-    {b:'Dış ticaret',l:[['Packing list ve taşıma ağırlığı','/hesaplama-merkezi/packing-list/'],['Tüm araçlar','/hesaplama-merkezi/']]},
+    {b:'Dış ticaret',l:[['Packing list ve taşıma ağırlığı','/hesaplama-merkezi/packing-list/'],['CBM ve konteyner doluluğu','/hesaplama-merkezi/konteyner/'],['FOB · CFR · CIF kıymet','/hesaplama-merkezi/fob-cif/'],['İthalat maliyet tahmini','/hesaplama-merkezi/ithalat-maliyeti/'],['Kur dönüşümü','/hesaplama-merkezi/kur-donusumu/'],['Tüm araçlar','/hesaplama-merkezi/']]},
     {b:'Vergi ve personel',l:[['KDV hesaplama','/pratik-bilgiler/#h-kdv'],['Net – brüt maaş','/pratik-bilgiler/#h-maas'],['Kıdem ve ihbar tazminatı','/pratik-bilgiler/#h-kidem'],['Gelir vergisi','/pratik-bilgiler/#h-gv'],['Gecikme zammı','/pratik-bilgiler/#h-gz'],['Damga vergisi','/pratik-bilgiler/#h-dv']]},
     {b:'Pratik bilgiler',l:[['Oranlar ve tutarlar 2026','/pratik-bilgiler/#oranlar'],['Vergi takvimi','/pratik-bilgiler/#takvim'],['Sık sorulan sorular','/pratik-bilgiler/#sss'],['Pişmanlık dilekçesi','/pratik-bilgiler/#pismanlik'],['Uzlaşma talebi','/pratik-bilgiler/#uzlasma'],['Şirket kuruluşu bilgileri','/pratik-bilgiler/#kurulus-listesi']]}]}
  };
