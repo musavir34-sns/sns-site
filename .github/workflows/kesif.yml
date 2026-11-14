@@ -12,12 +12,11 @@ jobs:
           mkdir -p out
           i=0
           for u in \
-            "https://www.turmob.org.tr/" \
-            "https://www.turmob.org.tr/ekutuphane/e2f9f8fd-af81-456b-8626-2e938f66dd45/mevzuat-sirkuleri/1" \
-            "https://www.turmob.org.tr/ekutuphane/5a9b323d-2a6b-4cb8-b6e5-37c035ec18a8/mevzuat-sirkuleri/1" \
-            "https://www.ismmmo.org.tr/" \
-            "https://www.ismmmo.org.tr/duyurular" \
-            "https://www.ismmmo.org.tr/mevzuat" ; do
+            "https://www.turmob.org.tr/Sirkuler" \
+            "https://ismmmo.org.tr/Yayin/2026-Mevzuat-Sirkulerleri--17144" \
+            "https://www.turmob.org.tr/ekutuphane/dc8d2536-e967-4326-b0da-7fb62520ca32/gundemde-one-cikanlar/1" \
+            "https://www.turmob.org.tr/Content/js/scripts.js" \
+            "https://www.turmob.org.tr/Haberler" ; do
             i=$((i+1))
             curl -sSL -m 40 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36" -o out/$i.html -w "$i %{http_code} %{size_download} %{url_effective}\n" "$u" >> out/ozet.txt || echo "$i HATA $u" >> out/ozet.txt
           done
