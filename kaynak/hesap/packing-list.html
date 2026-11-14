@@ -57,7 +57,7 @@
 
 <div class="hm-dugmeler">
 <button type="button" class="hm-btn ana" id="pl-pdf">PDF olarak kaydet</button>
-<a class="hm-btn" href="/hesaplama-merkezi/ihracat-belgeleri/" style="text-decoration:none;display:inline-flex;align-items:center">Kendi logonuzla Invoice ve Packing List hazırlayın →</a>
+<a class="hm-btn" id="pl-tas" href="/hesaplama-merkezi/tasima-karsilastirma/" style="text-decoration:none;display:inline-flex;align-items:center">Taşıma tekliflerini karşılaştır →</a><a class="hm-btn" href="/hesaplama-merkezi/ihracat-belgeleri/" style="text-decoration:none;display:inline-flex;align-items:center">Kendi logonuzla Invoice ve Packing List hazırlayın →</a>
 </div>
 <p class="hm-not hm-ekran">Düğme, tarayıcınızın yazdırma penceresini açar; hedef olarak <b>“PDF olarak kaydet”</b> seçin. Telefonda paylaş menüsünden PDF olarak kaydedilebilir.</p>
 
@@ -112,6 +112,7 @@
   y('d-g',F(ton,3)+' t');y('d-h',F(T.m3,3)+' m³');var wm=Math.max(ton,T.m3);y('d-e',F(wm,3)+' W/M'+(wm>0&&wm<1?' (çoğu tarifede en az 1)':''));
   var k='';if(T.m3>0){k='Konteyner iç hacmine göre yaklaşık doluluk: 20′ (≈33 m³) %'+F(T.m3/33*100,0)+' · 40′ (≈67 m³) %'+F(T.m3/67*100,0)+' · 40′ HC (≈76 m³) %'+F(T.m3/76*100,0)+'. Pratikte iç hacmin yaklaşık %85\'i kullanılabilir. Ayrıntılı hesap için Konteyner aracını kullanın.'}
   y('kont-not',k);
+  document.getElementById('pl-tas').href='/hesaplama-merkezi/tasima-karsilastirma/'+(T.g||T.m3?'#kg='+(+T.g.toFixed(2))+'&m3='+(+T.m3.toFixed(4)):'');
  }
  tb.addEventListener('input',hesapla);
  tb.addEventListener('click',function(e){var b=e.target.closest('.hm-sil');if(b){b.closest('tr').remove();if(!tb.rows.length)satir();hesapla()}});

@@ -312,7 +312,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
 
 <div class="hm-dugmeler">
 <button type="button" class="hm-btn ana" id="pl-pdf">PDF olarak kaydet</button>
-<a class="hm-btn" href="/hesaplama-merkezi/ihracat-belgeleri/" style="text-decoration:none;display:inline-flex;align-items:center">Kendi logonuzla Invoice ve Packing List hazırlayın →</a>
+<a class="hm-btn" id="pl-tas" href="/hesaplama-merkezi/tasima-karsilastirma/" style="text-decoration:none;display:inline-flex;align-items:center">Taşıma tekliflerini karşılaştır →</a><a class="hm-btn" href="/hesaplama-merkezi/ihracat-belgeleri/" style="text-decoration:none;display:inline-flex;align-items:center">Kendi logonuzla Invoice ve Packing List hazırlayın →</a>
 </div>
 <p class="hm-not hm-ekran">Düğme, tarayıcınızın yazdırma penceresini açar; hedef olarak <b>“PDF olarak kaydet”</b> seçin. Telefonda paylaş menüsünden PDF olarak kaydedilebilir.</p>
 
@@ -367,6 +367,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
   y('d-g',F(ton,3)+' t');y('d-h',F(T.m3,3)+' m³');var wm=Math.max(ton,T.m3);y('d-e',F(wm,3)+' W/M'+(wm>0&&wm<1?' (çoğu tarifede en az 1)':''));
   var k='';if(T.m3>0){k='Konteyner iç hacmine göre yaklaşık doluluk: 20′ (≈33 m³) %'+F(T.m3/33*100,0)+' · 40′ (≈67 m³) %'+F(T.m3/67*100,0)+' · 40′ HC (≈76 m³) %'+F(T.m3/76*100,0)+'. Pratikte iç hacmin yaklaşık %85\'i kullanılabilir. Ayrıntılı hesap için Konteyner aracını kullanın.'}
   y('kont-not',k);
+  document.getElementById('pl-tas').href='/hesaplama-merkezi/tasima-karsilastirma/'+(T.g||T.m3?'#kg='+(+T.g.toFixed(2))+'&m3='+(+T.m3.toFixed(4)):'');
  }
  tb.addEventListener('input',hesapla);
  tb.addEventListener('click',function(e){var b=e.target.closest('.hm-sil');if(b){b.closest('tr').remove();if(!tb.rows.length)satir();hesapla()}});
@@ -444,7 +445,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
     {b:'Yazılar · vergi ve mevzuat',l:[['Madde 18 mi, şirket mi?','/yazilar/#madde-18'],['Prim günü mü, kazanç matrahı mı?','/yazilar/#prim-gunu'],['E-ticarette yeni gümrük kuralları','/yazilar/#e-ticaret-gumruk'],['Kooperatiflerde dış denetçi','/yazilar/#kooperatif-denetim']]},
     {b:'Yazılar · medya ve sinema',l:[['Türk dizi sektörünün finansal analizi','/yazilar/#dizi-ihracat'],['Yapım şirketlerinde mali yapı','/yazilar/#kamera-arkasi'],['Sinema salonu işletmeciliği','/yazilar/#sinema-salon']]}]},
   '/pratik-bilgiler/':{t:'Hesaplama Merkezi',g:'SNS İş Dünyası Hesaplama Merkezi',a:'Dış ticaret, vergi, personel ve finans hesaplamaları; her araçta formül ve kaynak gösterilir.',h:'/hesaplama-merkezi/',k:[
-    {b:'Dış ticaret',l:[['Commercial Invoice ve Packing List','/hesaplama-merkezi/ihracat-belgeleri/#commercial'],['Proforma Invoice','/hesaplama-merkezi/ihracat-belgeleri/#proforma'],['Incoterms 2020 rehberi','/hesaplama-merkezi/incoterms/'],['Packing list ve taşıma ağırlığı','/hesaplama-merkezi/packing-list/'],['CBM ve konteyner doluluğu','/hesaplama-merkezi/konteyner/'],['FOB · CFR · CIF kıymet','/hesaplama-merkezi/fob-cif/'],['İthalat maliyet tahmini','/hesaplama-merkezi/ithalat-maliyeti/'],['Kur dönüşümü','/hesaplama-merkezi/kur-donusumu/'],['Tüm araçlar','/hesaplama-merkezi/']]},
+    {b:'Dış ticaret',l:[['Commercial Invoice ve Packing List','/hesaplama-merkezi/ihracat-belgeleri/#commercial'],['Proforma Invoice','/hesaplama-merkezi/ihracat-belgeleri/#proforma'],['Incoterms 2020 rehberi','/hesaplama-merkezi/incoterms/'],['Taşıma şekli karşılaştırma','/hesaplama-merkezi/tasima-karsilastirma/'],['Packing list ve taşıma ağırlığı','/hesaplama-merkezi/packing-list/'],['CBM ve konteyner doluluğu','/hesaplama-merkezi/konteyner/'],['FOB · CFR · CIF kıymet','/hesaplama-merkezi/fob-cif/'],['İthalat maliyet tahmini','/hesaplama-merkezi/ithalat-maliyeti/'],['Kur dönüşümü','/hesaplama-merkezi/kur-donusumu/'],['Tüm araçlar','/hesaplama-merkezi/']]},
     {b:'Vergi, personel ve finans',l:[['KDV tevkifatı','/hesaplama-merkezi/kdv-tevkifati/'],['Kâr marjı / kâr oranı','/hesaplama-merkezi/kar-marji/'],['KDV hesaplama','/pratik-bilgiler/#h-kdv'],['Net – brüt maaş','/pratik-bilgiler/#h-maas'],['Kıdem ve ihbar tazminatı','/pratik-bilgiler/#h-kidem'],['Gelir vergisi','/pratik-bilgiler/#h-gv'],['Gecikme zammı','/pratik-bilgiler/#h-gz'],['Damga vergisi','/pratik-bilgiler/#h-dv']]},
     {b:'Pratik bilgiler',l:[['Oranlar ve tutarlar 2026','/pratik-bilgiler/#oranlar'],['Vergi takvimi','/pratik-bilgiler/#takvim'],['Sık sorulan sorular','/pratik-bilgiler/#sss'],['Pişmanlık dilekçesi','/pratik-bilgiler/#pismanlik'],['Uzlaşma talebi','/pratik-bilgiler/#uzlasma'],['Şirket kuruluşu bilgileri','/pratik-bilgiler/#kurulus-listesi']]}]}
  };

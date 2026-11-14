@@ -1,0 +1,141 @@
+<!--META {"yol":"/hesaplama-merkezi/tasima-karsilastirma/","baslik":"Taşıma şekli karşılaştırma: ekspres, hava, kara, deniz · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Aynı yük için ekspres kargo, hava kargo, karayolu parsiyel, deniz LCL ve FCL seçeneklerinde esas ağırlık, navlun, transit süre, yoldaki stokun finansman maliyeti ve ithalatta navlunun vergi etkisi."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Dış ticaret › Taşıma şekli karşılaştırma</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Dış ticaret</p>
+<h1>Taşıma şekli karşılaştırma</h1>
+<p class="hm-giris">Aynı yük için aldığınız ekspres, hava, karayolu ve deniz yolu tekliflerini yan yana koyun. Araç her seçenekte fiyatlandırmaya esas birimi kendisi bulur. Navlunun yanında yoldaki malın finansman maliyetini ve ithalatta navlunun gümrük vergisine etkisini de hesaba katar. Sonuçta en ucuz ve en hızlı seçeneği gösterir.</p>
+<style>
+.tk-tablo{min-width:980px}
+.tk-tablo th:first-child,.tk-tablo td:first-child{position:sticky;left:0;background:#FFF;z-index:1;min-width:190px}
+.tk-tablo td{text-align:right}.tk-tablo td:first-child{text-align:left;font-weight:600}
+.tk-tablo th{text-align:right}.tk-tablo th:first-child{text-align:left}
+.tk-tablo th small{display:block;font-weight:500;letter-spacing:0;text-transform:none;color:#9AA0A6;margin-top:2px}
+.tk-tablo input{text-align:right;max-width:120px;margin-left:auto;display:block}
+.tk-tablo select{max-width:140px;margin-left:auto;display:block}
+.tk-tablo tr.ara td{background:#F9FAF8;font:600 11.5px/1.3 Manrope,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#666C72;text-align:left}
+.tk-tablo tr.top td{border-top:2px solid #2B2F33;font-weight:700;font-size:15px}
+.tk-tablo tr.top td b{font:500 19px/1.2 Fraunces,serif}
+.tk-tablo tr.kapali td:not(:first-child){color:#B9BEC2}
+.tk-rozet{display:inline-block;font:700 10.5px/1 Manrope,sans-serif;letter-spacing:.04em;padding:5px 8px;border-radius:999px;margin:3px 0 0 4px;white-space:nowrap}
+.tk-rozet.u{background:#3DDC97;color:#14281E}.tk-rozet.h{background:#2B2F33;color:#FFF}
+.tk-ac{display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:12px;font-weight:600;color:#4A5056;cursor:pointer;text-transform:none;letter-spacing:0}
+.tk-ac input{width:16px;height:16px;min-height:0;margin:0;accent-color:#1FA86D}
+@media print{.tk-tablo{min-width:0!important}.tk-tablo th:last-child,.tk-tablo td:last-child{display:table-cell!important}
+ .tk-tablo th:nth-child(2),.tk-tablo td:nth-child(2){width:auto!important}.tk-tablo input,.tk-tablo select{text-align:right;border:0;padding:0;min-height:0;font-size:10px;-webkit-appearance:none;appearance:none;background:none}
+ .tk-tablo td,.tk-tablo th{font-size:9.5px!important;padding:3px!important}.tk-tablo tr.top td b{font-size:12px}.tk-rozet{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:8px;padding:2px 5px}.tk-ac input{display:none}}
+</style>
+
+<div class="hm-kart">
+<div class="hm-ayar">
+<label>Brüt ağırlık (kg)<input id="y-kg" inputmode="decimal" placeholder="294"></label>
+<label>Hacim (m³)<input id="y-m3" inputmode="decimal" placeholder="1,47"></label>
+<label>Para birimi<select id="y-pb"></select></label>
+<label>Malın değeri (fatura bedeli)<input id="y-deger" inputmode="decimal" placeholder="25.000"></label>
+<label>Yıllık finansman maliyeti (%)<input id="y-fin" inputmode="decimal" placeholder="ör. 12"></label>
+<label>Yön<select id="y-yon"><option value="ihr">İhracat / diğer</option><option value="ith">Türkiye'ye ithalat</option></select></label>
+<label id="y-gv-et" style="display:none">Gümrük vergisi oranı (%)<input id="y-gv" inputmode="decimal" placeholder="ör. 8"></label>
+<label id="y-kdv-et" style="display:none">İthalat KDV oranı<select id="y-kdv"><option value="20" selected>%20</option><option value="10">%10</option><option value="1">%1</option></select></label>
+</div>
+<p class="hm-not" id="y-aktar" hidden></p>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="t-ornek">Örnek veriyle doldur</button><button type="button" class="hm-btn" id="t-temizle">Teklifleri temizle</button></div>
+</div>
+
+<h2>Teklifler ve sonuç</h2>
+<p class="hm-not" style="margin:0 0 12px">Her sütuna o taşıma şekli için aldığınız teklifi girin; teklifiniz olmayan sütunun kutucuğunu kaldırın. Doğru karşılaştırma için tekliflerin aynı kapsamda olması gerekir (ör. hepsi kapıdan kapıya).</p>
+<div class="hm-tablo-kap"><table class="hm-tablo tk-tablo"><thead id="t-bas"></thead><tbody id="t-govde"></tbody></table></div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="t-pdf">PDF olarak kaydet</button><a class="hm-btn" href="/hesaplama-merkezi/packing-list/" style="text-decoration:none;display:inline-flex;align-items:center">Ağırlık ve hacmi koli ölçülerinden hesapla →</a></div>
+
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul">
+<b>Ekspres kargo:</b> <code>esas ağırlık = büyük olan (brüt kg, m³ × 200)</code> · 5.000 cm³ = 1 kg<br>
+<b>Hava kargo:</b> <code>esas ağırlık = büyük olan (brüt kg, m³ × 166,67)</code> · IATA, 6.000 cm³ = 1 kg<br>
+<b>Karayolu parsiyel:</b> <code>esas ağırlık = büyük olan (brüt kg, m³ × 333)</code><br>
+<b>Deniz yolu LCL:</b> <code>navlun birimi (W/M) = büyük olan (ton, m³)</code><br>
+<b>Deniz yolu FCL:</b> <code>konteyner adedi = büyük olan (m³ ÷ kullanılabilir hacim, kg ÷ azami yük)</code> · kullanılabilir hacim iç hacmin %85'i<br>
+<b>Navlun:</b> <code>büyük olan (esas birim × birim fiyat, asgari ücret) + sabit masraflar</code><br>
+<b>Yoldaki stokun finansman maliyeti:</b> <code>malın değeri × yıllık oran × transit gün ÷ 365</code><br>
+<b>İthalatta navlunun vergi etkisi:</b> <code>gümrük vergisi = navlun × GV oranı</code> · <code>KDV = (navlun + GV) × KDV oranı</code>
+</div>
+<ul class="hm-kaynak">
+<li>Türkiye'ye ithalatta varış yerine kadar taşıma ve sigorta giderleri gümrük kıymetine eklenir (Gümrük Kanunu md. 27). Bu nedenle pahalı navlun gümrük vergisini de artırır; gümrük vergisi maliyettir.</li>
+<li>İthalatta ödenen KDV, KDV mükellefi için genellikle indirilebilir; bu nedenle toplam maliyete eklenmez, nakit etkisi olarak ayrı gösterilir.</li>
+<li>Yoldaki malın finansman maliyeti, ödemesi yapılmış ama henüz satılamayan malın bağladığı paranın maliyetidir; hızlı taşımanın yüksek navlununu kısmen telafi eder.</li>
+<li>Hacim bölenleri ve karayolu oranı yaygın uygulamadır; taşıyıcınızın kullandığı oranı teklifte kontrol edin.</li>
+</ul>
+<div class="hm-uyari">Araç, girdiğiniz tekliflere göre karşılaştırma yapar; fiyat önermez. Örnek veriler yalnızca aracın kullanımını göstermek içindir, piyasa fiyatı değildir. Taşıyıcının teklif ve tarife koşulları esastır.</div>
+<!--PDFALT-->
+</section>
+<script>
+(function(){var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};
+ el('y-pb').innerHTML=HM.pbSecenek('USD');
+ var KONT={'20':['20′',5.898*2.352*2.393*0.85,28200],'40':['40′',12.032*2.352*2.393*0.85,26700],'40HC':['40′ HC',12.032*2.352*2.698*0.85,26500]};
+ var M=[
+  {k:'eks',ad:'Ekspres kargo',birim:'kg'},
+  {k:'hav',ad:'Hava kargo',birim:'kg'},
+  {k:'kar',ad:'Karayolu parsiyel',birim:'kg'},
+  {k:'lcl',ad:'Deniz yolu LCL',birim:'W/M'},
+  {k:'fcl',ad:'Deniz yolu FCL',birim:'konteyner'}];
+ var GIR=[['fiyat','Birim fiyat'],['min','Asgari ücret'],['sabit','Sabit masraflar'],['gun','Transit süre (gün)']];
+ function birimEt(m){return m.k==='fcl'?'konteyner başına':(m.birim+' başına')}
+ el('t-bas').innerHTML='<tr><th>Kalem</th>'+M.map(function(m){return '<th><label class="tk-ac"><input type="checkbox" data-ac="'+m.k+'" checked>'+m.ad+'</label></th>'}).join('')+'</tr>';
+ var g='';
+ g+='<tr class="ara"><td colspan="6">Esas birim</td></tr>';
+ g+='<tr><td>Hacimsel ağırlık / karşılık</td>'+M.map(function(m){return '<td data-o="'+m.k+'-hac"></td>'}).join('')+'</tr>';
+ g+='<tr><td>Fiyatlandırmaya esas birim</td>'+M.map(function(m){return '<td data-o="'+m.k+'-esas"></td>'}).join('')+'</tr>';
+ g+='<tr class="ara"><td colspan="6">Teklif</td></tr>';
+ g+='<tr><td>Konteyner tipi</td>'+M.map(function(m){return '<td>'+(m.k==='fcl'?'<select data-i="fcl-tip"><option value="20">20′</option><option value="40">40′</option><option value="40HC">40′ HC</option></select>':'')+'</td>'}).join('')+'</tr>';
+ GIR.forEach(function(r){g+='<tr><td>'+r[1]+'<span class="tk-alt" data-r="'+r[0]+'"></span></td>'+M.map(function(m){return '<td><input data-i="'+m.k+'-'+r[0]+'" inputmode="decimal" aria-label="'+m.ad+' '+r[1]+'"'+(r[0]==='fiyat'?' placeholder="'+birimEt(m)+'"':'')+'></td>'}).join('')+'</tr>'});
+ g+='<tr class="ara"><td colspan="6">Maliyet</td></tr>';
+ g+='<tr><td>Navlun</td>'+M.map(function(m){return '<td data-o="'+m.k+'-nav"></td>'}).join('')+'</tr>';
+ g+='<tr><td>Yoldaki stokun finansman maliyeti</td>'+M.map(function(m){return '<td data-o="'+m.k+'-fin"></td>'}).join('')+'</tr>';
+ g+='<tr class="ith"><td>Navlun üzerinden gümrük vergisi</td>'+M.map(function(m){return '<td data-o="'+m.k+'-gv"></td>'}).join('')+'</tr>';
+ g+='<tr class="top"><td>Toplam lojistik maliyet</td>'+M.map(function(m){return '<td data-o="'+m.k+'-top"></td>'}).join('')+'</tr>';
+ g+='<tr><td>Kilogram başına</td>'+M.map(function(m){return '<td data-o="'+m.k+'-kg"></td>'}).join('')+'</tr>';
+ g+='<tr><td>Malın değerine oranı</td>'+M.map(function(m){return '<td data-o="'+m.k+'-oran"></td>'}).join('')+'</tr>';
+ g+='<tr class="ith"><td>İthalat KDV nakit etkisi (indirilebilir)</td>'+M.map(function(m){return '<td data-o="'+m.k+'-kdv"></td>'}).join('')+'</tr>';
+ el('t-govde').innerHTML=g;
+ function o(id,t){var e=document.querySelector('[data-o="'+id+'"]');if(e)e.innerHTML=t}
+ function iv(id){return S(document.querySelector('[data-i="'+id+'"]').value)}
+ function hes(){var kg=S(el('y-kg').value),m3=S(el('y-m3').value),pb=el('y-pb').value,deg=S(el('y-deger').value),fin=S(el('y-fin').value)/100,ith=el('y-yon').value==='ith',gv=(S(el('y-gv').value)||0)/100,kdv=+el('y-kdv').value/100;
+  el('y-gv-et').style.display=el('y-kdv-et').style.display=ith?'':'none';
+  document.querySelectorAll('.tk-tablo tr.ith').forEach(function(t){t.style.display=ith?'':'none'});
+  kg=isFinite(kg)?kg:0;m3=isFinite(m3)?m3:0;
+  var P=function(x){return isFinite(x)?F(x)+' '+pb:'–'};
+  var sonuc=[];
+  M.forEach(function(m){var ac=document.querySelector('[data-ac="'+m.k+'"]').checked,hac,esas,es;
+   document.querySelectorAll('[data-o^="'+m.k+'-"],[data-i^="'+m.k+'-"]').forEach(function(c){var td=c.closest('td');if(td)td.style.opacity=ac?'':'.35'});
+   if(m.k==='eks'){hac=m3*200;esas=Math.max(kg,hac);o('eks-hac',F(hac)+' kg');es=F(esas)+' kg'}
+   else if(m.k==='hav'){hac=m3*1e6/6000;esas=Math.max(kg,hac);o('hav-hac',F(hac)+' kg');es=F(esas)+' kg'}
+   else if(m.k==='kar'){hac=m3*333;esas=Math.max(kg,hac);o('kar-hac',F(hac)+' kg');es=F(esas)+' kg'}
+   else if(m.k==='lcl'){esas=Math.max(kg/1000,m3);o('lcl-hac',F(kg/1000,3)+' t · '+F(m3,3)+' m³');es=F(esas,3)+' W/M'}
+   else{var t=KONT[document.querySelector('[data-i="fcl-tip"]').value];esas=(kg||m3)?Math.max(1,Math.ceil(Math.max(m3/t[1],kg/t[2]))):0;o('fcl-hac','doluluk %'+F(t[1]?m3/t[1]*100:0,0)+' (hacim)');es=F(esas,0)+' × '+t[0]}
+   o(m.k+'-esas',(kg||m3)?es:'–');
+   var fy=iv(m.k+'-fiyat'),mn=iv(m.k+'-min'),sb=iv(m.k+'-sabit'),gun=iv(m.k+'-gun');
+   var nav=isFinite(fy)?Math.max(esas*fy,isFinite(mn)?mn:0)+(isFinite(sb)?sb:0):NaN;
+   var fm=(isFinite(deg)&&isFinite(fin)&&isFinite(gun))?deg*fin*gun/365:(isFinite(nav)?0:NaN);
+   var gvt=ith&&isFinite(nav)?nav*gv:0;
+   var top=isFinite(nav)?nav+(fm||0)+gvt:NaN;
+   o(m.k+'-nav',P(nav));o(m.k+'-fin',isFinite(deg)&&isFinite(fin)&&isFinite(gun)?P(fm):'–');o(m.k+'-gv',ith?P(isFinite(nav)?gvt:NaN):'');
+   o(m.k+'-kg',isFinite(top)&&kg>0?F(top/kg,3)+' '+pb:'–');o(m.k+'-oran',isFinite(top)&&deg>0?'%'+F(top/deg*100,1):'–');
+   o(m.k+'-kdv',ith&&isFinite(nav)?P((nav+gvt)*kdv):'');
+   if(ac&&isFinite(top))sonuc.push({k:m.k,top:top,gun:gun});
+   o(m.k+'-top','<b>'+P(top)+'</b>');
+  });
+  if(sonuc.length>1){var uc=sonuc.reduce(function(a,b){return b.top<a.top?b:a});var hz=sonuc.filter(function(s){return isFinite(s.gun)});
+   var cur=document.querySelector('[data-o="'+uc.k+'-top"]');cur.innerHTML+='<br><span class="tk-rozet u">En düşük maliyet</span>';
+   if(hz.length>1){var h=hz.reduce(function(a,b){return b.gun<a.gun?b:a});document.querySelector('[data-o="'+h.k+'-top"]').innerHTML+=(h.k===uc.k?'':'<br>')+'<span class="tk-rozet h">En hızlı · '+F(h.gun,0)+' gün</span>'}}
+ }
+ document.querySelector('.tk-tablo').addEventListener('input',hes);document.querySelector('.tk-tablo').addEventListener('change',hes);
+ ['y-kg','y-m3','y-deger','y-fin','y-gv'].forEach(function(i){el(i).addEventListener('input',hes)});['y-pb','y-yon','y-kdv'].forEach(function(i){el(i).addEventListener('change',hes)});
+ function yaz(id,v){document.querySelector('[data-i="'+id+'"]').value=v}
+ el('t-ornek').addEventListener('click',function(){el('y-kg').value='294';el('y-m3').value='1,47';el('y-pb').value='USD';el('y-deger').value='25.000';el('y-fin').value='12';
+  var d={eks:['9','','','3'],hav:['3,2','150','180','6'],kar:['0,35','150','100','9'],lcl:['85','85','250','28'],fcl:['1.800','','400','25']};
+  Object.keys(d).forEach(function(k){GIR.forEach(function(r,i){yaz(k+'-'+r[0],d[k][i])})});hes()});
+ el('t-temizle').addEventListener('click',function(){document.querySelectorAll('.tk-tablo input[data-i]').forEach(function(i){i.value=''});hes()});
+ el('t-pdf').addEventListener('click',function(){HM.pdf('Taşıma şekli karşılaştırma')});
+ var h=location.hash.slice(1).split('&').reduce(function(a,p){var x=p.split('=');a[x[0]]=decodeURIComponent(x[1]||'');return a},{});
+ if(h.kg||h.m3){if(h.kg)el('y-kg').value=F(+h.kg);if(h.m3)el('y-m3').value=F(+h.m3,3);var a=el('y-aktar');a.hidden=false;a.textContent='Packing list aracından gelen ağırlık ve hacim aktarıldı.'}
+ hes();
+})();
+</script>
