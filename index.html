@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SNS Danışmanlık · Serdar Saraç, SMMM · Serbest Muhasebeci Mali Müşavirlik Bürosu</title>
 <meta name="description" content="Serdar Saraç, Serbest Muhasebeci Mali Müşavir (İSMMMO sicil no 60446). Kağıthane / İstanbul. Muhasebe, vergi, bordro ve mali danışmanlık hizmetleri.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#2B2F33">
 <link rel="canonical" href="https://snsdanismanlik.com.tr/">
 </head>
 <body>
@@ -41,7 +45,9 @@ header{position:relative;z-index:26}
 .mm-item.acik .mm-btn,.mm-btn:hover{color:#1FA86D}
 .mm-item.acik .mm-btn svg{transform:rotate(180deg)}
 .mm-panel{display:none;position:absolute;left:0;right:0;top:100%;z-index:30;background:#FFFFFF;box-shadow:0 0 0 100vmax #FFFFFF;clip-path:inset(0 -100vmax -40px);border-top:3px solid #3DDC97;text-transform:none;letter-spacing:normal}
-.mm-item.acik .mm-panel{display:grid}
+.mm-item.acik .mm-panel{display:grid;animation:mmAc .22s ease-out}
+@keyframes mmAc{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.mm-perde{animation:mmPerde .22s ease-out}@keyframes mmPerde{from{opacity:0}to{opacity:1}}
 .mm-panel{grid-template-columns:minmax(220px,300px) 1fr;gap:48px;padding:36px 24px 44px}
 .mm-giris h3{margin:0 0 10px;font:400 28px/1.15 Fraunces,serif;color:#2B2F33}
 .mm-giris p{margin:0 0 18px;font:400 15px/1.55 Manrope,sans-serif;color:#4A5056}
@@ -1534,7 +1540,7 @@ function hDv(){var t=sayi(_v('d-t'));if(!(t>0))return _hata('d-c','Geçerli bir 
  var acikOge=null,kapaZ=null;
  function kapat(){if(acikOge){acikOge.classList.remove('acik');acikOge.querySelector('.mm-btn').setAttribute('aria-expanded','false');acikOge=null;}document.body.classList.remove('mm-acik');}
  function ac(o){if(acikOge===o)return;kapat();o.classList.add('acik');o.querySelector('.mm-btn').setAttribute('aria-expanded','true');acikOge=o;if(window.innerWidth>900)document.body.classList.add('mm-acik');}
- var masaustu=window.matchMedia('(min-width:901px) and (hover:hover)');
+ var masaustu=window.matchMedia('(min-width:901px)');
  document.querySelectorAll('header nav[aria-label="Ana menü"]').forEach(function(nav){
   Object.keys(M).forEach(function(href,n){
    var a=nav.querySelector(':scope > a[href="'+href+'"]');if(!a)return;var d=M[href];
