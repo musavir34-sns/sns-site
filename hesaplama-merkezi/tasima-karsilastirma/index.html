@@ -350,7 +350,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
  g+='<tr><td>Hacimsel ağırlık / karşılık</td>'+M.map(function(m){return '<td data-o="'+m.k+'-hac"></td>'}).join('')+'</tr>';
  g+='<tr><td>Fiyatlandırmaya esas birim</td>'+M.map(function(m){return '<td data-o="'+m.k+'-esas"></td>'}).join('')+'</tr>';
  g+='<tr class="ara"><td colspan="6">Teklif</td></tr>';
- g+='<tr><td>Konteyner tipi</td>'+M.map(function(m){return '<td>'+(m.k==='fcl'?'<select data-i="fcl-tip"><option value="20">20′</option><option value="40">40′</option><option value="40HC">40′ HC</option></select>':'')+'</td>'}).join('')+'</tr>';
+ g+='<tr><td>Konteyner tipi</td>'+M.map(function(m){return '<td>'+(m.k==='fcl'?'<select data-i="fcl-tip" aria-label="Konteyner tipi"><option value="20">20′</option><option value="40">40′</option><option value="40HC">40′ HC</option></select>':'')+'</td>'}).join('')+'</tr>';
  GIR.forEach(function(r){g+='<tr><td>'+r[1]+'<span class="tk-alt" data-r="'+r[0]+'"></span></td>'+M.map(function(m){return '<td><input data-i="'+m.k+'-'+r[0]+'" inputmode="decimal" aria-label="'+m.ad+' '+r[1]+'"'+(r[0]==='fiyat'?' placeholder="'+birimEt(m)+'"':'')+'></td>'}).join('')+'</tr>'});
  g+='<tr class="ara"><td colspan="6">Maliyet</td></tr>';
  g+='<tr><td>Navlun</td>'+M.map(function(m){return '<td data-o="'+m.k+'-nav"></td>'}).join('')+'</tr>';
@@ -497,6 +497,22 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
     +'<small style="display:block;margin-top:3px;font-size:13px;color:#666C72">'+GN[x.s.getDay()]+' · '+kal+' · '+x.n+kay+'</small></span></li>';
   }).join('');
   var alt=document.querySelector('[data-takvim-alt]');if(alt)alt.textContent='Yaklaşan son beyan ve ödeme günleri';
+ })();
+
+ /* yatay kaydırılan alanlar (kur bandı, geniş tablolar) klavyeyle de kaydırılabilsin: yalnız gerçekten taşan alanlara sekme durağı eklenir */
+ (function(){
+  function tara(){
+   document.querySelectorAll('body div, body section, body ul').forEach(function(e){
+    var ox=getComputedStyle(e).overflowX;if(ox!=='auto'&&ox!=='scroll'){return}
+    var tasar=e.scrollWidth>e.clientWidth+2;
+    if(tasar&&!e.hasAttribute('tabindex')){e.setAttribute('tabindex','0');e.setAttribute('data-kay','1');
+     if(!e.getAttribute('aria-label')&&!e.getAttribute('aria-labelledby')&&!e.getAttribute('role')){var c=e.querySelector('caption');e.setAttribute('role','region');
+      e.setAttribute('aria-label',(e.classList.contains('kurbant')?'Döviz kurları':c?c.textContent:'Tablo')+' (yana kaydırılabilir)')}}
+    else if(!tasar&&e.getAttribute('data-kay')==='1'){e.removeAttribute('tabindex');e.removeAttribute('data-kay');if(/yana kaydırılabilir/.test(e.getAttribute('aria-label')||'')){e.removeAttribute('role');e.removeAttribute('aria-label')}}
+   });
+  }
+  var z;window.addEventListener('resize',function(){clearTimeout(z);z=setTimeout(tara,250)});
+  if(document.readyState==='complete')tara();else window.addEventListener('load',tara);setTimeout(tara,1500);
  })();
 
  /* hesap sonuçlarını düz metin olarak kopyalama (e-postaya yapıştırmak ve ekran okuyucu kullanıcıları için) */

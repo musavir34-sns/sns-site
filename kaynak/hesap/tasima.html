@@ -84,7 +84,7 @@
  g+='<tr><td>Hacimsel ağırlık / karşılık</td>'+M.map(function(m){return '<td data-o="'+m.k+'-hac"></td>'}).join('')+'</tr>';
  g+='<tr><td>Fiyatlandırmaya esas birim</td>'+M.map(function(m){return '<td data-o="'+m.k+'-esas"></td>'}).join('')+'</tr>';
  g+='<tr class="ara"><td colspan="6">Teklif</td></tr>';
- g+='<tr><td>Konteyner tipi</td>'+M.map(function(m){return '<td>'+(m.k==='fcl'?'<select data-i="fcl-tip"><option value="20">20′</option><option value="40">40′</option><option value="40HC">40′ HC</option></select>':'')+'</td>'}).join('')+'</tr>';
+ g+='<tr><td>Konteyner tipi</td>'+M.map(function(m){return '<td>'+(m.k==='fcl'?'<select data-i="fcl-tip" aria-label="Konteyner tipi"><option value="20">20′</option><option value="40">40′</option><option value="40HC">40′ HC</option></select>':'')+'</td>'}).join('')+'</tr>';
  GIR.forEach(function(r){g+='<tr><td>'+r[1]+'<span class="tk-alt" data-r="'+r[0]+'"></span></td>'+M.map(function(m){return '<td><input data-i="'+m.k+'-'+r[0]+'" inputmode="decimal" aria-label="'+m.ad+' '+r[1]+'"'+(r[0]==='fiyat'?' placeholder="'+birimEt(m)+'"':'')+'></td>'}).join('')+'</tr>'});
  g+='<tr class="ara"><td colspan="6">Maliyet</td></tr>';
  g+='<tr><td>Navlun</td>'+M.map(function(m){return '<td data-o="'+m.k+'-nav"></td>'}).join('')+'</tr>';

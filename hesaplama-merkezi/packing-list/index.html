@@ -352,8 +352,8 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
  var tb=document.querySelector('#pl-tablo tbody');if(!tb)return;
  var S=HM.sayi,F=HM.f;
  function satir(d){d=d||{};var tr=document.createElement('tr');
-  tr.innerHTML='<td class="no"></td><td><input class="aciklama" data-k="a" placeholder="Örn. Koli A"></td>'+
-  ['n','l','w','h','g','nk'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right"></td>'}).join('')+
+  tr.innerHTML='<td class="no"></td><td><input class="aciklama" data-k="a" placeholder="Örn. Koli A" aria-label="Açıklama / koli işareti"></td>'+
+  ['n','l','w','h','g','nk'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right" aria-label="'+({n:'Koli adedi',l:'Boy (cm)',w:'En (cm)',h:'Yükseklik (cm)',g:'Brüt kg / koli',nk:'Net kg / koli'})[k]+'"></td>'}).join('')+
   '<td class="sag" data-o="g"></td><td class="sag" data-o="m3"></td><td><button type="button" class="hm-sil" aria-label="Satırı sil">×</button></td>';
   Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});
   tb.appendChild(tr);hesapla();return tr}
@@ -483,6 +483,22 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
     +'<small style="display:block;margin-top:3px;font-size:13px;color:#666C72">'+GN[x.s.getDay()]+' · '+kal+' · '+x.n+kay+'</small></span></li>';
   }).join('');
   var alt=document.querySelector('[data-takvim-alt]');if(alt)alt.textContent='Yaklaşan son beyan ve ödeme günleri';
+ })();
+
+ /* yatay kaydırılan alanlar (kur bandı, geniş tablolar) klavyeyle de kaydırılabilsin: yalnız gerçekten taşan alanlara sekme durağı eklenir */
+ (function(){
+  function tara(){
+   document.querySelectorAll('body div, body section, body ul').forEach(function(e){
+    var ox=getComputedStyle(e).overflowX;if(ox!=='auto'&&ox!=='scroll'){return}
+    var tasar=e.scrollWidth>e.clientWidth+2;
+    if(tasar&&!e.hasAttribute('tabindex')){e.setAttribute('tabindex','0');e.setAttribute('data-kay','1');
+     if(!e.getAttribute('aria-label')&&!e.getAttribute('aria-labelledby')&&!e.getAttribute('role')){var c=e.querySelector('caption');e.setAttribute('role','region');
+      e.setAttribute('aria-label',(e.classList.contains('kurbant')?'Döviz kurları':c?c.textContent:'Tablo')+' (yana kaydırılabilir)')}}
+    else if(!tasar&&e.getAttribute('data-kay')==='1'){e.removeAttribute('tabindex');e.removeAttribute('data-kay');if(/yana kaydırılabilir/.test(e.getAttribute('aria-label')||'')){e.removeAttribute('role');e.removeAttribute('aria-label')}}
+   });
+  }
+  var z;window.addEventListener('resize',function(){clearTimeout(z);z=setTimeout(tara,250)});
+  if(document.readyState==='complete')tara();else window.addEventListener('load',tara);setTimeout(tara,1500);
  })();
 
  /* hesap sonuçlarını düz metin olarak kopyalama (e-postaya yapıştırmak ve ekran okuyucu kullanıcıları için) */

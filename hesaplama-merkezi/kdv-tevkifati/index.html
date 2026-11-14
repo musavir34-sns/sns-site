@@ -426,6 +426,22 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
   var alt=document.querySelector('[data-takvim-alt]');if(alt)alt.textContent='Yaklaşan son beyan ve ödeme günleri';
  })();
 
+ /* yatay kaydırılan alanlar (kur bandı, geniş tablolar) klavyeyle de kaydırılabilsin: yalnız gerçekten taşan alanlara sekme durağı eklenir */
+ (function(){
+  function tara(){
+   document.querySelectorAll('body div, body section, body ul').forEach(function(e){
+    var ox=getComputedStyle(e).overflowX;if(ox!=='auto'&&ox!=='scroll'){return}
+    var tasar=e.scrollWidth>e.clientWidth+2;
+    if(tasar&&!e.hasAttribute('tabindex')){e.setAttribute('tabindex','0');e.setAttribute('data-kay','1');
+     if(!e.getAttribute('aria-label')&&!e.getAttribute('aria-labelledby')&&!e.getAttribute('role')){var c=e.querySelector('caption');e.setAttribute('role','region');
+      e.setAttribute('aria-label',(e.classList.contains('kurbant')?'Döviz kurları':c?c.textContent:'Tablo')+' (yana kaydırılabilir)')}}
+    else if(!tasar&&e.getAttribute('data-kay')==='1'){e.removeAttribute('tabindex');e.removeAttribute('data-kay');if(/yana kaydırılabilir/.test(e.getAttribute('aria-label')||'')){e.removeAttribute('role');e.removeAttribute('aria-label')}}
+   });
+  }
+  var z;window.addEventListener('resize',function(){clearTimeout(z);z=setTimeout(tara,250)});
+  if(document.readyState==='complete')tara();else window.addEventListener('load',tara);setTimeout(tara,1500);
+ })();
+
  /* hesap sonuçlarını düz metin olarak kopyalama (e-postaya yapıştırmak ve ekran okuyucu kullanıcıları için) */
  (function(){
   var dur=document.createElement('span');dur.className='sr';dur.setAttribute('role','status');document.body.appendChild(dur);

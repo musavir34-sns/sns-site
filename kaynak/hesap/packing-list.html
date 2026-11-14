@@ -86,8 +86,8 @@
  var tb=document.querySelector('#pl-tablo tbody');if(!tb)return;
  var S=HM.sayi,F=HM.f;
  function satir(d){d=d||{};var tr=document.createElement('tr');
-  tr.innerHTML='<td class="no"></td><td><input class="aciklama" data-k="a" placeholder="Örn. Koli A"></td>'+
-  ['n','l','w','h','g','nk'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right"></td>'}).join('')+
+  tr.innerHTML='<td class="no"></td><td><input class="aciklama" data-k="a" placeholder="Örn. Koli A" aria-label="Açıklama / koli işareti"></td>'+
+  ['n','l','w','h','g','nk'].map(function(k){return '<td><input data-k="'+k+'" inputmode="decimal" style="text-align:right" aria-label="'+({n:'Koli adedi',l:'Boy (cm)',w:'En (cm)',h:'Yükseklik (cm)',g:'Brüt kg / koli',nk:'Net kg / koli'})[k]+'"></td>'}).join('')+
   '<td class="sag" data-o="g"></td><td class="sag" data-o="m3"></td><td><button type="button" class="hm-sil" aria-label="Satırı sil">×</button></td>';
   Object.keys(d).forEach(function(k){var i=tr.querySelector('[data-k="'+k+'"]');if(i)i.value=d[k]});
   tb.appendChild(tr);hesapla();return tr}
