@@ -75,7 +75,10 @@ header{position:relative;z-index:26}
 .mm-grup li a:hover::after{opacity:1}
 .mm-perde{display:none;position:fixed;inset:0;z-index:25;background:rgba(43,47,51,.18)}
 body.mm-acik .mm-perde{display:block}
-body.mm-acik header::before{content:"";position:absolute;top:0;bottom:0;left:-100vmax;right:-100vmax;background:#F4F4F2;z-index:-1}
+header::before{content:"";position:absolute;top:0;bottom:0;left:-100vmax;right:-100vmax;background:#FFFFFF;border-bottom:1px solid #E1E4DE;z-index:-1;transition:box-shadow .2s}
+header nav[aria-label="Ana menü"] > a:last-child{background:#3DDC97;border-color:#3DDC97!important;color:#14281E!important;font-weight:600;transition:background .15s}
+header nav[aria-label="Ana menü"] > a:last-child:hover{background:#1FA86D;border-color:#1FA86D!important;color:#FFFFFF!important}
+@media (min-width:901px){header{position:sticky!important;top:0;transition:padding .2s}body.kaydi header{padding-top:14px!important;padding-bottom:14px!important}body.kaydi header::before{box-shadow:0 6px 18px rgba(43,47,51,.08)}}
 html,body{overflow-x:clip}
 @media (max-width:900px){
   header.acik nav[aria-label="Ana menü"] > .mm-item{width:100%;flex-direction:column;align-items:flex-start}
@@ -328,6 +331,7 @@ HM.pbSecenek=function(sec){return HM.PB.map(function(p){return '<option value="'
    h+='<div class="ms-satir"><div><b>'+c[0]+'</b><small>'+c[1]+' · '+(fark===0?'aynı saat':(fark>0?'+':'−')+Math.abs(fark)+' sa')+'</small></div><div class="ms-sag"><span class="ms-durum'+(ms?' acik':'')+'">'+(hs?'Hafta sonu':ms?'Mesaide':'Mesai dışı')+'</span><span class="ms-saat">'+p.hour+'<i>:</i>'+p.minute+'</span></div></div>'});
   kap.innerHTML=h;var oz=kap.parentNode.querySelector('.ms-ozet');if(oz)oz.textContent='Şu an '+L.length+' şehirden '+acik+' tanesinde mesai saati';})}
  mesai();setInterval(mesai,20000);
+ function kay(){document.body.classList.toggle('kaydi',window.scrollY>140)}window.addEventListener('scroll',kay,{passive:true});kay();
  var bantlar=[];document.querySelectorAll('[data-kurbant]').forEach(function(e){bantlar.push(e.parentNode)});
  function gizle(){bantlar.forEach(function(b){var d=b.parentNode;if(d)d.style.display='none'})}
  fetch('/kurlar.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(k){
