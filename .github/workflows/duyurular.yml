@@ -1,0 +1,23 @@
+name: TURMOB ve ISMMMO duyurularini guncelle
+on:
+  schedule:
+    - cron: "10 5,10,15 * * *"   # 08:10, 13:10, 18:10 Istanbul
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  duyuru:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 araclar/duyurular.py
+      - name: Degisiklik varsa kaydet
+        run: |
+          if [ -n "$(git status --porcelain duyurular.json)" ]; then
+            git config user.name "duyuru-botu"
+            git config user.email "duyuru-botu@users.noreply.github.com"
+            git add duyurular.json
+            git commit -m "TURMOB/ISMMMO duyurulari"
+            git pull --rebase -q origin main
+            git push
+          fi
