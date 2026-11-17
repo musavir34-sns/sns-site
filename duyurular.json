@@ -1,6 +1,13 @@
 {
  "turmob": [
   {
+   "tarih": "17.11.2026",
+   "no": "124",
+   "konu": "Sosyal Güvenlik",
+   "baslik": "SGK’ Dan Alınan Borcu Yoktur Yazılarının Limitlerinde Değişiklik Yapıldı",
+   "url": "https://www.turmob.org.tr/sirkuler/detailPdf/1997621f-9e8c-4663-ae69-a1c89c27fa19/sgk--dan-alinan-borcu-yoktur-yazilarinin-limitlerinde-degisiklik-yapildi"
+  },
+  {
    "tarih": "10.11.2026",
    "no": "123",
    "konu": "Vergi",
@@ -62,13 +69,6 @@
    "konu": "Vergi",
    "baslik": "Kiralama, Amortisman ve Personel Giderleri ile Kur Farkı Zararlarının Sermaye Kaybı veya Borca Batık Olma Hesaplamalarında Dikkate Alınmamasına İlişkin Süre Uzatıldı",
    "url": "https://www.turmob.org.tr/sirkuler/detailPdf/6f33c08e-8a28-43b4-9473-698f24c43b27/kiralama--amortisman-ve-personel-giderleri-ile-kur-farki-zararlarinin-sermaye-kaybi-veya-borca-batik"
-  },
-  {
-   "tarih": "25.09.2026",
-   "no": "114",
-   "konu": "Sosyal Güvenlik",
-   "baslik": "Çalışmanın Ne Kadarının İşyerinde Ne Kadarının Uzaktan Olduğu ile Çalışma Saatleri Yazılı İş Sözleşmesinde Belirtilmesi Gerekir",
-   "url": "https://www.turmob.org.tr/sirkuler/detailPdf/c6cd6b86-efa5-4617-9434-b10f485efaec/calismanin-ne-kadarinin-isyerinde-ne-kadarinin-uzaktan-oldugu-ile-calisma-saatleri-yazili-is-sozlesm"
   }
  ],
  "ismmmo": [
@@ -109,5 +109,5 @@
    "url": "https://www.ismmmo.org.tr/dosya/6286/Mevzuat-Dosya/27102026-yabanci-para-degerleri.pdf"
   }
  ],
- "guncelleme": "16.11.2026 19:43"
+ "guncelleme": "17.11.2026 14:04"
 }
