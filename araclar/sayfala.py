@@ -155,6 +155,22 @@ def bas_yap(yol, baslik, aciklama, ek="", gorsel_ozel=None, tur="website"):
             % (esc(baslik), esc(aciklama), ikonlar, ALAN, yol, tur, esc(baslik), esc(aciklama), ALAN, yol, ek))
 
 
+# Yapılandırılmış veri (schema.org): arama motorları ve yapay zekâ aramaları büroyu doğru tanısın.
+# Bilgiler vergi levhası, faaliyet belgesi ve Google İşletme Profili ile aynı tutulmalı.
+ISLETME_LD = {
+    "@context": "https://schema.org", "@type": "AccountingService", "@id": ALAN + "/#buro",
+    "name": "Serdar Saraç Serbest Muhasebeci Mali Müşavir Bürosu", "alternateName": "SNS Danışmanlık",
+    "url": ALAN + "/", "logo": ALAN + "/og-sns.png", "image": ALAN + "/og-sns.png",
+    "email": "info@snsdanismanlik.com.tr", "telephone": "+90 532 624 99 33",
+    "address": {"@type": "PostalAddress", "streetAddress": "Hamidiye Mah. Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2",
+                "addressLocality": "Kağıthane", "addressRegion": "İstanbul", "postalCode": "34408", "addressCountry": "TR"},
+    "geo": {"@type": "GeoCoordinates", "latitude": 41.092933, "longitude": 28.975068},
+    "areaServed": "TR", "knowsLanguage": ["tr", "en"],
+    "founder": {"@type": "Person", "name": "Serdar Saraç", "jobTitle": "Serbest Muhasebeci Mali Müşavir",
+                "sameAs": ["https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/"]},
+}
+ISLETME_LD_HTML = '<script type="application/ld+json">%s</script>\n' % json.dumps(ISLETME_LD, ensure_ascii=False)
+
 uretilen = []
 for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     a, b = bolumler[pid]
@@ -163,6 +179,8 @@ for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     govde = baglanti_cevir(govde, pid)
     govde = govde.replace('href="#ana"', 'href="/"')
     bas = bas_yap(yol, baslik, aciklama, ("<script>%s</script>\n" % eski_js) if pid == "ana" else ("<script>%s</script>\n" % yazi_yonlendir_js) if pid == "yazilar-sayfa" else "")
+    if pid in ("ana", "iletisim-sayfa", "hakkimizda-sayfa"):
+        bas = bas.replace("</head>", ISLETME_LD_HTML + "</head>", 1)
     js = [yeni_yonlendirme, canli_js, menu_js, gundem_js]
     if pid == "pratik-sayfa":
         js.insert(0, hesap_js)
@@ -378,5 +396,27 @@ open("sitemap.xml", "w", encoding="utf-8").write(
     + "".join("  <url><loc>%s%s</loc></url>\n" % (ALAN, y) for y in [v[0] for v in SAYFALAR.values()] + ek_adresler)
     + "</urlset>\n")
 open("robots.txt", "w", encoding="utf-8").write("User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % ALAN)
+
+# llms.txt: yapay zekâ arama araçlarının siteyi hızlı tanıması için sade özet (llmstxt.org biçimi)
+import html
+def _baslik_aciklama(y):
+    t = open((y.strip("/") + "/index.html") if y != "/" else "index.html", encoding="utf-8").read()
+    b = re.search(r"<title>(.*?)</title>", t, re.S).group(1)
+    a = re.search(r'<meta name="description" content="(.*?)">', t, re.S).group(1)
+    return html.unescape(b).split(" · SNS")[0], html.unescape(a)
+_gruplar = [("Ana sayfalar", lambda y: not y.startswith(("/yazilar/", "/hesaplama-merkezi/")) or y == "/yazilar/"),
+            ("Yazılar ve okuyucu soruları", lambda y: y.startswith("/yazilar/") and y != "/yazilar/"),
+            ("Hesaplama Merkezi", lambda y: y.startswith("/hesaplama-merkezi/"))]
+_tum = [v[0] for v in SAYFALAR.values()] + ek_adresler
+_llms = ("# SNS Danışmanlık · Serdar Saraç, Serbest Muhasebeci Mali Müşavir\n\n"
+         "> Serdar Saraç Serbest Muhasebeci Mali Müşavir Bürosu (İSMMMO sicil no 60446), Kağıthane / İstanbul. "
+         "Muhasebe, vergi, SGK ve bordro, dış ticaret ve şirket işlemleri konularında hizmet verir. "
+         "Sitedeki yazılar ve okuyucu soruları genel bilgilendirme amaçlıdır; somut bir olaya ilişkin mesleki görüş yerine geçmez.\n\n"
+         "Adres: Hamidiye Mah. Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / İstanbul · "
+         "E-posta: info@snsdanismanlik.com.tr · Telefon: +90 532 624 99 33\n")
+for _ad, _f in _gruplar:
+    _llms += "\n## %s\n\n" % _ad + "".join("- [%s](%s%s): %s\n" % (*_baslik_aciklama(y)[:1], ALAN, y, _baslik_aciklama(y)[1]) for y in _tum if _f(y))
+open("llms.txt", "w", encoding="utf-8").write(_llms)
+
 for h, y, n in uretilen:
     print("%-34s %-24s %7d bayt" % (h, y, n))
