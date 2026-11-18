@@ -286,6 +286,9 @@ for dosya in sorted(glob.glob("kaynak/sayfalar/*.html")):
         liste = ('<ul class="yz-sorular">' + "".join('<li><a href="/yazilar/%s/">%s</a><small>%s · %s</small></li>' % (d, yz_meta[d][0]["baslik"], yz_meta[d][0]["kategori"].split(" · ")[-1], yz_meta[d][0]["guncelleme"]) for d in sorular) + '</ul>'
                  if sorular else '<p class="yz-bos">Henüz yayımlanmış yanıt yok. Gelen sorular arasından seçilenler yanıtlandıkça bu listede yer alacak.</p>')
         icerik = icerik.replace("<!--SORULAR-->", liste)
+        # Sayfanın "Son güncelleme" tarihi, en son yayımlanan yanıtın tarihinden eski kalmasın
+        gun = lambda t: tuple(reversed([int(x) for x in t.split(".")]))
+        meta["guncelleme"] = max([meta["guncelleme"]] + [yz_meta[d][0]["guncelleme"] for d in sorular], key=gun)
     kaynak = re.search(r"<!--KAYNAK (.*?) -->", icerik, re.S)
     icerik = re.sub(r"<!--KAYNAK .*? -->", "", icerik, flags=re.S).strip()
     govde = (re.sub(r'<div class="sayfa"[^>]*>', '<div class="sayfa" id="ozel-%s">' % os.path.basename(dosya)[:-5], yz_ust, count=1)
