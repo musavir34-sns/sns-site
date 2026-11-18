@@ -31,7 +31,7 @@ SAYFALAR = {  # bölüm kimliği: (adres, başlık, açıklama)
     "hakkimizda-sayfa": ("/hakkimizda/", "Serdar Saraç, SMMM · Hakkımızda · SNS Danışmanlık",
             "Serdar Saraç'ın özgeçmişi, görev aldığı kurumlar, eğitim ve deneyim alanları. İstanbul SMMM Odası sicil no 60446."),
     "iletisim-sayfa": ("/iletisim/", "İletişim · SNS Danışmanlık",
-            "Adres, telefon, e-posta ve WhatsApp bilgileri. Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/2, 34408 Kağıthane / İstanbul."),
+            "Adres, telefon, e-posta ve WhatsApp bilgileri. Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / İstanbul."),
     "yasal-sayfa": ("/kvkk-ve-cerezler/", "KVKK Aydınlatma Metni ve Çerez Politikası · SNS Danışmanlık",
             "Kişisel verilerin işlenmesine ilişkin aydınlatma metni ve çerez politikası."),
 }
