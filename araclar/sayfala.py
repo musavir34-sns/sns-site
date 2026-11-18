@@ -333,6 +333,7 @@ def menu_etiket(html):
 EN_TERIM = ["Commercial Invoice", "Proforma Invoice", "Packing List", "packing list", "Origin Declaration", "Incoterms", "Cash Flow", "Notify"]
 _EN_RE = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(EN_TERIM, key=len, reverse=True)) + r")\b")
 _ATLA = ("script", "style", "title", "option", "textarea", "head", "svg")
+CF_ANALIZ = """<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "270111e077c64b8d85784514fc8d95d6"}'></script>\n"""
 def ingilizce_isaretle(html):
     parca = re.split(r"(<[^>]+>)", html); ic = []; out = []
     for p in parca:
@@ -352,6 +353,9 @@ for h, y, n in uretilen:
     t = open(h, encoding="utf-8").read()
     t2 = menu_etiket(kur_bandi(t))
     t2 = ingilizce_isaretle(t2)
+    # ziyaret sayacı: Cloudflare Web Analytics (çerezsiz, kişiyi tanımlamaz)
+    if "cloudflareinsights" not in t2:
+        t2 = t2.replace("</body>", CF_ANALIZ + "</body>", 1)
     # erişilebilirlik: içeriğe geç bağlantısı, kur bandı etiketi, hesap sonuçlarının ekran okuyucuya bildirilmesi
     t2 = t2.replace("<body>\n", '<body>\n<a class="atla" href="#icerik">İçeriğe geç</a>\n', 1)
     k = t2.find("</header>")
