@@ -182,6 +182,8 @@ for pid, (yol, baslik, aciklama) in SAYFALAR.items():
     bas = bas_yap(yol, baslik, aciklama, ("<script>%s</script>\n" % eski_js) if pid == "ana" else ("<script>%s</script>\n" % yazi_yonlendir_js) if pid == "yazilar-sayfa" else "")
     if pid in ("ana", "iletisim-sayfa", "hakkimizda-sayfa"):
         bas = bas.replace("</head>", ISLETME_LD_HTML + "</head>", 1)
+    if pid == "ana":  # Bing Webmaster Tools site doğrulaması (kaldırılmamalı)
+        bas = bas.replace("</head>", '<meta name="msvalidate.01" content="5EC5BDE2B80F13EED4DE461AB37B3F4F">\n</head>', 1)
     js = [yeni_yonlendirme, canli_js, menu_js, gundem_js]
     if pid == "pratik-sayfa":
         js.insert(0, hesap_js)
