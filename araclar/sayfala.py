@@ -166,6 +166,7 @@ ISLETME_LD = {
                 "addressLocality": "Kağıthane", "addressRegion": "İstanbul", "postalCode": "34408", "addressCountry": "TR"},
     "geo": {"@type": "GeoCoordinates", "latitude": 41.092933, "longitude": 28.975068},
     "areaServed": "TR", "knowsLanguage": ["tr", "en"],
+    "sameAs": ["https://share.google/wuSox0PQlExN3fpbv"],  # Google İşletme Profili
     "founder": {"@type": "Person", "name": "Serdar Saraç", "jobTitle": "Serbest Muhasebeci Mali Müşavir",
                 "sameAs": ["https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/"]},
 }
