@@ -21,6 +21,16 @@ Adres: Hamidiye Mah. Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No
 - [Erişilebilirlik beyanı](https://snsdanismanlik.com.tr/erisilebilirlik/): snsdanismanlik.com.tr sitesinin görme engelli ziyaretçiler dahil herkes tarafından kullanılabilmesi için yapılanlar, bilinen sınırlamalar ve sorun bildirme yolu.
 - [Okuyucu soruları](https://snsdanismanlik.com.tr/okuyucu-sorulari/): Muhasebe, vergi, SGK ve dış ticaret uygulamasında sık sorulan sorular, isimsiz ve genel bilgilendirme yazısı olarak yanıtlanır.
 
+## English pages
+
+- [About · Serdar Saraç, Certified Public Accountant](https://snsdanismanlik.com.tr/en/about/): Profile of Serdar Saraç: career, institutions, education and certificates. Istanbul Chamber of Certified Public Accountants reg. no 60446.
+- [Contact](https://snsdanismanlik.com.tr/en/contact/): Address, telephone, WhatsApp and e-mail. Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / Istanbul, Türkiye.
+- [Certified Public Accountant in Istanbul · Serdar Saraç](https://snsdanismanlik.com.tr/en/): Serdar Saraç, Certified Public Accountant (Istanbul Chamber reg. no 60446), Kağıthane / Istanbul. Accounting, tax, payroll, foreign-trade and foreign-owned company services in Turkish and English.
+- [International trade and foreign-owned companies](https://snsdanismanlik.com.tr/en/international/): Accounting and tax for import and export, freight and cost planning, VAT refunds, and accounting for foreign-owned companies in Türkiye. Services in Turkish and English.
+- [Privacy notice and cookie policy](https://snsdanismanlik.com.tr/en/privacy/): Privacy notice under Law No. 6698 on the Protection of Personal Data (KVKK) and cookie policy of snsdanismanlik.com.tr.
+- [Services](https://snsdanismanlik.com.tr/en/services/): Bookkeeping, tax returns, payroll and social security, company procedures, tax audits, foreign trade, foreign-owned companies, financial reporting and audit in Türkiye.
+- [What Tax Incentives Are Available to an Exporting Business in Türkiye?](https://snsdanismanlik.com.tr/en/articles/tax-incentives-for-exporters/): VAT exemption and refunds on exports of goods and services, deliveries for export, inward processing, income deductions and reduced corporate tax rates in Türkiye; stamp duty and fee exemptions; foreign-exchange obligations.
+
 ## Yazılar ve okuyucu soruları
 
 - [İhracat Yapan Bir İşletme Hangi Vergisel Avantajlardan Yararlanabilir?](https://snsdanismanlik.com.tr/yazilar/ihracatta-vergisel-avantajlar/): Mal ve hizmet ihracatında KDV istisnası ve iadesi, ihraç kayıtlı teslim, dahilde işleme rejimi, kazanç indirimleri ve indirimli kurumlar vergisi; damga vergisi-harç istisnası ve döviz tarafındaki yükümlülükler.

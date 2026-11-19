@@ -320,6 +320,113 @@ for dosya in sorted(glob.glob("kaynak/sayfalar/*.html")):
     open(hedef, "w", encoding="utf-8").write(sayfa)
     uretilen.append((hedef, meta["yol"], len(sayfa))); ek_adresler.append(meta["yol"])
 
+# --- Yabancı dil sayfaları (kaynak/en/*.html; ileride kaynak/ar/*.html) ---
+# Her kaynak dosya: <!--META {"yol": "/en/...", "tr": "/turkce-karsiligi/", "baslik": ..., "aciklama": ..., "tur": "sayfa"|"yazi"} --> + gövde
+DILLER = {
+    "en": {"ad": "English", "kisa": "EN", "dir": "ltr", "locale": "en_US",
+           "unvan": "Certified Public Accountant",
+           "menu": [("Services", "/en/services/"), ("International", "/en/international/"), ("About", "/en/about/")],
+           "iletisim": ("Contact", "/en/contact/"), "menu_ad": "Main menu", "atla": "Skip to content",
+           "yaz_meta": "Serdar Saraç, Certified Public Accountant · Last updated: %s", "kisaca": "In brief",
+           "dayanak": "Legal basis", "yazi_not": "This article is for general information only. Legislation may change; specific cases should be assessed under the legislation in force at the time.",
+           "alt": [("Office holder", "Serdar Saraç<br/>Certified Public Accountant (<span lang=\"tr\">Serbest Muhasebeci Mali Müşavir</span>)"),
+                   ("Registered office", "<span lang=\"tr\">Serdar Saraç Serbest Muhasebeci Mali Müşavir Bürosu</span><br/>Office reg. no 27853 · Trade name used: <span lang=\"tr\">SNS Danışmanlık</span>"),
+                   ("Professional chamber", "Istanbul Chamber of Certified Public Accountants (<span lang=\"tr\">İSMMMO</span>)<br/>Reg. no 60446 · Licence no 342135321<br/>Registered: 05.03.2024"),
+                   ("Languages", "Turkish · English"),
+                   ("Address", "<span lang=\"tr\">Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / İstanbul</span>, Türkiye"),
+                   ("Contact", "+90 532 624 99 33 (also WhatsApp)<br/>info@snsdanismanlik.com.tr")],
+           "alt_link": [("Privacy &amp; cookies", "/en/privacy/"), ("Accessibility (in Turkish)", "/erisilebilirlik/"),
+                        ("LinkedIn", "https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/")]},
+}
+DIL_CSS = (".dl{background:#F4F4F2;color:#2B2F33;font-family:Manrope,sans-serif;min-height:100vh}"
+           ".dl-ust{max-width:1248px;margin:0 auto;padding:28px 24px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}"
+           ".dl-logo{display:flex;align-items:center;gap:16px;text-decoration:none;color:#2B2F33}"
+           ".dl-logo b{display:block;font:400 22px/1.2 Fraunces,serif}.dl-logo small{display:block;margin-top:4px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#4A5056}"
+           ".dl-menu{display:flex;flex-wrap:wrap;align-items:center;gap:12px 30px;font-size:14px;letter-spacing:.08em;text-transform:uppercase}"
+           ".dl-menu a{color:#2F3437;text-decoration:none}.dl-menu a[aria-current]{color:#2B2F33;border-bottom:1px solid #1FA86D;padding-bottom:3px}"
+           ".dl-menu a.dl-ilet{border:1px solid #1FA86D;padding:12px 22px;color:#2B2F33}"
+           ".dl-dil{display:flex;gap:10px;color:#666C72}.dl-dil a{color:#666C72}.dl-dil b{color:#2B2F33;font-weight:600}"
+           ".dl-w{max-width:1248px;margin:0 auto;padding:0 24px}"
+           ".dl-hero{border-top:1px solid #E1E4DE;padding:72px 0 56px;background:radial-gradient(circle 300px at 76% 40%,rgba(61,220,151,.30),rgba(61,220,151,0) 100%),radial-gradient(circle 220px at 58% 85%,rgba(31,168,109,.12),rgba(31,168,109,0) 100%)}"
+           ".dl-ey{margin:0;font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:#2B2F33;border-left:3px solid #1FA86D;padding-left:10px}"
+           ".dl h1{margin:22px 0 0;font:300 clamp(40px,5.6vw,76px)/1.05 Fraunces,serif;letter-spacing:-.015em}"
+           ".dl-lead{margin:28px 0 0;max-width:680px;font-size:19px;line-height:1.7;color:#4A5056}"
+           ".dl-cta{margin-top:36px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;font-size:16px;color:#4A5056}"
+           ".dl-btn{background:#3DDC97;color:#14281E;border-radius:999px;padding:18px 30px;text-decoration:none;font-weight:600;letter-spacing:.03em}.dl-btn:hover{background:#1FA86D;color:#FFF}"
+           ".dl-sec{padding-top:96px}.dl-sec>.dl-ey{margin-bottom:0}"
+           ".dl h2{margin:16px 0 0;font:400 clamp(30px,3.6vw,44px)/1.15 Fraunces,serif}"
+           ".dl-p{margin:18px 0 0;max-width:760px;font-size:17px;line-height:1.75;color:#3A3F44}"
+           ".dl-grid{margin-top:40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));border-top:1px solid #E1E4DE;border-left:1px solid #E1E4DE}"
+           ".dl-grid.dl-g3{grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}"
+           ".dl-card{background:#FFF;padding:30px 28px;border-right:1px solid #E1E4DE;border-bottom:1px solid #E1E4DE}.dl-card h3{margin:0 0 12px;font:500 22px/1.3 Fraunces,serif}"
+           ".dl-no{margin:0 0 10px;font:13px 'JetBrains Mono',monospace;color:#2B2F33}"
+           ".dl-card ul{margin:0;padding-left:18px;font-size:15.5px;line-height:1.85;color:#3A3F44}.dl-card p{margin:0;font-size:15.5px;line-height:1.7;color:#3A3F44}"
+           ".dl-card a{color:#157A4F}.dl-kucuk{margin:20px 0 0;font-size:14px;line-height:1.6;color:#5F656B}"
+           ".dl-tl{margin:24px 0 0;padding:0;list-style:none;border-top:1px solid #E1E4DE}.dl-tl li{display:flex;flex-wrap:wrap;gap:4px 24px;padding:14px 0;border-bottom:1px solid #E1E4DE;font-size:16px}"
+           ".dl-tl b{flex:0 0 120px;font:600 14px 'JetBrains Mono',monospace;color:#157A4F}.dl-tl span{flex:1 1 280px}"
+           ".dl-bilgi{margin-top:48px;border:1px solid #E1E4DE;border-radius:14px;padding:28px 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px 32px;font-size:15px;line-height:1.6;color:#2F3437}"
+           ".dl-bilgi p{margin:0}.dl-bilgi p:first-child{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#666C72}.dl-bilgi p+p{margin-top:4px}"
+           ".dl-alt{max-width:1248px;margin:0 auto;padding:40px 24px 48px;display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;font-size:14px;color:#666C72}"
+           ".dl-alt a{color:#666C72}.dl-alt span{display:flex;flex-wrap:wrap;gap:24px}"
+           ".dl table{border-collapse:collapse;width:100%;font-size:15.5px}.dl td,.dl th{text-align:start;padding:10px 12px;border-bottom:1px solid #E1E4DE}"
+           "@media(max-width:700px){.dl-hero{padding:48px 0 40px}.dl-sec{padding-top:64px}.dl-card{padding:24px 20px}}")
+LOGO_SVG = ('<svg aria-hidden="true" height="40" style="flex:none" viewBox="8 10 80 76" width="40"><rect fill="#1FA86D" height="10" width="80" x="8" y="10"></rect>'
+            '<rect fill="#1FA86D" height="38" width="10" x="8" y="10"></rect><rect fill="#2B2F33" height="10" width="80" x="8" y="43"></rect>'
+            '<rect fill="#1FA86D" height="38" width="10" x="78" y="48"></rect><rect fill="#1FA86D" height="10" width="80" x="8" y="76"></rect></svg>')
+DIL_ESLES = {}   # Türkçe adres -> {dil: adres}; hreflang ve dil seçici için
+dil_sayfalar = []
+for dil, D in DILLER.items():
+    for dosya in sorted(glob.glob("kaynak/%s/*.html" % dil) + glob.glob("kaynak/%s/yazilar/*.html" % dil)):
+        metin = open(dosya, encoding="utf-8").read()
+        m = re.match(r"<!--META (\{.*?\}) -->\n", metin, re.S)
+        meta = json.loads(m.group(1)); meta["icerik"] = metin[m.end():]; meta["dil"] = dil
+        dil_sayfalar.append(meta)
+        if meta.get("tr"):
+            DIL_ESLES.setdefault(meta["tr"], {})[dil] = meta["yol"]
+def hreflang(tr_yol, diller):
+    h = '<link rel="alternate" hreflang="tr" href="%s%s">\n' % (ALAN, tr_yol)
+    h += "".join('<link rel="alternate" hreflang="%s" href="%s%s">\n' % (d, ALAN, y) for d, y in sorted(diller.items()))
+    return h + '<link rel="alternate" hreflang="x-default" href="%s%s">\n' % (ALAN, tr_yol)
+for meta in dil_sayfalar:
+    dil, D, yol = meta["dil"], DILLER[meta["dil"]], meta["yol"]
+    tr_yol = meta.get("tr") or "/"
+    menu = "".join('<a href="%s"%s>%s</a>' % (y, ' aria-current="page"' if yol.startswith(y) else "", ad) for ad, y in D["menu"])
+    ust = ('<div class="sayfa" id="%s"><div class="dl" dir="%s">\n<header class="dl-ust">\n<a class="dl-logo" href="/%s/">%s<span><b lang="tr">SNS Danışmanlık</b><small>Serdar Saraç · %s</small></span></a>\n'
+           '<nav class="dl-menu" aria-label="%s">%s<span class="dl-dil"><a href="%s" lang="tr" hreflang="tr">TR</a><b aria-current="true">%s</b></span>'
+           '<a class="dl-ilet" href="%s"%s>%s</a></nav>\n</header>\n'
+           % ("%s-%s" % (dil, yol.strip("/").replace("/", "-") or "ana"), D["dir"], dil, LOGO_SVG, D["unvan"], D["menu_ad"], menu, tr_yol, D["kisa"],
+              D["iletisim"][1], ' aria-current="page"' if yol == D["iletisim"][1] else "", D["iletisim"][0]))
+    alt = ('<section class="dl-w"><div class="dl-bilgi">' + "".join('<div><p>%s</p><p>%s</p></div>' % x for x in D["alt"]) + '</div></section>\n'
+           '<footer class="dl-alt"><span>© 2026 <span lang="tr">SNS Danışmanlık</span></span><span>'
+           + "".join('<a href="%s">%s</a>' % (y, ad) for ad, y in D["alt_link"]) + '</span></footer>\n</div></div>')
+    icerik = meta["icerik"]
+    ek_bas = hreflang(tr_yol, DIL_ESLES.get(tr_yol, {dil: yol})) if meta.get("tr") else ""
+    if meta.get("tur") == "yazi":
+        kaynak = re.search(r"<!--KAYNAK (.*?) -->", icerik, re.S)
+        icerik = re.sub(r"<!--KAYNAK .*? -->", "", icerik, flags=re.S).strip()
+        kis = ('<section class="yz-kisaca" aria-labelledby="yz-kisaca-b"><h2 id="yz-kisaca-b">%s</h2><ul>' % D["kisaca"]
+               + "".join("<li>%s</li>" % x for x in meta["kisaca"]) + "</ul></section>\n") if meta.get("kisaca") else ""
+        icerik = ('<article class="yz"><p class="yz-ust">%s</p><h1>%s</h1><p class="yz-meta">%s</p>\n%s%s\n'
+                  % (meta["kategori"], meta["baslik"], D["yaz_meta"] % meta["guncelleme"], kis, icerik)
+                  + ('<p class="yz-dayanak"><b>%s:</b> %s</p>' % (D["dayanak"], kaynak.group(1).strip()) if kaynak else "")
+                  + '<p class="yz-not">%s</p></article>\n' % D["yazi_not"])
+        tarih_iso = "-".join(reversed(meta["guncelleme"].split(".")))
+        ld = {"@context": "https://schema.org", "@type": "Article", "headline": meta["baslik"], "description": meta["aciklama"],
+              "dateModified": tarih_iso, "inLanguage": dil, "mainEntityOfPage": ALAN + yol,
+              "author": {"@type": "Person", "name": "Serdar Saraç", "jobTitle": D["unvan"]},
+              "publisher": {"@type": "Organization", "name": "SNS Danışmanlık", "url": ALAN}}
+        ek_bas += '<script type="application/ld+json">%s</script>\n' % json.dumps(ld, ensure_ascii=False)
+    elif meta.get("buro_kaydi"):
+        ek_bas += ISLETME_LD_HTML
+    bas = bas_yap(yol, meta["baslik"] + " · SNS Danışmanlık", meta["aciklama"], ek_bas, None, "article" if meta.get("tur") == "yazi" else "website")
+    bas = bas.replace('<html lang="tr">', '<html lang="%s" dir="%s">' % (dil, D["dir"]), 1).replace('content="tr_TR"', 'content="%s"' % D["locale"], 1)
+    sayfa = (bas + '<a class="atla" href="#icerik">%s</a>\n' % D["atla"] + govde_on + "<style>%s%s</style>\n" % (DIL_CSS, YZ_CSS)
+             + ust + icerik + "\n" + alt + "\n</body>\n</html>\n")
+    hedef = yol.strip("/") + "/index.html"
+    os.makedirs(os.path.dirname(hedef), exist_ok=True)
+    open(hedef, "w", encoding="utf-8").write(sayfa)
+    uretilen.append((hedef, yol, len(sayfa))); ek_adresler.append(yol)
+
 # --- Son işlem: menü etiketleri ve kur bandı sunucu tarafında hazır gelsin (sayfa yüklenirken kayma olmasın) ---
 MENU_ETIKET = dict(re.findall(r"'([^']+)':\{t:'([^']+)'", menu_js))
 try:
@@ -379,7 +486,17 @@ for h, y, n in uretilen:
     if "cloudflareinsights" not in t2:
         t2 = t2.replace("</body>", CF_ANALIZ + "</body>", 1)
     # erişilebilirlik: içeriğe geç bağlantısı, kur bandı etiketi, hesap sonuçlarının ekran okuyucuya bildirilmesi
-    t2 = t2.replace("<body>\n", '<body>\n<a class="atla" href="#icerik">İçeriğe geç</a>\n', 1)
+    if 'class="atla"' not in t2:
+        t2 = t2.replace("<body>\n", '<body>\n<a class="atla" href="#icerik">İçeriğe geç</a>\n', 1)
+    # dil seçici ve hreflang: Türkçe sayfalarda menüdeki boş alana diğer dil bağlantıları
+    if not any(h.startswith(d + "/") for d in DILLER):
+        karsilik = DIL_ESLES.get(y, {})
+        secici = "".join('<a href="%s" lang="%s" hreflang="%s" style="color: #666C72; text-decoration: none" aria-label="%s">%s</a>'
+                         % (karsilik.get(d, "/%s/" % d), d, d, DILLER[d]["ad"], DILLER[d]["kisa"]) for d in DILLER)
+        t2 = t2.replace('<span style="display: flex; gap: 12px; color: #666C72"></span>',
+                        '<span style="display: flex; gap: 12px; color: #666C72"><b style="color: #2B2F33; font-weight: 600" aria-current="true">TR</b>%s</span>' % secici, 1)
+        if karsilik and 'hreflang="x-default"' not in t2:
+            t2 = t2.replace("</head>", hreflang(y, karsilik) + "</head>", 1)
     k = t2.find("</header>")
     if k > 0 and 'id="icerik"' not in t2:
         t2 = t2[:k + 9] + '\n<span id="icerik" tabindex="-1"></span>' + t2[k + 9:]
@@ -405,7 +522,8 @@ def _baslik_aciklama(y):
     b = re.search(r"<title>(.*?)</title>", t, re.S).group(1)
     a = re.search(r'<meta name="description" content="(.*?)">', t, re.S).group(1)
     return html.unescape(b).split(" · SNS")[0], html.unescape(a)
-_gruplar = [("Ana sayfalar", lambda y: not y.startswith(("/yazilar/", "/hesaplama-merkezi/")) or y == "/yazilar/"),
+_gruplar = [("Ana sayfalar", lambda y: not y.startswith(("/yazilar/", "/hesaplama-merkezi/", "/en/")) or y == "/yazilar/"),
+            ("English pages", lambda y: y.startswith("/en/")),
             ("Yazılar ve okuyucu soruları", lambda y: y.startswith("/yazilar/") and y != "/yazilar/"),
             ("Hesaplama Merkezi", lambda y: y.startswith("/hesaplama-merkezi/"))]
 _tum = [v[0] for v in SAYFALAR.values()] + ek_adresler
