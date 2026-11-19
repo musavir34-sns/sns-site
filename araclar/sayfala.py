@@ -320,7 +320,7 @@ for dosya in sorted(glob.glob("kaynak/sayfalar/*.html")):
     open(hedef, "w", encoding="utf-8").write(sayfa)
     uretilen.append((hedef, meta["yol"], len(sayfa))); ek_adresler.append(meta["yol"])
 
-# --- Yabancı dil sayfaları (kaynak/en/*.html; ileride kaynak/ar/*.html) ---
+# --- Yabancı dil sayfaları (kaynak/en/*.html, kaynak/ar/*.html) ---
 # Her kaynak dosya: <!--META {"yol": "/en/...", "tr": "/turkce-karsiligi/", "baslik": ..., "aciklama": ..., "tur": "sayfa"|"yazi"} --> + gövde
 DILLER = {
     "en": {"ad": "English", "kisa": "EN", "dir": "ltr", "locale": "en_US",
@@ -336,6 +336,20 @@ DILLER = {
                    ("Address", "<span lang=\"tr\">Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / İstanbul</span>, Türkiye"),
                    ("Contact", "+90 532 624 99 33 (also WhatsApp)<br/>info@snsdanismanlik.com.tr")],
            "alt_link": [("Privacy &amp; cookies", "/en/privacy/"), ("Accessibility (in Turkish)", "/erisilebilirlik/"),
+                        ("LinkedIn", "https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/")]},
+    "ar": {"ad": "العربية", "kisa": "AR", "dir": "rtl", "locale": "ar_AR",
+           "unvan": "محاسب قانوني معتمد",
+           "menu": [("الخدمات", "/ar/services/"), ("التجارة الدولية", "/ar/international/"), ("من نحن", "/ar/about/")],
+           "iletisim": ("اتصل بنا", "/ar/contact/"), "menu_ad": "القائمة الرئيسية", "atla": "انتقل إلى المحتوى",
+           "yaz_meta": "سردار سراج، محاسب قانوني معتمد · آخر تحديث: %s", "kisaca": "باختصار",
+           "dayanak": "السند القانوني", "yazi_not": "هذا المقال لأغراض المعلومات العامة فقط. قد تتغير التشريعات، لذا يجب تقييم كل حالة بعينها وفق التشريعات السارية وقت التقييم.",
+           "alt": [("صاحب المكتب", "سردار سراج (<span lang=\"tr\">Serdar Saraç</span>)<br/>محاسب قانوني معتمد (<span lang=\"tr\">Serbest Muhasebeci Mali Müşavir</span>)"),
+                   ("الاسم الرسمي للمكتب", "<span lang=\"tr\" dir=\"ltr\">Serdar Saraç Serbest Muhasebeci Mali Müşavir Bürosu</span><br/>رقم تسجيل المكتب 27853 · الاسم المستخدم: <span lang=\"tr\" dir=\"ltr\">SNS Danışmanlık</span>"),
+                   ("الغرفة المهنية", "غرفة المحاسبين القانونيين المعتمدين في إسطنبول (<span lang=\"tr\">İSMMMO</span>)<br/>رقم التسجيل 60446 · رقم الترخيص 342135321<br/>تاريخ التسجيل: 05.03.2024"),
+                   ("لغات العمل", "التركية · الإنجليزية"),
+                   ("العنوان", "<span lang=\"tr\" dir=\"ltr\">Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / İstanbul</span>، تركيا"),
+                   ("التواصل", "<span dir=\"ltr\">+90 532 624 99 33</span> (واتساب أيضاً)<br/><span dir=\"ltr\">info@snsdanismanlik.com.tr</span>")],
+           "alt_link": [("الخصوصية وملفات تعريف الارتباط", "/ar/privacy/"), ("إمكانية الوصول (بالتركية)", "/erisilebilirlik/"),
                         ("LinkedIn", "https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/")]},
 }
 DIL_CSS = (".dl{background:#F4F4F2;color:#2B2F33;font-family:Manrope,sans-serif;min-height:100vh}"
@@ -370,7 +384,20 @@ DIL_CSS = (".dl{background:#F4F4F2;color:#2B2F33;font-family:Manrope,sans-serif;
            ".dl-alt{max-width:1248px;margin:0 auto;padding:40px 24px 48px;display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;font-size:14px;color:#666C72}"
            ".dl-alt a{color:#666C72}.dl-alt span{display:flex;flex-wrap:wrap;gap:24px}"
            ".dl table{border-collapse:collapse;width:100%;font-size:15.5px}.dl td,.dl th{text-align:start;padding:10px 12px;border-bottom:1px solid #E1E4DE}"
-           "@media(max-width:700px){.dl-hero{padding:48px 0 40px}.dl-sec{padding-top:64px}.dl-card{padding:24px 20px}}")
+           "@media(max-width:700px){.dl-hero{padding:48px 0 40px}.dl-sec{padding-top:64px}.dl-card{padding:24px 20px}}"
+           # Arapça: sağdan sola, Noto Naskh Arabic; büyük harf ve harf aralığı Arapçada kullanılmaz
+           "[dir=rtl] .dl,[dir=rtl].dl{font-family:'Noto Naskh Arabic',Manrope,serif}"
+           "[dir=rtl] .dl-menu,[dir=rtl] .dl-ey,[dir=rtl] .dl-logo small,[dir=rtl] .dl-bilgi p:first-child{letter-spacing:0;text-transform:none}"
+           "[dir=rtl] .dl-menu{font-size:16px}[dir=rtl] .dl-ey{font-size:15px;border-left:0;padding-left:0;border-right:3px solid #1FA86D;padding-right:10px}"
+           "[dir=rtl] h1,[dir=rtl] h2,[dir=rtl] h3{font-family:'Noto Naskh Arabic',serif!important;font-weight:600!important;letter-spacing:0}"
+           "[dir=rtl] .dl h1{line-height:1.35}[dir=rtl] .dl h2{line-height:1.4}[dir=rtl] .dl-lead,[dir=rtl] .dl-p{line-height:1.9}"
+           "[dir=rtl] .dl-card ul{padding-left:0;padding-right:18px}[dir=rtl] .dl-logo b,[dir=rtl] [lang=tr],[dir=rtl] [lang=en]{font-family:Manrope,sans-serif}"
+           "[dir=rtl] .dl-logo b{font-family:Fraunces,serif}"
+           "[dir=rtl] .yz{font-family:'Noto Naskh Arabic',serif}[dir=rtl] .yz p{line-height:1.95}[dir=rtl] .yz ul,[dir=rtl] .yz ol{padding-left:0;padding-right:22px}"
+           "[dir=rtl] .yz blockquote{border-left:0;padding:4px 22px 4px 0;border-right:2px solid #1FA86D;font-family:'Noto Naskh Arabic',serif}"
+           "[dir=rtl] .yz-ust{letter-spacing:0;text-transform:none;font-size:15px;border-left:0;padding-left:0;border-right:3px solid #1FA86D;padding-right:10px}"
+           "[dir=rtl] .yz-kisaca{border-left:1px solid #E1E4DE;border-right:4px solid #1FA86D}[dir=rtl] .yz-kisaca h2{letter-spacing:0;text-transform:none;font-size:15px}"
+           "[dir=rtl] .yz-kisaca ul{padding-left:0;padding-right:20px}[dir=rtl] .dl-tl b[dir=ltr]{text-align:right}")
 LOGO_SVG = ('<svg aria-hidden="true" height="40" style="flex:none" viewBox="8 10 80 76" width="40"><rect fill="#1FA86D" height="10" width="80" x="8" y="10"></rect>'
             '<rect fill="#1FA86D" height="38" width="10" x="8" y="10"></rect><rect fill="#2B2F33" height="10" width="80" x="8" y="43"></rect>'
             '<rect fill="#1FA86D" height="38" width="10" x="78" y="48"></rect><rect fill="#1FA86D" height="10" width="80" x="8" y="76"></rect></svg>')
@@ -392,10 +419,15 @@ for meta in dil_sayfalar:
     dil, D, yol = meta["dil"], DILLER[meta["dil"]], meta["yol"]
     tr_yol = meta.get("tr") or "/"
     menu = "".join('<a href="%s"%s>%s</a>' % (y, ' aria-current="page"' if yol.startswith(y) else "", ad) for ad, y in D["menu"])
+    karsilik = DIL_ESLES.get(tr_yol, {}) if meta.get("tr") else {}
+    secici = '<a href="%s" lang="tr" hreflang="tr" aria-label="TR – Türkçe">TR</a>' % tr_yol + "".join(
+        ('<b aria-current="true" lang="%s">%s</b>' % (d, DILLER[d]["kisa"])) if d == dil else
+        ('<a href="%s" lang="%s" hreflang="%s" aria-label="%s – %s">%s</a>' % (karsilik.get(d, "/%s/" % d), d, d, DILLER[d]["kisa"], DILLER[d]["ad"], DILLER[d]["kisa"]))
+        for d in DILLER)
     ust = ('<div class="sayfa" id="%s"><div class="dl" dir="%s">\n<header class="dl-ust">\n<a class="dl-logo" href="/%s/">%s<span><b lang="tr">SNS Danışmanlık</b><small>Serdar Saraç · %s</small></span></a>\n'
-           '<nav class="dl-menu" aria-label="%s">%s<span class="dl-dil"><a href="%s" lang="tr" hreflang="tr">TR</a><b aria-current="true">%s</b></span>'
+           '<nav class="dl-menu" aria-label="%s">%s<span class="dl-dil">%s</span>'
            '<a class="dl-ilet" href="%s"%s>%s</a></nav>\n</header>\n'
-           % ("%s-%s" % (dil, yol.strip("/").replace("/", "-") or "ana"), D["dir"], dil, LOGO_SVG, D["unvan"], D["menu_ad"], menu, tr_yol, D["kisa"],
+           % ("%s-%s" % (dil, yol.strip("/").replace("/", "-") or "ana"), D["dir"], dil, LOGO_SVG, D["unvan"], D["menu_ad"], menu, secici,
               D["iletisim"][1], ' aria-current="page"' if yol == D["iletisim"][1] else "", D["iletisim"][0]))
     alt = ('<section class="dl-w"><div class="dl-bilgi">' + "".join('<div><p>%s</p><p>%s</p></div>' % x for x in D["alt"]) + '</div></section>\n'
            '<footer class="dl-alt"><span>© 2026 <span lang="tr">SNS Danışmanlık</span></span><span>'
@@ -492,8 +524,8 @@ for h, y, n in uretilen:
     # dil seçici ve hreflang: Türkçe sayfalarda menüdeki boş alana diğer dil bağlantıları
     if not any(h.startswith(d + "/") for d in DILLER):
         karsilik = DIL_ESLES.get(y, {})
-        secici = "".join('<a href="%s" lang="%s" hreflang="%s" style="color: #666C72; text-decoration: none" aria-label="%s">%s</a>'
-                         % (karsilik.get(d, "/%s/" % d), d, d, DILLER[d]["ad"], DILLER[d]["kisa"]) for d in DILLER)
+        secici = "".join('<a href="%s" lang="%s" hreflang="%s" style="color: #666C72; text-decoration: none" aria-label="%s – %s">%s</a>'
+                         % (karsilik.get(d, "/%s/" % d), d, d, DILLER[d]["kisa"], DILLER[d]["ad"], DILLER[d]["kisa"]) for d in DILLER)
         t2 = t2.replace('<span style="display: flex; gap: 12px; color: #666C72"></span>',
                         '<span style="display: flex; gap: 12px; color: #666C72"><b style="color: #2B2F33; font-weight: 600" aria-current="true">TR</b>%s</span>' % secici, 1)
         if karsilik and 'hreflang="x-default"' not in t2:
@@ -523,8 +555,9 @@ def _baslik_aciklama(y):
     b = re.search(r"<title>(.*?)</title>", t, re.S).group(1)
     a = re.search(r'<meta name="description" content="(.*?)">', t, re.S).group(1)
     return html.unescape(b).split(" · SNS")[0], html.unescape(a)
-_gruplar = [("Ana sayfalar", lambda y: not y.startswith(("/yazilar/", "/hesaplama-merkezi/", "/en/")) or y == "/yazilar/"),
+_gruplar = [("Ana sayfalar", lambda y: not y.startswith(("/yazilar/", "/hesaplama-merkezi/", "/en/", "/ar/")) or y == "/yazilar/"),
             ("English pages", lambda y: y.startswith("/en/")),
+            ("صفحات باللغة العربية (Arabic pages)", lambda y: y.startswith("/ar/")),
             ("Yazılar ve okuyucu soruları", lambda y: y.startswith("/yazilar/") and y != "/yazilar/"),
             ("Hesaplama Merkezi", lambda y: y.startswith("/hesaplama-merkezi/"))]
 _tum = [v[0] for v in SAYFALAR.values()] + ek_adresler
