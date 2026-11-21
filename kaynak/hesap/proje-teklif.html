@@ -1,0 +1,99 @@
+<!--META {"yol":"/hesaplama-merkezi/yurt-disi-proje-teklifi/","baslik":"Yurt dışı proje teklif maliyeti hesaplama · SNS İş Dünyası Hesaplama Merkezi","aciklama":"Yurt dışında kurulum, montaj, etkinlik veya çekim işi için teklif fiyatı: ekipman, navlun, gümrük, ekip, konaklama, vize, teminat mektubu, kur tamponu, karşı ülke vergisi ve tahsilat vadesiyle hedef kâr marjına göre fiyat."} -->
+<section class="hm">
+<p class="hm-yol"><a href="/hesaplama-merkezi/">Hesaplama Merkezi</a> › Finans › Yurt dışı proje teklifi</p>
+<!--PDFBASLIK-->
+<p class="hm-ust">Hesaplama Merkezi · Finans</p>
+<h1>Yurt dışı proje teklif maliyeti</h1>
+<p class="hm-giris">Yurt dışında kurulum, montaj, etkinlik veya çekim işi için teklif hazırlarken gözden kaçan kalemleri tek yerde toplayın. Doğrudan maliyetlere kur ve beklenmeyen gider tamponu, teminat mektubu masrafı, karşı ülkede kesilecek vergi ve tahsilat vadesinin finansman maliyeti eklenir; hedef kâr marjına göre teklif fiyatı bulunur.</p>
+
+<div class="hm-kart"><h2 style="margin-top:0">1. Ekipman ve lojistik</h2><div class="hm-ayar">
+<label>Para birimi<select id="p-pb"></select></label>
+<label>Satılacak ekipman ve malzeme maliyeti<input id="p-ekip" inputmode="decimal" placeholder="0"></label>
+<label>Geri dönecek ekipmanın kullanım bedeli<input id="p-kira" inputmode="decimal" placeholder="amortisman / kira payı"></label>
+<label>Navlun ve sigorta (gidiş + dönüş)<input id="p-nav" inputmode="decimal" placeholder="0"></label>
+<label>Gümrük, komisyoncu, ATA karnesi<input id="p-gum" inputmode="decimal" placeholder="0"></label>
+<label>Yerel nakliye, vinç, depo<input id="p-yer" inputmode="decimal" placeholder="0"></label>
+</div></div>
+
+<div class="hm-kart" style="margin-top:16px"><h2 style="margin-top:0">2. Ekip</h2><div class="hm-ayar">
+<label>Kişi sayısı<input id="p-kisi" inputmode="decimal" placeholder="0"></label>
+<label>Görev süresi (gün)<input id="p-gun" inputmode="decimal" placeholder="0"></label>
+<label>Kişi başı günlük işveren maliyeti<input id="p-ucret" inputmode="decimal" placeholder="ücret + SGK"></label>
+<label>Kişi başı günlük harcırah<input id="p-harc" inputmode="decimal" placeholder="0"></label>
+<label>Kişi başı uçak bileti<input id="p-ucak" inputmode="decimal" placeholder="0"></label>
+<label>Kişi başı gecelik konaklama<input id="p-otel" inputmode="decimal" placeholder="0"></label>
+<label>Kişi başı vize ve seyahat sağlık sigortası<input id="p-vize" inputmode="decimal" placeholder="0"></label>
+<label>Yerel personel ve taşeron<input id="p-yerel" inputmode="decimal" placeholder="0"></label>
+</div></div>
+
+<div class="hm-kart" style="margin-top:16px"><h2 style="margin-top:0">3. Risk, vergi ve finansman</h2><div class="hm-ayar">
+<label>Kur riski tamponu (%)<input id="p-kur" inputmode="decimal" placeholder="3"></label>
+<label>Beklenmeyen giderler (%)<input id="p-bek" inputmode="decimal" placeholder="5"></label>
+<label>Teminat mektubu (teklifin %’si)<input id="p-tm" inputmode="decimal" placeholder="10"></label>
+<label>Teminat komisyonu (yıllık %)<input id="p-tmk" inputmode="decimal" placeholder="3"></label>
+<label>Teminat süresi (ay)<input id="p-tms" inputmode="decimal" placeholder="6"></label>
+<label>Karşı ülke vergisi, mahsup edilemeyen (%)<input id="p-sto" inputmode="decimal" placeholder="0"></label>
+<label>Tahsilat vadesi (gün)<input id="p-vade" inputmode="decimal" placeholder="60"></label>
+<label>Finansman maliyeti (yıllık %)<input id="p-fin" inputmode="decimal" placeholder="8"></label>
+<label>Hedef kâr marjı (%)<input id="p-marj" inputmode="decimal" placeholder="20"></label>
+</div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn" id="p-ornek">Örnek veriyle doldur</button><button type="button" class="hm-btn" id="p-temiz">Temizle</button></div></div>
+
+<h2>Sonuç</h2>
+<div class="hm-izgara">
+<div class="hm-kutu vurgu"><small>Teklif fiyatı</small><b id="r-fiyat">–</b><span id="r-fiyat-a">hedef marja göre</span></div>
+<div class="hm-kutu"><small>Toplam maliyet</small><b id="r-mal">–</b><span id="r-mal-a"></span></div>
+<div class="hm-kutu"><small>Kâr</small><b id="r-kar">–</b><span id="r-kar-a"></span></div>
+<div class="hm-kutu"><small>Başabaş teklif</small><b id="r-bas">–</b><span>kâr sıfır olduğunda</span></div>
+</div>
+<p class="hm-not" id="r-uyari" hidden></p>
+
+<h2>Maliyet dökümü</h2>
+<div class="hm-tablo-kap"><table class="hm-tablo" style="min-width:520px"><caption class="sr">Maliyet dökümü</caption><thead><tr><th>Kalem</th><th class="sag">Tutar</th><th class="sag">Teklifteki payı</th></tr></thead><tbody id="p-dok"></tbody></table></div>
+
+<h2>Marj senaryoları</h2>
+<div class="hm-tablo-kap"><table class="hm-tablo" style="min-width:520px"><caption class="sr">Marj senaryoları</caption><thead><tr><th>Hedef kâr marjı</th><th class="sag">Teklif fiyatı</th><th class="sag">Kâr</th><th class="sag">Kâr oranı (markup)</th></tr></thead><tbody id="p-sen"></tbody></table></div>
+<div class="hm-dugmeler"><button type="button" class="hm-btn ana" id="p-pdf">PDF olarak kaydet</button></div>
+
+<h2>Nasıl hesaplanır?</h2>
+<div class="hm-formul"><b>Doğrudan maliyet (D)</b> <code>= ekipman + lojistik + ekip + konaklama + vize + yerel giderler</code><br>
+<b>Ekip maliyeti</b> <code>= kişi × gün × (günlük işveren maliyeti + harcırah) + kişi × (uçak + vize) + kişi × (gün − 1) × gecelik konaklama</code><br>
+<b>Tamponlu maliyet (B)</b> <code>= D × (1 + kur tamponu + beklenmeyen gider oranı)</code><br>
+<b>Teklif fiyatı (F)</b> <code>= B ÷ (1 − marj − karşı ülke vergisi − teminat oranı × komisyon × ay ÷ 12 − finansman oranı × vade ÷ 365)</code><br>
+Teminat masrafı, karşı ülke vergisi ve finansman maliyeti teklif tutarına bağlı olduğu için fiyatın paydasında yer alır.</div>
+<ul class="hm-kaynak">
+<li><b>Karşı ülke vergisi:</b> Yurt dışında ödenen vergi, belgelendirilirse belirli sınırlar içinde Türkiye’deki kurumlar vergisinden mahsup edilebilir (KVK md. 33). Bu alana yalnızca mahsup edilemeyeceğini düşündüğünüz kısmı girin.</li>
+<li><b>Harcırah:</b> İş seyahati gündeliklerinin, en yüksek devlet memuruna ödenen tutarı aşmayan kısmı gelir vergisinden istisnadır (GVK md. 24/b); aşan kısım ücret olarak vergilenir ve işveren maliyetine eklenmelidir.</li>
+<li><b>KDV:</b> Teklif KDV hariç hesaplanır. Ekipman ihracatı, yurt dışında ifa edilen hizmet ve hizmet ihracatının KDV sonuçları farklıdır; ayrıntı için <a href="/yazilar/led-ekran-yurt-disinda-kurulum-mal-mi-hizmet-mi/">ilgili yazıya</a> bakabilirsiniz.</li>
+</ul>
+<p class="hm-not">Araç bilgilendirme amaçlıdır; sonuç tahminidir. Teklif öncesinde sözleşme şartları, karşı ülkenin vergi ve sosyal güvenlik kuralları ile çifte vergilendirmeyi önleme anlaşmasının hükümleri ayrıca değerlendirilmelidir.</p>
+<!--PDFALT-->
+</section>
+<script>
+(function(){var S=HM.sayi,F=HM.f,el=function(i){return document.getElementById(i)};
+ el('p-pb').innerHTML='<option value="TL">TL · Türk lirası</option>'+HM.pbSecenek('EUR');
+ var ALAN=['p-ekip','p-kira','p-nav','p-gum','p-yer','p-kisi','p-gun','p-ucret','p-harc','p-ucak','p-otel','p-vize','p-yerel','p-kur','p-bek','p-tm','p-tmk','p-tms','p-sto','p-vade','p-fin','p-marj'];
+ function v(i){var x=S(el(i).value);return isFinite(x)?x:0}
+ function hes(){var pb=el('p-pb').value;function P(x){return isFinite(x)?F(x,0)+' '+pb:'–'}
+  var kisi=v('p-kisi'),gun=v('p-gun');
+  var ekipman=v('p-ekip')+v('p-kira'),lojistik=v('p-nav')+v('p-gum')+v('p-yer');
+  var ucret=kisi*gun*v('p-ucret'),harc=kisi*gun*v('p-harc'),seyahat=kisi*(v('p-ucak')+v('p-vize')),otel=kisi*Math.max(gun-1,0)*v('p-otel'),yerel=v('p-yerel');
+  var D=ekipman+lojistik+ucret+harc+seyahat+otel+yerel;
+  var tam=D*(v('p-kur')+v('p-bek'))/100,B=D+tam;
+  var tmO=v('p-tm')/100*v('p-tmk')/100*v('p-tms')/12,stO=v('p-sto')/100,fnO=v('p-fin')/100*v('p-vade')/365,m=v('p-marj')/100;
+  var payda=1-m-stO-tmO-fnO,fiyat=payda>0&&B>0?B/payda:NaN,bas=(1-stO-tmO-fnO)>0&&B>0?B/(1-stO-tmO-fnO):NaN;
+  var uy=el('r-uyari');if(B>0&&!(payda>0)){uy.hidden=false;uy.textContent='Marj, vergi, teminat ve finansman oranlarının toplamı %100’e ulaştı; oranları kontrol edin.'}else uy.hidden=true;
+  var tm=fiyat*tmO,st=fiyat*stO,fn=fiyat*fnO,top=B+tm+st+fn,kar=fiyat-top;
+  el('r-fiyat').textContent=P(fiyat);
+  el('r-mal').textContent=isFinite(fiyat)?P(top):(D>0?P(D):'–');el('r-mal-a').textContent=D>0?'doğrudan maliyet: '+P(D):'';
+  el('r-kar').textContent=P(kar);el('r-kar-a').textContent=isFinite(fiyat)&&top>0?'kâr oranı (markup): %'+F(kar/top*100,1):'';
+  el('r-bas').textContent=P(bas);
+  var sat=[['Ekipman ve malzeme',ekipman],['Navlun, gümrük, yerel lojistik',lojistik],['Ekip işveren maliyeti',ucret],['Harcırah',harc],['Uçak, vize, sigorta',seyahat],['Konaklama',otel],['Yerel personel ve taşeron',yerel],['Kur ve beklenmeyen gider tamponu',tam],['Teminat mektubu masrafı',tm],['Karşı ülke vergisi',st],['Tahsilat vadesi finansman maliyeti',fn],['Kâr',kar]];
+  el('p-dok').innerHTML=D>0?sat.filter(function(r){return r[1]&&isFinite(r[1])}).map(function(r){return '<tr><td>'+r[0]+'</td><td class="sag">'+P(r[1])+'</td><td class="sag">'+(isFinite(fiyat)?'%'+F(r[1]/fiyat*100,1):'–')+'</td></tr>'}).join('')+(isFinite(fiyat)?'<tr><th>Teklif fiyatı</th><th class="sag">'+P(fiyat)+'</th><th class="sag">%100</th></tr>':''):'<tr><td colspan="3" style="color:#666C72">Maliyet kalemleri girildiğinde döküm listelenir.</td></tr>';
+  el('p-sen').innerHTML=B>0?[0,10,15,20,25,30,35].map(function(p){var d=1-p/100-stO-tmO-fnO,f=d>0?B/d:NaN,k=f-(B+f*(stO+tmO+fnO)),t=f-k;return '<tr><td>%'+p+'</td><td class="sag">'+P(f)+'</td><td class="sag">'+P(k)+'</td><td class="sag">'+(isFinite(f)&&t>0?'%'+F(k/t*100,1):'–')+'</td></tr>'}).join(''):'<tr><td colspan="4" style="color:#666C72">Maliyet kalemleri girildiğinde senaryolar listelenir.</td></tr>'}
+ ALAN.forEach(function(i){el(i).addEventListener('input',hes)});el('p-pb').addEventListener('change',hes);
+ el('p-ornek').addEventListener('click',function(){var o={'p-ekip':'120.000','p-kira':'15.000','p-nav':'9.500','p-gum':'2.500','p-yer':'3.000','p-kisi':'6','p-gun':'10','p-ucret':'150','p-harc':'60','p-ucak':'450','p-otel':'110','p-vize':'120','p-yerel':'4.000','p-kur':'3','p-bek':'5','p-tm':'10','p-tmk':'3','p-tms':'6','p-sto':'0','p-vade':'60','p-fin':'8','p-marj':'20'};for(var k in o)el(k).value=o[k];el('p-pb').value='EUR';hes()});
+ el('p-temiz').addEventListener('click',function(){ALAN.forEach(function(i){el(i).value=''});hes()});
+ el('p-pdf').addEventListener('click',function(){HM.pdf('Yurt dışı proje teklifi')});
+ hes();})();
+</script>
