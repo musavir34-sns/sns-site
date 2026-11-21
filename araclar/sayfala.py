@@ -229,7 +229,8 @@ a, b = bolumler["yazilar-sayfa"]
 yz_iskelet = baglanti_cevir(s[a:b], None).replace('href="#ana"', 'href="/"')
 yz_ust = yz_iskelet[:yz_iskelet.find("</header>") + len("</header>")]
 k = yz_iskelet.find("Büro sahibi"); yz_alt = yz_iskelet[yz_iskelet.rfind("<section", 0, k):]
-YZ_CSS = (".yz{max-width:760px;margin:0 auto;padding:64px 24px 0;color:#2B2F33;font-family:Manrope,sans-serif}"
+YZ_CSS = (".yz-tablo{overflow-x:auto;margin:10px 0 18px}.yz table{width:100%;min-width:480px;border-collapse:collapse;font-size:15px;line-height:1.55}.yz th,.yz td{border-top:1px solid #E1E4DE;padding:10px 12px;text-align:left;vertical-align:top}.yz thead th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#5F656B;font-weight:600}.yz tbody th{font-weight:600}.yz h3.yz-alt{margin:22px 0 8px;font:500 19px/1.35 Fraunces,serif}"
+          ".yz{max-width:760px;margin:0 auto;padding:64px 24px 0;color:#2B2F33;font-family:Manrope,sans-serif}"
           ".yz-yol{margin:0 0 22px;font-size:13px;color:#666C72}.yz-yol a{color:#666C72}"
           ".yz-ust{margin:0;font-size:13px;letter-spacing:.26em;text-transform:uppercase;border-left:3px solid #1FA86D;padding-left:10px}"
           ".yz h1{margin:14px 0 14px;font:300 clamp(32px,4.4vw,48px)/1.15 Fraunces,serif}"
