@@ -33,6 +33,8 @@ jobs:
                   yollar.add("/yazilar/%s/" % m.group(1))
               elif m:
                   yollar.add(m.group(1))
+          if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch":   # elle calistirilinca tum site haritasi
+              yollar = set(re.findall(r"<loc>https://snsdanismanlik\.com\.tr([^<]+)</loc>", open("sitemap.xml").read()))
           if not yollar:
               print("Bildirilecek sayfa yok"); raise SystemExit
           govde = json.dumps({"host": "snsdanismanlik.com.tr", "key": os.environ["ANAHTAR"],
