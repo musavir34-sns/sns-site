@@ -165,10 +165,24 @@ ISLETME_LD = {
     "address": {"@type": "PostalAddress", "streetAddress": "Hamidiye Mah. Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2",
                 "addressLocality": "Kağıthane", "addressRegion": "İstanbul", "postalCode": "34408", "addressCountry": "TR"},
     "geo": {"@type": "GeoCoordinates", "latitude": 41.092933, "longitude": 28.975068},
-    "areaServed": "TR", "knowsLanguage": ["tr", "en"],
+    "areaServed": ["TR", "LY", "QA", "IQ"], "knowsLanguage": ["tr", "en"],
     "sameAs": ["https://share.google/wuSox0PQlExN3fpbv"],  # Google İşletme Profili
-    "founder": {"@type": "Person", "name": "Serdar Saraç", "jobTitle": "Serbest Muhasebeci Mali Müşavir",
-                "sameAs": ["https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/"]},
+    "knowsAbout": ["Muhasebe ve defter tutma", "Vergi danışmanlığı", "Dış ticaret ve ihracat vergilendirmesi", "Akreditif ve ihracat bedelinin tahsili",
+                   "KDV iadesi", "Libya, Katar ve Irak ile ticaret", "Yabancı sermayeli şirketler", "Şirket işlemleri ve genel kurul (TTK)"],
+    # Büro sahibinin kimliği ve uzmanlık alanları (yapay zekâ aramalarının kişiyi uzmanlıkla eşleştirmesi için)
+    "founder": {"@type": "Person", "@id": ALAN + "/#serdar-sarac", "name": "Serdar Saraç", "jobTitle": "Serbest Muhasebeci Mali Müşavir",
+                "url": ALAN + "/hakkimizda/", "sameAs": ["https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/"],
+                "alumniOf": {"@type": "CollegeOrUniversity", "name": "Anadolu Üniversitesi"},
+                "memberOf": {"@type": "Organization", "name": "İstanbul Serbest Muhasebeci Mali Müşavirler Odası", "alternateName": "İSMMMO"},
+                "hasCredential": [
+                    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Meslek ruhsatı", "name": "Serbest Muhasebeci Mali Müşavir",
+                     "recognizedBy": {"@type": "Organization", "name": "TÜRMOB"}},
+                    {"@type": "EducationalOccupationalCredential", "credentialCategory": "Sertifika", "name": "Kooperatif Dış Denetçisi",
+                     "recognizedBy": {"@type": "Organization", "name": "TÜRMOB"}}],
+                "knowsLanguage": ["tr", "en"],
+                "knowsAbout": ["Dış ticaret", "İhracat ve ithalat vergilendirmesi", "Akreditif", "Libya'ya ihracat", "Yabancı sermayeli şirketler",
+                               "Türk Ticaret Kanunu şirket işlemleri", "Kooperatif dış denetimi", "Medya ve film sektöründe finansal yönetim",
+                               "Finansal raporlama ve bütçe", "Enflasyon muhasebesi"]},
 }
 ISLETME_LD_HTML = '<script type="application/ld+json">%s</script>\n' % json.dumps(ISLETME_LD, ensure_ascii=False)
 
