@@ -542,6 +542,10 @@ def ingilizce_isaretle(html):
         else:
             out.append(_EN_RE.sub(r'<span lang="en">\1</span>', p))
     return "".join(out)
+RH_CSS = (".rh-bant{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;border:1px solid #1FA86D;padding:9px 16px;font-size:14px;line-height:1.3;background:#FFFFFF}"
+          ".rh-e{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#157A4F;font-weight:600}"
+          ".rh-bant a{color:#2B2F33;text-decoration:none;border-bottom:1px solid #1FA86D}.rh-bant a:hover,.rh-bant a:focus-visible{color:#157A4F}"
+          ".rh-n{color:#8A9096}@media (max-width:640px){.rh-n,.rh-2{display:none}.rh-bant{padding:7px 12px}}")
 for h, y, n in uretilen:
     t = open(h, encoding="utf-8").read()
     t2 = menu_etiket(kur_bandi(t))
@@ -575,6 +579,15 @@ for h, y, n in uretilen:
         m_dil = re.search(r'<html lang="([a-z]+)"', t2)
         etiket = {"en": "Table", "ar": "جدول", "fa": "جدول"}.get(m_dil.group(1) if m_dil else "tr", "Tablo")
         t2 = t2.replace('<div class="yz-tablo">', '<div class="yz-tablo" tabindex="0" role="region" aria-label="%s">' % etiket)
+    # Rehberler bağlantısı: Türkçe sayfalarda logo satırının sağında (dar ekranda kısalır)
+    if not any(h.startswith(d + "/") for d in DILLER) and 'class="rh-bant"' not in t2:
+        mh = re.search(r'(<header[^>]*>\s*<a href="/"[^>]*>.*?</a>)', t2, re.S)
+        if mh:
+            bant = ('\n<nav class="rh-bant" aria-label="Rehberler"><span class="rh-e">Rehberler</span>'
+                    '<a href="/sirket-islemleri-rehberi/">Şirket işlemleri</a><span class="rh-n" aria-hidden="true">·</span>'
+                    '<a class="rh-2" href="/yazilar/yabancilarin-turkiyede-sirket-kurmasi/">Yabancılar için şirket kurma</a></nav>')
+            t2 = t2[:mh.end()] + bant + t2[mh.end():]
+            t2 = t2.replace("</head>", "<style>" + RH_CSS + "</style>\n</head>", 1)
     # SSS: data-sss işaretli bölümdeki soru-cevaplardan FAQPage yapılandırılmış verisi
     m = re.search(r"<section[^>]*data-sss[^>]*>(.*?)</section>", t2, re.S)
     if m and '"FAQPage"' not in t2:
