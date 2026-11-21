@@ -368,6 +368,20 @@ DILLER = {
                    ("التواصل", "<span dir=\"ltr\">+90 532 624 99 33</span> (واتساب أيضاً)<br/><span dir=\"ltr\">info@snsdanismanlik.com.tr</span>")],
            "alt_link": [("الخصوصية وملفات تعريف الارتباط", "/ar/privacy/"), ("إمكانية الوصول (بالتركية)", "/erisilebilirlik/"),
                         ("LinkedIn", "https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/")]},
+    "fa": {"ad": "فارسی", "kisa": "FA", "dir": "rtl", "locale": "fa_IR",
+           "unvan": "حسابدار رسمی و مشاور مالی",
+           "menu": [("خدمات", "/fa/services/"), ("تجارت بین‌المللی", "/fa/international/"), ("درباره ما", "/fa/about/")],
+           "iletisim": ("تماس با ما", "/fa/contact/"), "menu_ad": "منوی اصلی", "atla": "رفتن به محتوا",
+           "yaz_meta": "سردار ساراچ، حسابدار رسمی و مشاور مالی · آخرین به‌روزرسانی: %s", "kisaca": "به طور خلاصه",
+           "dayanak": "مبنای قانونی", "yazi_not": "این مطلب صرفاً جنبه اطلاع‌رسانی عمومی دارد. مقررات ممکن است تغییر کند؛ بنابراین هر مورد مشخص باید بر اساس مقررات جاری بررسی شود.",
+           "alt": [("مدیر دفتر", "سردار ساراچ (<span lang=\"tr\">Serdar Saraç</span>)<br/>حسابدار رسمی و مشاور مالی (<span lang=\"tr\">Serbest Muhasebeci Mali Müşavir</span>)"),
+                   ("نام رسمی دفتر", "<span lang=\"tr\" dir=\"ltr\">Serdar Saraç Serbest Muhasebeci Mali Müşavir Bürosu</span><br/>شماره ثبت دفتر 27853 · نام مورد استفاده: <span lang=\"tr\" dir=\"ltr\">SNS Danışmanlık</span>"),
+                   ("کانون حرفه‌ای", "کانون حسابداران رسمی و مشاوران مالی استانبول (<span lang=\"tr\">İSMMMO</span>)<br/>شماره عضویت 60446 · شماره پروانه 342135321<br/>تاریخ ثبت: 05.03.2024"),
+                   ("زبان‌های کاری", "ترکی · انگلیسی"),
+                   ("نشانی", "<span lang=\"tr\" dir=\"ltr\">Hamidiye Mah., Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2, 34408 Kağıthane / İstanbul</span>، ترکیه"),
+                   ("تماس", "<span dir=\"ltr\">+90 532 624 99 33</span> (واتس‌اپ)<br/><span dir=\"ltr\">info@snsdanismanlik.com.tr</span>")],
+           "alt_link": [("حریم خصوصی و کوکی‌ها", "/fa/privacy/"), ("دسترس‌پذیری (به ترکی)", "/erisilebilirlik/"),
+                        ("LinkedIn", "https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/")]},
 }
 DIL_CSS = (".dl{background:#F4F4F2;color:#2B2F33;font-family:Manrope,sans-serif;min-height:100vh}"
            ".dl-ust{max-width:1248px;margin:0 auto;padding:28px 24px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}"
@@ -582,6 +596,7 @@ def _baslik_aciklama(y):
 _gruplar = [("Ana sayfalar", lambda y: not y.startswith(("/yazilar/", "/hesaplama-merkezi/", "/en/", "/ar/")) or y == "/yazilar/"),
             ("English pages", lambda y: y.startswith("/en/")),
             ("صفحات باللغة العربية (Arabic pages)", lambda y: y.startswith("/ar/")),
+            ("صفحات به زبان فارسی (Persian pages)", lambda y: y.startswith("/fa/")),
             ("Yazılar ve okuyucu soruları", lambda y: y.startswith("/yazilar/") and y != "/yazilar/"),
             ("Hesaplama Merkezi", lambda y: y.startswith("/hesaplama-merkezi/"))]
 _tum = [v[0] for v in SAYFALAR.values()] + ek_adresler
