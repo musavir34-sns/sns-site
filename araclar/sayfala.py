@@ -570,6 +570,11 @@ for h, y, n in uretilen:
     if h.startswith("yazilar/") and h != "yazilar/index.html":
         a = t2.find('<article class="yz">'); b = t2.find('</article>', a)
         t2 = t2[:a] + t2[a:b].replace("<h3>", '<h2 class="yz-ara">').replace("</h3>", "</h2>") + t2[b:]
+    # erişilebilirlik: kaydırılabilir tablolar klavyeyle odaklanabilsin (axe: scrollable-region-focusable)
+    if '<div class="yz-tablo">' in t2:
+        m_dil = re.search(r'<html lang="([a-z]+)"', t2)
+        etiket = {"en": "Table", "ar": "جدول", "fa": "جدول"}.get(m_dil.group(1) if m_dil else "tr", "Tablo")
+        t2 = t2.replace('<div class="yz-tablo">', '<div class="yz-tablo" tabindex="0" role="region" aria-label="%s">' % etiket)
     # SSS: data-sss işaretli bölümdeki soru-cevaplardan FAQPage yapılandırılmış verisi
     m = re.search(r"<section[^>]*data-sss[^>]*>(.*?)</section>", t2, re.S)
     if m and '"FAQPage"' not in t2:
