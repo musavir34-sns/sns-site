@@ -165,10 +165,10 @@ ISLETME_LD = {
     "address": {"@type": "PostalAddress", "streetAddress": "Hamidiye Mah. Girne Cad. Çelik Özer İş Merkezi No: 49/1 İç Kapı No: 2",
                 "addressLocality": "Kağıthane", "addressRegion": "İstanbul", "postalCode": "34408", "addressCountry": "TR"},
     "geo": {"@type": "GeoCoordinates", "latitude": 41.092933, "longitude": 28.975068},
-    "areaServed": ["TR", "LY", "QA", "IQ"], "knowsLanguage": ["tr", "en"],
+    "areaServed": ["TR", "LY", "QA", "IQ", "EG", "IR"], "knowsLanguage": ["tr", "en"],
     "sameAs": ["https://share.google/wuSox0PQlExN3fpbv"],  # Google İşletme Profili
     "knowsAbout": ["Muhasebe ve defter tutma", "Vergi danışmanlığı", "Dış ticaret ve ihracat vergilendirmesi", "Akreditif ve ihracat bedelinin tahsili",
-                   "KDV iadesi", "Libya, Katar ve Irak ile ticaret", "Yabancı sermayeli şirketler", "Şirket işlemleri ve genel kurul (TTK)"],
+                   "KDV iadesi", "Libya, Katar, Irak, Mısır ve İran ile ticaret", "Yabancı sermayeli şirketler", "Şirket işlemleri ve genel kurul (TTK)"],
     # Büro sahibinin kimliği ve uzmanlık alanları (yapay zekâ aramalarının kişiyi uzmanlıkla eşleştirmesi için)
     "founder": {"@type": "Person", "@id": ALAN + "/#serdar-sarac", "name": "Serdar Saraç", "jobTitle": "Serbest Muhasebeci Mali Müşavir",
                 "url": ALAN + "/hakkimizda/", "sameAs": ["https://www.linkedin.com/in/serdar-sara%C3%A7-3660466a/"],
