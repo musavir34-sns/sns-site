@@ -4,7 +4,7 @@
 Üretilenler: index.html, <bolum>/index.html, sitemap.xml, robots.txt
 Siteyi düzenlerken yalnızca kaynak/tek-sayfa.html değiştirilir, sonra bu betik çalıştırılır.
 """
-import json, os, re
+import html, json, os, re
 
 ALAN = "https://snsdanismanlik.com.tr"
 KAYNAK = "kaynak/tek-sayfa.html"
@@ -509,6 +509,13 @@ for h, y, n in uretilen:
     if h.startswith("yazilar/") and h != "yazilar/index.html":
         a = t2.find('<article class="yz">'); b = t2.find('</article>', a)
         t2 = t2[:a] + t2[a:b].replace("<h3>", '<h2 class="yz-ara">').replace("</h3>", "</h2>") + t2[b:]
+    # SSS: data-sss işaretli bölümdeki soru-cevaplardan FAQPage yapılandırılmış verisi
+    m = re.search(r"<section[^>]*data-sss[^>]*>(.*?)</section>", t2, re.S)
+    if m and '"FAQPage"' not in t2:
+        temiz = lambda x: html.unescape(re.sub(r"<[^>]+>", "", x)).strip()
+        ciftler = re.findall(r"<h3[^>]*>(.*?)</h3>\s*<p[^>]*>(.*?)</p>", m.group(1), re.S)
+        ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": temiz(q), "acceptedAnswer": {"@type": "Answer", "text": temiz(a)}} for q, a in ciftler]}
+        t2 = t2.replace("</head>", '<script type="application/ld+json">%s</script>\n</head>' % json.dumps(ld, ensure_ascii=False), 1)
     if t2 != t:
         open(h, "w", encoding="utf-8").write(t2)
 
