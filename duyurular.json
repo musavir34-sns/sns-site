@@ -1,6 +1,13 @@
 {
  "turmob": [
   {
+   "tarih": "24.11.2026",
+   "no": "125",
+   "konu": "Sosyal Güvenlik",
+   "baslik": "Denetim Elemanlarının Tutanak Tarihine Göre SGK İdari Para Cezaları Farklı Hesaplanmaktadır",
+   "url": "https://www.turmob.org.tr/sirkuler/detailPdf/1f87e684-d9f7-4a28-be43-de54df7a740f/denetim-elemanlarinin-tutanak-tarihine-gore-sgk-idari-para-cezalari-farkli-hesaplanmaktadir"
+  },
+  {
    "tarih": "17.11.2026",
    "no": "124",
    "konu": "Sosyal Güvenlik",
@@ -62,13 +69,6 @@
    "konu": "Vergi",
    "baslik": "Vergilendirme İşlemlerinde Elektronik Tebligatın Usul ve Esaslarına İlişkin Tebliğ Yayımlandı",
    "url": "https://www.turmob.org.tr/sirkuler/detailPdf/cb021b9f-19d1-498c-ae39-e5a9e72748be/vergilendirme-islemlerinde-elektronik-tebligatin-usul-ve-esaslarina-iliskin-teblig-yayimlandi"
-  },
-  {
-   "tarih": "11.10.2026",
-   "no": "115",
-   "konu": "Vergi",
-   "baslik": "Kiralama, Amortisman ve Personel Giderleri ile Kur Farkı Zararlarının Sermaye Kaybı veya Borca Batık Olma Hesaplamalarında Dikkate Alınmamasına İlişkin Süre Uzatıldı",
-   "url": "https://www.turmob.org.tr/sirkuler/detailPdf/6f33c08e-8a28-43b4-9473-698f24c43b27/kiralama--amortisman-ve-personel-giderleri-ile-kur-farki-zararlarinin-sermaye-kaybi-veya-borca-batik"
   }
  ],
  "ismmmo": [
@@ -89,13 +89,7 @@
    "konu": "Duyuru",
    "baslik": "Özel Usulsüzlük Cezalarına İlişkin Talebimizi TÜRMOB'a İlettik",
    "url": "https://www.ismmmo.org.tr/dosya/6312/Kurumsal-Dosya/11112026-ozel-usulsuzluk-cezalarina-iliskin-talebimiz.pdf"
-  },
-  {
-   "tarih": "30.10.2026",
-   "konu": "Mevzuat",
-   "baslik": "Katma Değer Vergisi Beyannamelerine (KDV1, KDV2, KDV2B, KDV4, KDV9015) İlişkin Önemli Duyuru",
-   "url": "https://www.ismmmo.org.tr/dosya/6292/Mevzuat-Dosya/30102026-kdv-beyannameleri-duyuru.pdf"
   }
  ],
- "guncelleme": "23.11.2026 14:10"
+ "guncelleme": "24.11.2026 19:13"
 }
