@@ -526,7 +526,7 @@ def menu_etiket(html):
 EN_TERIM = ["Commercial Invoice", "Proforma Invoice", "Packing List", "packing list", "Origin Declaration", "Incoterms", "Cash Flow", "Notify"]
 _EN_RE = re.compile(r"\b(" + "|".join(re.escape(x) for x in sorted(EN_TERIM, key=len, reverse=True)) + r")\b")
 _ATLA = ("script", "style", "title", "option", "textarea", "head", "svg")
-CF_ANALIZ = """<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "270111e077c64b8d85784514fc8d95d6"}'></script>\n"""
+CF_ANALIZ = """<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5aa168602cf0464588b7ead2a05a12a6"}'></script>\n"""
 def ingilizce_isaretle(html):
     parca = re.split(r"(<[^>]+>)", html); ic = []; out = []
     for p in parca:
